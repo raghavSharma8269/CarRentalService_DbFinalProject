@@ -8,6 +8,7 @@ public class CarRentalServiceDbFinalProjectApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(CarRentalServiceDbFinalProjectApplication.class, args);
+		System.out.println("Car Rental Service Application is running...");
 	}
 
 }
