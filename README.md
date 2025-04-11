@@ -22,7 +22,7 @@
 
 #### Admin Account
 - [ ] Create employee accounts with a username, password, and full name.  
-  - [ ] **(Optional)** Require new employees to change their password on first login.
+- [ ] **(Optional)** Require new employees to change their password on first login.
 - [ ] Delete customer or employee accounts.
 - [ ] Modify general employee account info.
 - [ ] Modify general customer account info.
