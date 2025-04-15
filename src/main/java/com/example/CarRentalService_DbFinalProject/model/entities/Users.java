@@ -1,5 +1,6 @@
-package com.example.CarRentalService_DbFinalProject.model;
+package com.example.CarRentalService_DbFinalProject.model.entities;
 
+import com.example.CarRentalService_DbFinalProject.model.Roles;
 import jakarta.persistence.*;
 import lombok.Data;
 
