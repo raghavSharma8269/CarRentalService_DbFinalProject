@@ -19,14 +19,15 @@ public class Username_Email_Availability {
         Optional<Users> optionalUserViaUserName = userRepository.findByUserName(user.getUserName());
         Optional<Users> optionalUserViaEmail = userRepository.findByEmail(user.getEmail());
 
-        // Check if the email/username is taken
-        if (optionalUserViaEmail.isEmpty() && optionalUserViaUserName.isEmpty()) {
-            // Email and username are available
-            return;
-        } else {
-            // Email or username is already taken
-            throw new RegisterException("Email or username already exists");
+        // Check if the email is taken
+        if (optionalUserViaEmail.isPresent()) {
+            throw new RegisterException("Email is already taken");
         }
+        // Check if the username is taken
+        if (optionalUserViaUserName.isPresent()) {
+            throw new RegisterException("Username is already taken");
+        }
+        // If both are empty, the email and username are available
     }
 
 }
