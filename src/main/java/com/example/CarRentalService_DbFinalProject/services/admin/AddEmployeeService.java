@@ -1,5 +1,7 @@
 package com.example.CarRentalService_DbFinalProject.services.admin;
 
+import com.example.CarRentalService_DbFinalProject.errorHandling.validations.UserValidation;
+import com.example.CarRentalService_DbFinalProject.errorHandling.validations.Username_Email_Availability;
 import com.example.CarRentalService_DbFinalProject.model.Roles;
 import com.example.CarRentalService_DbFinalProject.model.entities.Users;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,29 +16,44 @@ public class AddEmployeeService {
 
     private final DataSource dataSource;
     private final PasswordEncoder passwordEncoder;
+    private final Username_Email_Availability username_email_availability;
 
-    public AddEmployeeService(DataSource dataSource, PasswordEncoder passwordEncoder) {
+    public AddEmployeeService(
+            DataSource dataSource, PasswordEncoder passwordEncoder,
+            Username_Email_Availability usernameEmailAvailability
+    ) {
         this.dataSource = dataSource;
         this.passwordEncoder = passwordEncoder;
+        username_email_availability = usernameEmailAvailability;
     }
 
     public void execute (Users user) {
-        String sql = "INSERT INTO users (user_name, password, email, full_name, role) VALUES (?, ?, ?, ?, ?)";
 
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            // Check if the email/username is taken
+            username_email_availability.execute(user);
 
-            stmt.setString(1, user.getUserName());
-            stmt.setString(2, passwordEncoder.encode(user.getPassword()));
-            stmt.setString(3, user.getEmail());
-            stmt.setString(4, user.getFullName());
-            stmt.setString(5, Roles.EMPLOYEE.name());
+            // Validate the new user
+            UserValidation.execute(user);
 
-            stmt.executeUpdate();
+            String sql = "INSERT INTO users (user_name, password, email, full_name, role) VALUES (?, ?, ?, ?, ?)";
 
-        } catch (Exception e) {
-            System.out.println("Error inserting employee: " + e.getMessage());
-        }
+
+            try (Connection conn = dataSource.getConnection();
+                 PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+                stmt.setString(1, user.getUserName());
+                stmt.setString(2, passwordEncoder.encode(user.getPassword()));
+                stmt.setString(3, user.getEmail());
+                stmt.setString(4, user.getFullName());
+                stmt.setString(5, Roles.EMPLOYEE.name());
+
+                stmt.executeUpdate();
+
+            } catch (Exception e) {
+                System.out.println("Error inserting employee: " + e.getMessage());
+            }
+
+
     }
 
 }
