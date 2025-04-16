@@ -1,8 +1,7 @@
-package com.example.CarRentalService_DbFinalProject.sql;
+package com.example.CarRentalService_DbFinalProject.services.admin;
 
 import com.example.CarRentalService_DbFinalProject.model.Roles;
 import com.example.CarRentalService_DbFinalProject.model.entities.Users;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 

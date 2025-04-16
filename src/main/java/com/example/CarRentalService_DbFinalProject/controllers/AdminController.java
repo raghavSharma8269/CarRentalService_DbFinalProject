@@ -1,6 +1,7 @@
 package com.example.CarRentalService_DbFinalProject.controllers;
 
 import com.example.CarRentalService_DbFinalProject.model.entities.Users;
+import com.example.CarRentalService_DbFinalProject.services.admin.AddEmployeeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,9 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/admin")
 public class AdminController {
 
-    private final com.example.CarRentalService_DbFinalProject.sql.AddEmployeeService addEmployeeService;
+    private final AddEmployeeService addEmployeeService;
 
-    public AdminController(com.example.CarRentalService_DbFinalProject.sql.AddEmployeeService addEmployeeService) {
+    public AdminController(AddEmployeeService addEmployeeService) {
         this.addEmployeeService = addEmployeeService;
     }
 
