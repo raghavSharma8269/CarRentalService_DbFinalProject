@@ -2,10 +2,14 @@ package com.example.CarRentalService_DbFinalProject.model.entities;
 
 import com.example.CarRentalService_DbFinalProject.model.Roles;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Users {
 
     @Id
