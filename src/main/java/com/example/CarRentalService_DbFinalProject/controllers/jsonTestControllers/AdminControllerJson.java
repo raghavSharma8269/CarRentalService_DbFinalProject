@@ -1,4 +1,4 @@
-package com.example.CarRentalService_DbFinalProject.controllers;
+package com.example.CarRentalService_DbFinalProject.controllers.jsonTestControllers;
 
 import com.example.CarRentalService_DbFinalProject.model.entities.Users;
 import com.example.CarRentalService_DbFinalProject.services.admin.AddEmployeeService;
@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/admin")
-public class AdminController {
+@RequestMapping("/api/json/admin")
+public class AdminControllerJson {
 
     private final AddEmployeeService addEmployeeService;
 
-    public AdminController(AddEmployeeService addEmployeeService) {
+    public AdminControllerJson(AddEmployeeService addEmployeeService) {
         this.addEmployeeService = addEmployeeService;
     }
 

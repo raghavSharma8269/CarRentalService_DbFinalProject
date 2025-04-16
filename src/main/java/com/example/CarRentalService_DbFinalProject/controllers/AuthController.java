@@ -2,11 +2,11 @@ package com.example.CarRentalService_DbFinalProject.controllers;
 
 import com.example.CarRentalService_DbFinalProject.model.entities.Users;
 import com.example.CarRentalService_DbFinalProject.services.auth.RegisterService;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+@Controller
 @RequestMapping("/api/auth")
 public class AuthController {
 
@@ -16,23 +16,23 @@ public class AuthController {
         this.registerService = registerService;
     }
 
+    @GetMapping("/register")
+    public String showRegisterForm(Model model) {
+        model.addAttribute("user", new Users());
+        return "register"; // returns register.html
+    }
+
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody Users user) {
-        registerService.execute(user);
-        return ResponseEntity.ok("Registered");
-    }
+    public String register(@ModelAttribute("user") Users user, Model model) {
+        try {
+            registerService.execute(user);
+            model.addAttribute("message", "Registration successful!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            model.addAttribute("message", "Error: " + e.getMessage());
+        }
 
-    @GetMapping("/admin")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<String> admin() {
-        return ResponseEntity.ok("admin");
+        return "register";
     }
-
-    @GetMapping("/employee")
-    @PreAuthorize("hasRole('ADMIN' or hasRole('EMPLOYEE'))")
-    public ResponseEntity<String> employee() {
-        return ResponseEntity.ok("employee");
-    }
-
 
 }
