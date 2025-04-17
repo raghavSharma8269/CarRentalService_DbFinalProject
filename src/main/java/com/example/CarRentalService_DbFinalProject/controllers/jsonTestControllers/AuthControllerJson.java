@@ -1,20 +1,20 @@
 package com.example.CarRentalService_DbFinalProject.controllers.jsonTestControllers;
 
 import com.example.CarRentalService_DbFinalProject.model.entities.Users;
+import com.example.CarRentalService_DbFinalProject.model.repositories.UserRepository;
 import com.example.CarRentalService_DbFinalProject.services.auth.RegisterService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/json/auth")
 public class AuthControllerJson {
 
     private final RegisterService registerService;
+    private final UserRepository userRepository;
 
-    public AuthControllerJson(RegisterService registerService) {
+    public AuthControllerJson(UserRepository userRepository, RegisterService registerService) {
+        this.userRepository = userRepository;
         this.registerService = registerService;
     }
 
@@ -22,4 +22,6 @@ public class AuthControllerJson {
     public ResponseEntity<String> registerViaJson(@RequestBody Users user) {
        return registerService.execute(user);
     }
+
+
 }
