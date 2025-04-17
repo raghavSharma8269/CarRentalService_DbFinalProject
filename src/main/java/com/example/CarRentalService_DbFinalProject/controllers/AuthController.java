@@ -6,7 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
+@Controller // @RestController is used for REST APIs and doesn't return views
 @RequestMapping("/api/auth")
 public class AuthController {
 

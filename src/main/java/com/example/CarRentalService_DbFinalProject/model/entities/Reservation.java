@@ -28,5 +28,53 @@ public class Reservation {
     @Column(name = "end", nullable = false)
     private LocalDateTime end;
 
+    public Reservation(Users user, Vehicle vehicleId, LocalDateTime start, LocalDateTime end) {
+        this.user = user;
+        this.vehicleId = vehicleId;
+        this.start = start;
+        this.end = end;
+    }
 
+    public Reservation() {
+    }
+
+    public int getReservationId() {
+        return reservationId;
+    }
+
+    public void setReservationId(int reservationId) {
+        this.reservationId = reservationId;
+    }
+
+    public Users getUser() {
+        return user;
+    }
+
+    public void setUser(Users user) {
+        this.user = user;
+    }
+
+    public Vehicle getVehicleId() {
+        return vehicleId;
+    }
+
+    public void setVehicleId(Vehicle vehicleId) {
+        this.vehicleId = vehicleId;
+    }
+
+    public LocalDateTime getStart() {
+        return start;
+    }
+
+    public void setStart(LocalDateTime start) {
+        this.start = start;
+    }
+
+    public LocalDateTime getEnd() {
+        return end;
+    }
+
+    public void setEnd(LocalDateTime end) {
+        this.end = end;
+    }
 }

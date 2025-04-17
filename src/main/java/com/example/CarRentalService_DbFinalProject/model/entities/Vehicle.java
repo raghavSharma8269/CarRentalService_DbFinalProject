@@ -38,4 +38,90 @@ public class Vehicle {
     private String imageUrl;
 
 
+    public Vehicle() {
+    }
+
+    public Vehicle(int vehicleId, String make, String model, String year, String licensePlate, double pricePerDay, boolean availability, boolean description, String imageUrl) {
+        this.vehicleId = vehicleId;
+        this.make = make;
+        this.model = model;
+        this.year = year;
+        this.licensePlate = licensePlate;
+        this.pricePerDay = pricePerDay;
+        this.availability = availability;
+        this.description = description;
+        this.imageUrl = imageUrl;
+    }
+
+    public int getVehicleId() {
+        return vehicleId;
+    }
+
+    public void setVehicleId(int vehicleId) {
+        this.vehicleId = vehicleId;
+    }
+
+    public String getMake() {
+        return make;
+    }
+
+    public void setMake(String make) {
+        this.make = make;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
+    }
+
+    public String getLicensePlate() {
+        return licensePlate;
+    }
+
+    public void setLicensePlate(String licensePlate) {
+        this.licensePlate = licensePlate;
+    }
+
+    public double getPricePerDay() {
+        return pricePerDay;
+    }
+
+    public void setPricePerDay(double pricePerDay) {
+        this.pricePerDay = pricePerDay;
+    }
+
+    public boolean isAvailability() {
+        return availability;
+    }
+
+    public void setAvailability(boolean availability) {
+        this.availability = availability;
+    }
+
+    public boolean isDescription() {
+        return description;
+    }
+
+    public void setDescription(boolean description) {
+        this.description = description;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 }

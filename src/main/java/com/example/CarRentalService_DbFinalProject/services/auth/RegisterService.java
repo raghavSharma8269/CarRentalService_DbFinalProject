@@ -36,14 +36,13 @@ public class RegisterService {
             // Validate the new user
             UserValidation.execute(user);
 
-            Users newUser = new Users(
-                    0,
-                    user.getUserName(),
-                    passwordEncoder.encode(user.getPassword()),
-                    user.getEmail(),
-                    user.getFullName(),
-                    Roles.CUSTOMER
-            );
+        Users newUser = new Users(
+                user.getUserName(),
+                passwordEncoder.encode(user.getPassword()),
+                user.getEmail(),
+                user.getFullName(),
+                Roles.CUSTOMER
+        );
 
 
            userRepository.save(newUser);
