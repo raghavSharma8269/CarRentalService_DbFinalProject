@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+
+<!-- Inherit BootStrap CDN From Base.html -->
+<head th:replace="base.html :: base_head"></head>
+
 <body>
+    <!-- Inherit Default Navigation Bar From Base.html -->
+    <div th:replace="base.html :: base_navigation"></div>
 
 </body>
 </html>

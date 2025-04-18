@@ -1,0 +1,46 @@
+<!doctype html>
+<!-- Allows use of Thymeleaf-specific attributes (e.g., th:fragment, th:href, th:text, etc.) -->
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!-- Base HTML structure for head -->
+<head th:fragment="base_head">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-…" crossorigin="anonymous">
+    <title th:text="${pageTitle}">Car Rental Platform</title>
+</head>
+
+<!-- Base HTML structure for navigation bar -->
+<body th:fragment="base_navigation">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <div class="container-fluid">
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <a class="navbar-brand" href="#">CarFlow</a>
+
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Link</a>
+                    </li>
+                </ul>
+
+                <form class="d-flex" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+
+            </div>
+
+        </div>
+    </nav>
+</body>
+
+</html>
