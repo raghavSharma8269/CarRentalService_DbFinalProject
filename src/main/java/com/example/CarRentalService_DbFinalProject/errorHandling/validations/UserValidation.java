@@ -2,7 +2,6 @@ package com.example.CarRentalService_DbFinalProject.errorHandling.validations;
 
 import com.example.CarRentalService_DbFinalProject.errorHandling.Exceptions.RegisterException;
 import com.example.CarRentalService_DbFinalProject.model.entities.Users;
-import com.example.CarRentalService_DbFinalProject.model.repositories.UserRepository;
 
 public class UserValidation {
 
@@ -21,6 +20,9 @@ public class UserValidation {
         }
         if(user.getUserName().length() < 3) {
             throw new RegisterException("Username must be at least 3 characters long");
+        }
+        if(user.getRole() == null){
+            throw new RegisterException("Role cannot be null");
         }
     }
 
