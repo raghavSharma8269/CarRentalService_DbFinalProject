@@ -2,21 +2,23 @@ package com.example.CarRentalService_DbFinalProject.controllers.jsonTestControll
 
 import com.example.CarRentalService_DbFinalProject.model.entities.Users;
 import com.example.CarRentalService_DbFinalProject.services.admin.AddEmployeeService;
+import com.example.CarRentalService_DbFinalProject.services.admin.GetAllUsersService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/json/admin")
 public class AdminControllerJson {
 
     private final AddEmployeeService addEmployeeService;
+    private final GetAllUsersService getAllUsersService;
 
-    public AdminControllerJson(AddEmployeeService addEmployeeService) {
+    public AdminControllerJson(AddEmployeeService addEmployeeService, GetAllUsersService getAllUsersService) {
         this.addEmployeeService = addEmployeeService;
+        this.getAllUsersService = getAllUsersService;
     }
 
     @PostMapping("/add-employee")
@@ -24,6 +26,13 @@ public class AdminControllerJson {
     public ResponseEntity<String> addEmployee(@RequestBody Users user) {
         addEmployeeService.execute(user);
         return ResponseEntity.ok("Employee added successfully");
+    }
+
+    @GetMapping("/get-all-users")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<Users>> getAllUsers() {
+        List<Users> users = getAllUsersService.execute();
+        return ResponseEntity.ok(users);
     }
 
 }
