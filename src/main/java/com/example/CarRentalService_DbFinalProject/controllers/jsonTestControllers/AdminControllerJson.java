@@ -2,6 +2,7 @@ package com.example.CarRentalService_DbFinalProject.controllers.jsonTestControll
 
 import com.example.CarRentalService_DbFinalProject.model.entities.Users;
 import com.example.CarRentalService_DbFinalProject.services.admin.AddEmployeeService;
+import com.example.CarRentalService_DbFinalProject.services.admin.DeleteUserService;
 import com.example.CarRentalService_DbFinalProject.services.admin.GetAllUsersService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,10 +16,12 @@ public class AdminControllerJson {
 
     private final AddEmployeeService addEmployeeService;
     private final GetAllUsersService getAllUsersService;
+    private final DeleteUserService deleteUserService;
 
-    public AdminControllerJson(AddEmployeeService addEmployeeService, GetAllUsersService getAllUsersService) {
+    public AdminControllerJson(AddEmployeeService addEmployeeService, GetAllUsersService getAllUsersService, DeleteUserService deleteUserService) {
         this.addEmployeeService = addEmployeeService;
         this.getAllUsersService = getAllUsersService;
+        this.deleteUserService = deleteUserService;
     }
 
     @PostMapping("/add-employee")
@@ -38,5 +41,10 @@ public class AdminControllerJson {
         return ResponseEntity.ok(users);
     }
 
+    @DeleteMapping("/users/{userId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<String> deleteUser(@PathVariable int userId) {
+        return deleteUserService.execute(userId);
+    }
 
 }
