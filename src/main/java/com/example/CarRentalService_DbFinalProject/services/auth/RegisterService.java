@@ -33,8 +33,7 @@ public class RegisterService {
             // Check if the email/username is taken
             username_email_availability.execute(user);
 
-            // Validate the new user
-            UserValidation.execute(user);
+
 
         Users newUser = new Users(
                 user.getUserName(),
@@ -44,6 +43,8 @@ public class RegisterService {
                 Roles.CUSTOMER
         );
 
+        // Validate the new user
+        UserValidation.execute(newUser);
 
            userRepository.save(newUser);
            return ResponseEntity.ok().body("Registered");

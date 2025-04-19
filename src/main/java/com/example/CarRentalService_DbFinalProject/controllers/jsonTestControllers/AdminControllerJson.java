@@ -4,6 +4,7 @@ import com.example.CarRentalService_DbFinalProject.model.entities.Users;
 import com.example.CarRentalService_DbFinalProject.services.admin.AddEmployeeService;
 import com.example.CarRentalService_DbFinalProject.services.admin.DeleteUserService;
 import com.example.CarRentalService_DbFinalProject.services.admin.GetAllUsersService;
+import com.example.CarRentalService_DbFinalProject.services.admin.UpdateUserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -17,11 +18,13 @@ public class AdminControllerJson {
     private final AddEmployeeService addEmployeeService;
     private final GetAllUsersService getAllUsersService;
     private final DeleteUserService deleteUserService;
+    private final UpdateUserService updateUserService;
 
-    public AdminControllerJson(AddEmployeeService addEmployeeService, GetAllUsersService getAllUsersService, DeleteUserService deleteUserService) {
+    public AdminControllerJson(AddEmployeeService addEmployeeService, GetAllUsersService getAllUsersService, DeleteUserService deleteUserService, UpdateUserService updateUserService) {
         this.addEmployeeService = addEmployeeService;
         this.getAllUsersService = getAllUsersService;
         this.deleteUserService = deleteUserService;
+        this.updateUserService = updateUserService;
     }
 
     @PostMapping("/add-employee")
@@ -46,5 +49,12 @@ public class AdminControllerJson {
     public ResponseEntity<String> deleteUser(@PathVariable int userId) {
         return deleteUserService.execute(userId);
     }
+
+    @PutMapping("/users/{userId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<String> updateUser(@RequestBody Users updatedUser, @PathVariable int userId) {
+        return updateUserService.execute(updatedUser, userId);
+    }
+
 
 }
