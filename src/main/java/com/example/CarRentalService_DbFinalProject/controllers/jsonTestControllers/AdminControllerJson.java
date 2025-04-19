@@ -28,11 +28,12 @@ public class AdminControllerJson {
         return ResponseEntity.ok("Employee added successfully");
     }
 
-    @GetMapping("/get-all-users")
+    @GetMapping("/users")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<Users>> getAllUsers() {
-        List<Users> users = getAllUsersService.execute();
+    public ResponseEntity<List<Users>> getAllUsers(@RequestParam (required = false) String role) {
+        List<Users> users = getAllUsersService.execute(role);
         return ResponseEntity.ok(users);
     }
+
 
 }

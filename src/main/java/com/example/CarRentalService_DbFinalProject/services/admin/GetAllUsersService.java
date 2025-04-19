@@ -1,5 +1,6 @@
 package com.example.CarRentalService_DbFinalProject.services.admin;
 
+import com.example.CarRentalService_DbFinalProject.model.Roles;
 import com.example.CarRentalService_DbFinalProject.model.entities.Users;
 import com.example.CarRentalService_DbFinalProject.model.repositories.UserRepository;
 import org.springframework.stereotype.Service;
@@ -15,7 +16,15 @@ public class GetAllUsersService {
         this.userRepository = userRepository;
     }
 
-    public List<Users> execute() {
-        return userRepository.findAll();
+    public List<Users> execute(String role) {
+
+        if (role == null || role.isEmpty()) {
+            return userRepository.findAll();
+        } else {
+            return userRepository.findByRole(Roles.valueOf(role));
+        }
     }
+
+
+
 }
