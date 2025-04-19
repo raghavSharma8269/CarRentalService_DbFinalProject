@@ -23,7 +23,7 @@ public class GetAllUsersService {
             try {
                 enumRole = Roles.valueOf(role.toUpperCase());
             } catch (IllegalArgumentException e) {
-                return List.of(); // or handle as a 400 error
+                return List.of();
             }
         }
 
