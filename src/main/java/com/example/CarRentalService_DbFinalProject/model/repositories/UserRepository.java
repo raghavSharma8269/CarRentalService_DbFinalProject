@@ -19,6 +19,16 @@ public interface UserRepository extends JpaRepository<Users, Integer> {
     @Query("SELECT query FROM Users query WHERE query.email = :email")
     Optional<Users> findByEmail(@Param("email") String email);
 
-    @Query("SELECT query FROM Users query WHERE query.role = :role")
-    List<Users> findByRole(@Param("role") Roles role);
+    @Query("SELECT query FROM Users query WHERE " +
+            "(:role IS NULL OR query.role = :role) AND " +
+            "(:keyword IS NULL OR :keyword = '' OR " +
+            "LOWER(query.userName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+            "LOWER(query.email) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+            "LOWER(query.fullName) LIKE LOWER(CONCAT('%', :keyword, '%')))")
+    List<Users> findByRoleAndKeyword(@Param("role") Roles role, @Param("keyword") String keyword);
+
 }
+
+
+
+

@@ -16,15 +16,18 @@ public class GetAllUsersService {
         this.userRepository = userRepository;
     }
 
-    public List<Users> execute(String role) {
+    public List<Users> execute(String role, String keyword) {
+        Roles enumRole = null;
 
-        if (role == null || role.isEmpty()) {
-            return userRepository.findAll();
-        } else {
-            return userRepository.findByRole(Roles.valueOf(role));
+        if (role != null && !role.isEmpty()) {
+            try {
+                enumRole = Roles.valueOf(role.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                return List.of(); // or handle as a 400 error
+            }
         }
+
+        return userRepository.findByRoleAndKeyword(enumRole, keyword);
     }
-
-
 
 }

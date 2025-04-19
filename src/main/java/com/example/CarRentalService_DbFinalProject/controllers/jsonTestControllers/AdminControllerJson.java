@@ -30,8 +30,11 @@ public class AdminControllerJson {
 
     @GetMapping("/users")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<Users>> getAllUsers(@RequestParam (required = false) String role) {
-        List<Users> users = getAllUsersService.execute(role);
+    public ResponseEntity<List<Users>> getAllUsers(
+            @RequestParam (required = false) String role,
+            @RequestParam (required = false) String keyword
+    ) {
+        List<Users> users = getAllUsersService.execute(role, keyword);
         return ResponseEntity.ok(users);
     }
 
