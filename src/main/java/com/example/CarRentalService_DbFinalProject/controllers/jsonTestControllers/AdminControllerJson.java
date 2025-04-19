@@ -20,7 +20,10 @@ public class AdminControllerJson {
     private final DeleteUserService deleteUserService;
     private final UpdateUserService updateUserService;
 
-    public AdminControllerJson(AddEmployeeService addEmployeeService, GetAllUsersService getAllUsersService, DeleteUserService deleteUserService, UpdateUserService updateUserService) {
+    public AdminControllerJson(AddEmployeeService addEmployeeService,
+                               GetAllUsersService getAllUsersService,
+                               DeleteUserService deleteUserService,
+                               UpdateUserService updateUserService) {
         this.addEmployeeService = addEmployeeService;
         this.getAllUsersService = getAllUsersService;
         this.deleteUserService = deleteUserService;
@@ -34,6 +37,7 @@ public class AdminControllerJson {
         return ResponseEntity.ok("Employee added successfully");
     }
 
+    // Get all users
     @GetMapping("/users")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<Users>> getAllUsers(
@@ -44,12 +48,14 @@ public class AdminControllerJson {
         return ResponseEntity.ok(users);
     }
 
+    // Delete user by ID
     @DeleteMapping("/users/{userId}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> deleteUser(@PathVariable int userId) {
         return deleteUserService.execute(userId);
     }
 
+    // Update user by ID
     @PutMapping("/users/{userId}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> updateUser(@RequestBody Users updatedUser, @PathVariable int userId) {
