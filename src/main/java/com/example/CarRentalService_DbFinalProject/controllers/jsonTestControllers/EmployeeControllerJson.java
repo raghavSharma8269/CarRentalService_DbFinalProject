@@ -1,10 +1,10 @@
 package com.example.CarRentalService_DbFinalProject.controllers.jsonTestControllers;
 
 import com.example.CarRentalService_DbFinalProject.model.entities.Vehicle;
-import com.example.CarRentalService_DbFinalProject.services.employee.AddVehicleService;
-import com.example.CarRentalService_DbFinalProject.services.employee.DeleteVehicleService;
-import com.example.CarRentalService_DbFinalProject.services.employee.GetAllVehicles;
-import com.example.CarRentalService_DbFinalProject.services.employee.UpdateVehicleService;
+import com.example.CarRentalService_DbFinalProject.services.employee.vehicle.AddVehicleService;
+import com.example.CarRentalService_DbFinalProject.services.employee.vehicle.DeleteVehicleService;
+import com.example.CarRentalService_DbFinalProject.services.employee.vehicle.GetAllVehicles;
+import com.example.CarRentalService_DbFinalProject.services.employee.vehicle.UpdateVehicleService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;

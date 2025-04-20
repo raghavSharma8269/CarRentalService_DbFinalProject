@@ -1,4 +1,4 @@
-package com.example.CarRentalService_DbFinalProject.services.employee;
+package com.example.CarRentalService_DbFinalProject.services.employee.vehicle;
 
 import com.example.CarRentalService_DbFinalProject.model.entities.Vehicle;
 import com.example.CarRentalService_DbFinalProject.model.repositories.VehicleRepository;
