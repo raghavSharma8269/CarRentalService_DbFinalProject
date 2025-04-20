@@ -1,13 +1,13 @@
 package com.example.CarRentalService_DbFinalProject.services.employee;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-@Component
+@Service
 public class DeleteVehicleService {
 
     private final DataSource dataSource;
