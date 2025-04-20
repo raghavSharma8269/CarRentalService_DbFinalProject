@@ -32,7 +32,7 @@ public class Vehicle {
     private boolean availability;
 
     @Column(name = "description", nullable = false)
-    private boolean description;
+    private String description;
 
     @Column(name = "image_url", nullable = false)
     private String imageUrl;
@@ -41,7 +41,7 @@ public class Vehicle {
     public Vehicle() {
     }
 
-    public Vehicle(String make, String model, String year, String licensePlate, double pricePerDay, boolean availability, boolean description, String imageUrl) {
+    public Vehicle(String make, String model, String year, String licensePlate, double pricePerDay, boolean availability, String description, String imageUrl) {
         this.make = make;
         this.model = model;
         this.year = year;
@@ -108,11 +108,11 @@ public class Vehicle {
         this.availability = availability;
     }
 
-    public boolean isDescription() {
+    public String description () {
         return description;
     }
 
-    public void setDescription(boolean description) {
+    public void setDescription(String description) {
         this.description = description;
     }
 
