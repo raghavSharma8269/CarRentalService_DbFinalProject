@@ -1,5 +1,6 @@
 package com.example.CarRentalService_DbFinalProject.services.employee;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
@@ -16,7 +17,7 @@ public class DeleteVehicleService {
         this.dataSource = dataSource;
     }
 
-    public void execute(int vehicleId) {
+    public ResponseEntity<String> execute(int vehicleId) {
         String sql = "DELETE FROM vehicle WHERE vehicle_id = ?";
 
         try (Connection conn = dataSource.getConnection();
@@ -28,5 +29,6 @@ public class DeleteVehicleService {
         } catch (SQLException e) {
             System.out.println("Error deleting vehicle: " + e.getMessage());
         }
+        return ResponseEntity.ok("Vehicle deleted successfully");
     }
 }

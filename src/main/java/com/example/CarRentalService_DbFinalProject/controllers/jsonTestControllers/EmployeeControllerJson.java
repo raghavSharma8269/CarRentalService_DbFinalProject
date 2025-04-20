@@ -31,8 +31,7 @@ public class EmployeeControllerJson {
     @DeleteMapping("/vehicles/{vehicleId}")
     @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
     public ResponseEntity<String> deleteVehicle(@PathVariable int vehicleId) {
-        deleteVehicleService.execute(vehicleId);
-        return ResponseEntity.ok("Vehicle deleted successfully");
+        return deleteVehicleService.execute(vehicleId);
     }
 
 }
