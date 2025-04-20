@@ -1,5 +1,6 @@
 package com.example.CarRentalService_DbFinalProject.services.employee;
 
+import com.example.CarRentalService_DbFinalProject.model.repositories.MaintenanceRepository;
 import com.example.CarRentalService_DbFinalProject.model.repositories.ReservationRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -14,13 +15,16 @@ public class DeleteVehicleService {
 
     private final DataSource dataSource;
     private final ReservationRepository reservationRepository;
+    private final MaintenanceRepository maintenanceRepository;
 
     public DeleteVehicleService(
             DataSource dataSource,
-            ReservationRepository reservationRepository
+            ReservationRepository reservationRepository,
+            MaintenanceRepository maintenanceRepository
     ) {
         this.dataSource = dataSource;
         this.reservationRepository = reservationRepository;
+        this.maintenanceRepository = maintenanceRepository;
     }
 
     public ResponseEntity<String> execute(int vehicleId) {
@@ -33,6 +37,7 @@ public class DeleteVehicleService {
 
             // Delete associated reservations
             reservationRepository.deleteReservationByVehicleId(vehicleId);
+            maintenanceRepository.deleteMaintenanceByVehicleId(vehicleId);
 
             stmt.executeUpdate();
 
