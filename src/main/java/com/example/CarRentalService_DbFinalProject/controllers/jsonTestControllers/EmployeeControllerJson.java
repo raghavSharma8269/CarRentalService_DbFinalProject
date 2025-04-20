@@ -3,6 +3,7 @@ package com.example.CarRentalService_DbFinalProject.controllers.jsonTestControll
 import com.example.CarRentalService_DbFinalProject.model.entities.Vehicle;
 import com.example.CarRentalService_DbFinalProject.services.employee.AddVehicleService;
 import com.example.CarRentalService_DbFinalProject.services.employee.DeleteVehicleService;
+import com.example.CarRentalService_DbFinalProject.services.employee.UpdateVehicleService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -13,13 +14,15 @@ public class EmployeeControllerJson {
 
     private final AddVehicleService addVehicleService;
     private final DeleteVehicleService deleteVehicleService;
+    private final UpdateVehicleService updateVehicleService;
 
     public EmployeeControllerJson(
             AddVehicleService addVehicleService,
-            DeleteVehicleService deleteVehicleService
+            DeleteVehicleService deleteVehicleService, UpdateVehicleService updateVehicleService
     ) {
         this.addVehicleService = addVehicleService;
         this.deleteVehicleService = deleteVehicleService;
+        this.updateVehicleService = updateVehicleService;
     }
 
     @PostMapping("/vehicles")
@@ -32,6 +35,12 @@ public class EmployeeControllerJson {
     @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
     public ResponseEntity<String> deleteVehicle(@PathVariable int vehicleId) {
         return deleteVehicleService.execute(vehicleId);
+    }
+
+    @PutMapping("/vehicles/{vehicleId}")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
+    public ResponseEntity<String> updateVehicle(@PathVariable int vehicleId, @RequestBody Vehicle updatedVehicle) {
+        return updateVehicleService.execute(vehicleId, updatedVehicle);
     }
 
 }
