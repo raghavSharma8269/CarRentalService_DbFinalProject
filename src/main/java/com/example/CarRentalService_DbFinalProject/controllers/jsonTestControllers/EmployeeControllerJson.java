@@ -1,6 +1,8 @@
 package com.example.CarRentalService_DbFinalProject.controllers.jsonTestControllers;
 
+import com.example.CarRentalService_DbFinalProject.model.entities.Reservation;
 import com.example.CarRentalService_DbFinalProject.model.entities.Vehicle;
+import com.example.CarRentalService_DbFinalProject.services.employee.reservation.GetAllReservationsService;
 import com.example.CarRentalService_DbFinalProject.services.employee.vehicle.AddVehicleService;
 import com.example.CarRentalService_DbFinalProject.services.employee.vehicle.DeleteVehicleService;
 import com.example.CarRentalService_DbFinalProject.services.employee.vehicle.GetAllVehicles;
@@ -19,18 +21,25 @@ public class EmployeeControllerJson {
     private final DeleteVehicleService deleteVehicleService;
     private final UpdateVehicleService updateVehicleService;
     private final GetAllVehicles getAllVehicles;
+    private final GetAllReservationsService getAllReservationsService;
 
     public EmployeeControllerJson(
             AddVehicleService addVehicleService,
             DeleteVehicleService deleteVehicleService,
             UpdateVehicleService updateVehicleService,
-            GetAllVehicles getAllVehicles
+            GetAllVehicles getAllVehicles,
+            GetAllReservationsService getAllReservationsService
     ) {
         this.addVehicleService = addVehicleService;
         this.deleteVehicleService = deleteVehicleService;
         this.updateVehicleService = updateVehicleService;
         this.getAllVehicles = getAllVehicles;
+        this.getAllReservationsService = getAllReservationsService;
     }
+
+    /**
+        VEHICLE CRUD OPERATIONS
+     */
 
     @PostMapping("/vehicles")
     @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
@@ -58,6 +67,18 @@ public class EmployeeControllerJson {
             @RequestParam(required = false) Double maxPrice
     ) {
         return getAllVehicles.execute(keyword, minPrice, maxPrice);
+    }
+
+    /**
+     RESERVATION CRUD OPERATIONS
+     */
+
+    @GetMapping("/reservations")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
+    public ResponseEntity<List<Reservation>> getAllReservations(
+            @RequestParam(required = false) String keyword
+    ) {
+        return getAllReservationsService.execute(keyword);
     }
 
 }
