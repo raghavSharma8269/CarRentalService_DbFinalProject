@@ -1,5 +1,6 @@
 package com.example.CarRentalService_DbFinalProject.services.employee;
 
+import com.example.CarRentalService_DbFinalProject.errorHandling.validations.VehicleValidation;
 import com.example.CarRentalService_DbFinalProject.model.entities.Vehicle;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,9 @@ public class UpdateVehicleService {
 
         try (var conn = dataSource.getConnection();
              var stmt = conn.prepareStatement(sql)) {
+
+            // Validate the updated vehicle details
+            VehicleValidation.execute(updatedVehicle);
 
             stmt.setString(1, updatedVehicle.getMake());
             stmt.setString(2, updatedVehicle.getModel());
