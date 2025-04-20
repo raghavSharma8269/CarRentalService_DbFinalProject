@@ -108,7 +108,7 @@ public class Vehicle {
         this.availability = availability;
     }
 
-    public String description () {
+    public String getDescription () {
         return description;
     }
 
