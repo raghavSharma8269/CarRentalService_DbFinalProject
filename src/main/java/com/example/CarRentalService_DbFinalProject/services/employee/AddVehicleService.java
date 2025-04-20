@@ -2,6 +2,7 @@ package com.example.CarRentalService_DbFinalProject.services.employee;
 
 import com.example.CarRentalService_DbFinalProject.errorHandling.validations.VehicleValidation;
 import com.example.CarRentalService_DbFinalProject.model.entities.Vehicle;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
@@ -18,7 +19,7 @@ public class AddVehicleService {
         this.dataSource = dataSource;
     }
 
-    public void execute(Vehicle vehicle) {
+    public ResponseEntity<String> execute(Vehicle vehicle) {
         // Validate  vehicle
         VehicleValidation.execute(vehicle);
 
@@ -42,5 +43,7 @@ public class AddVehicleService {
         } catch (SQLException e) {
             System.out.println("Error inserting vehicle: " + e.getMessage());
         }
+
+        return ResponseEntity.ok("Vehicle added successfully");
     }
 }
