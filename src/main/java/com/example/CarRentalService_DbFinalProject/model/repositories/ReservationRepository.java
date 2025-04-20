@@ -10,6 +10,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Integer> {
 
+
+    // Delete all reservations associated with a specific vehicle ID
     @Modifying
     @Transactional
     @Query("DELETE FROM Reservation r WHERE r.vehicleId.vehicleId = :vehicleId")

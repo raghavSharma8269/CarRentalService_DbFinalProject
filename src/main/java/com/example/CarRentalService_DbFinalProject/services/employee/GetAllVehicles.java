@@ -17,7 +17,6 @@ public class GetAllVehicles {
     }
 
     public ResponseEntity<List<Vehicle>> execute(String keyword, Double minPrice, Double maxPrice) {
-
         List<Vehicle> vehicles = vehicleRepository.searchByKeywordAndPrice(keyword,minPrice,maxPrice );
         return ResponseEntity.ok(vehicles);
     }

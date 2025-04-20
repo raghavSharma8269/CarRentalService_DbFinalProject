@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface VehicleRepository extends JpaRepository<Vehicle, Integer> {
 
-    // Search vehicles by keyword (in make, model, year, license_plate, min price, max price)
+    // Search vehicles by keyword via make, model, year, license_plate, min price - max price
     @Query("SELECT query FROM Vehicle query WHERE " +
             "(:keyword IS NULL OR :keyword = '' OR " +
             "LOWER(query.make) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +

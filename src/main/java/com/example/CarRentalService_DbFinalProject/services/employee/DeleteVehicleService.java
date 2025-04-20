@@ -35,7 +35,7 @@ public class DeleteVehicleService {
 
             stmt.setInt(1, vehicleId);
 
-            // Delete associated reservations
+            // Delete associated reservations and maintenance
             reservationRepository.deleteReservationByVehicleId(vehicleId);
             maintenanceRepository.deleteMaintenanceByVehicleId(vehicleId);
 

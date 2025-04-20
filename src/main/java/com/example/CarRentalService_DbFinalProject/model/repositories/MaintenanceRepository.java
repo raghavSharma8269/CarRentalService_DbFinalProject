@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MaintenanceRepository extends JpaRepository<Maintenance, Integer> {
 
+    // Delete all maintenance associated with a specific vehicle ID
     @Modifying
     @Transactional
     @Query("DELETE FROM Maintenance r WHERE r.vehicleId.vehicleId = :vehicleId")
