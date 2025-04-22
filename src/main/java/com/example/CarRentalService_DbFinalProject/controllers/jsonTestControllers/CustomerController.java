@@ -2,12 +2,10 @@ package com.example.CarRentalService_DbFinalProject.controllers.jsonTestControll
 
 import com.example.CarRentalService_DbFinalProject.model.entities.Vehicle;
 import com.example.CarRentalService_DbFinalProject.services.customer.GetAllAvailableVehiclesService;
+import com.example.CarRentalService_DbFinalProject.services.customer.GetVehicleViaIdService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -16,9 +14,11 @@ import java.util.List;
 public class CustomerController {
 
     private final GetAllAvailableVehiclesService getAllAvailableVehiclesService;
+    private final GetVehicleViaIdService getVehicleViaIdService;
 
-    public CustomerController(GetAllAvailableVehiclesService getAllAvailableVehiclesService) {
+    public CustomerController(GetAllAvailableVehiclesService getAllAvailableVehiclesService, GetVehicleViaIdService getVehicleViaIdService) {
         this.getAllAvailableVehiclesService = getAllAvailableVehiclesService;
+        this.getVehicleViaIdService = getVehicleViaIdService;
     }
 
     @GetMapping("/vehicles")
@@ -30,6 +30,12 @@ public class CustomerController {
 
     ) {
         return getAllAvailableVehiclesService.execute(keyword, minPrice, maxPrice);
+    }
+
+    @GetMapping("/vehicles/{id}")
+    @PreAuthorize("hasRole('CUSTOMER') or hasRole('EMPLOYEE') or hasRole('ADMIN')")
+    public ResponseEntity<Vehicle> getVehicleById(@PathVariable int id) {
+        return getVehicleViaIdService.execute(id);
     }
 
 }
