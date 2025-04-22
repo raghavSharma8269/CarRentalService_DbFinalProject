@@ -34,8 +34,10 @@ public class SecurityConfiguration {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
+                        // Allow access to the following endpoints without authentication, add more here as needed
                         .requestMatchers("/api/json/auth/**").permitAll()
-                        .requestMatchers("/error", "/api/auth/**").permitAll()
+                        .requestMatchers("/error", "/api/auth/**", "/api/test/**").permitAll()
+                        .requestMatchers("/css/**", "/images/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(
