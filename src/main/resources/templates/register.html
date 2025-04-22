@@ -5,9 +5,6 @@
 <head th:replace="base.html :: base_head"></head>
 
 <body>
-    <!-- Inherit Default Navigation Bar From Base.html -->
-    <div th:replace="base.html :: base_navigation"></div>
-
     <h2>Register</h2>
     <form th:action="@{/api/auth/register}" method="post" th:object="${user}">
         <input type="text" th:field="*{userName}" placeholder="Username"/><br/>
