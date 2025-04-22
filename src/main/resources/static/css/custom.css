@@ -1,0 +1,7 @@
+/* in your site CSS */
+.nav-link.heart-hover i {
+    transition: transform .2s ease-in-out;
+}
+.nav-link.heart-hover:hover i {
+    transform: translateY(-0.22rem);
+}
