@@ -4,10 +4,7 @@ import com.example.CarRentalService_DbFinalProject.model.entities.Coupon;
 import com.example.CarRentalService_DbFinalProject.model.entities.Maintenance;
 import com.example.CarRentalService_DbFinalProject.model.entities.Reservation;
 import com.example.CarRentalService_DbFinalProject.model.entities.Vehicle;
-import com.example.CarRentalService_DbFinalProject.services.employee.coupon.CreateCouponService;
-import com.example.CarRentalService_DbFinalProject.services.employee.coupon.DeleteCouponService;
-import com.example.CarRentalService_DbFinalProject.services.employee.coupon.EditCouponService;
-import com.example.CarRentalService_DbFinalProject.services.employee.coupon.GetCouponsService;
+import com.example.CarRentalService_DbFinalProject.services.employee.coupon.*;
 import com.example.CarRentalService_DbFinalProject.services.employee.maintenance.CreateMaintenanceService;
 import com.example.CarRentalService_DbFinalProject.services.employee.maintenance.GetAllMaintenanceService;
 import com.example.CarRentalService_DbFinalProject.services.employee.maintenance.GetMaintenanceViaIdService;
@@ -41,6 +38,7 @@ public class EmployeeControllerJson {
     private final UpdateMaintenanceService updateMaintenanceService;
     private final GetAllMaintenanceService getAllMaintenanceService;
     private final GetMaintenanceViaIdService getMaintenanceViaIdService;
+    private final GetCouponViaIdService getCouponViaIdService;
 
     public EmployeeControllerJson(
             AddVehicleService addVehicleService,
@@ -55,7 +53,8 @@ public class EmployeeControllerJson {
             CreateMaintenanceService createMaintenanceService,
             UpdateMaintenanceService updateMaintenanceService,
             GetAllMaintenanceService getAllMaintenanceService,
-            GetMaintenanceViaIdService getMaintenanceViaIdService
+            GetMaintenanceViaIdService getMaintenanceViaIdService,
+            GetCouponViaIdService getCouponViaIdService
     ) {
         this.addVehicleService = addVehicleService;
         this.deleteVehicleService = deleteVehicleService;
@@ -70,6 +69,7 @@ public class EmployeeControllerJson {
         this.updateMaintenanceService = updateMaintenanceService;
         this.getAllMaintenanceService = getAllMaintenanceService;
         this.getMaintenanceViaIdService = getMaintenanceViaIdService;
+        this.getCouponViaIdService = getCouponViaIdService;
     }
 
     /**
@@ -142,6 +142,12 @@ public class EmployeeControllerJson {
     @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
     public ResponseEntity<List<Coupon>> getAllCoupons(@RequestParam(required = false) String couponCode) {
         return getCouponsService.execute(couponCode);
+    }
+
+    @GetMapping("/coupons/{couponId}")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
+    public ResponseEntity<Coupon> getAllCoupons(@PathVariable int couponId) {
+        return getCouponViaIdService.execute(couponId);
     }
 
     /**
