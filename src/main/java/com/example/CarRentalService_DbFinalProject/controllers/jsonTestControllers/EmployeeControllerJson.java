@@ -9,6 +9,8 @@ import com.example.CarRentalService_DbFinalProject.services.employee.coupon.Dele
 import com.example.CarRentalService_DbFinalProject.services.employee.coupon.EditCouponService;
 import com.example.CarRentalService_DbFinalProject.services.employee.coupon.GetCouponsService;
 import com.example.CarRentalService_DbFinalProject.services.employee.maintenance.CreateMaintenanceService;
+import com.example.CarRentalService_DbFinalProject.services.employee.maintenance.GetAllMaintenanceService;
+import com.example.CarRentalService_DbFinalProject.services.employee.maintenance.UpdateMaintenanceService;
 import com.example.CarRentalService_DbFinalProject.services.employee.reservation.GetAllReservationsService;
 import com.example.CarRentalService_DbFinalProject.services.employee.vehicle.AddVehicleService;
 import com.example.CarRentalService_DbFinalProject.services.employee.vehicle.DeleteVehicleService;
@@ -34,6 +36,8 @@ public class EmployeeControllerJson {
     private final EditCouponService editCouponService;
     private final GetCouponsService getCouponsService;
     private final CreateMaintenanceService createMaintenanceService;
+    private final UpdateMaintenanceService updateMaintenanceService;
+    private final GetAllMaintenanceService getAllMaintenanceService;
 
     public EmployeeControllerJson(
             AddVehicleService addVehicleService,
@@ -45,7 +49,8 @@ public class EmployeeControllerJson {
             DeleteCouponService deleteCouponService,
             EditCouponService editCouponService,
             GetCouponsService getCouponsService,
-            CreateMaintenanceService createMaintenanceService
+            CreateMaintenanceService createMaintenanceService,
+            UpdateMaintenanceService updateMaintenanceService, GetAllMaintenanceService getAllMaintenanceService
     ) {
         this.addVehicleService = addVehicleService;
         this.deleteVehicleService = deleteVehicleService;
@@ -57,6 +62,8 @@ public class EmployeeControllerJson {
         this.editCouponService = editCouponService;
         this.getCouponsService = getCouponsService;
         this.createMaintenanceService = createMaintenanceService;
+        this.updateMaintenanceService = updateMaintenanceService;
+        this.getAllMaintenanceService = getAllMaintenanceService;
     }
 
     /**
@@ -141,7 +148,19 @@ public class EmployeeControllerJson {
         return createMaintenanceService.execute(maintenance);
     }
 
+    @PutMapping("/maintenance/{maintenanceId}")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
+    public ResponseEntity<String> updateMaintenance (
+            @PathVariable int maintenanceId,
+            @RequestBody Maintenance updatedMaintenance) {
+        return updateMaintenanceService.execute(updatedMaintenance, maintenanceId);
+    }
 
+    @GetMapping("/maintenance")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
+    public ResponseEntity<List<Maintenance>> getAllMaintenances(@RequestParam(required = false) String keyword) {
+        return getAllMaintenanceService.execute(keyword);
+    }
 
 
 }
