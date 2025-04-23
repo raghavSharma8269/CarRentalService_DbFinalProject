@@ -10,6 +10,7 @@ import com.example.CarRentalService_DbFinalProject.services.employee.coupon.Edit
 import com.example.CarRentalService_DbFinalProject.services.employee.coupon.GetCouponsService;
 import com.example.CarRentalService_DbFinalProject.services.employee.maintenance.CreateMaintenanceService;
 import com.example.CarRentalService_DbFinalProject.services.employee.maintenance.GetAllMaintenanceService;
+import com.example.CarRentalService_DbFinalProject.services.employee.maintenance.GetMaintenanceViaIdService;
 import com.example.CarRentalService_DbFinalProject.services.employee.maintenance.UpdateMaintenanceService;
 import com.example.CarRentalService_DbFinalProject.services.employee.reservation.GetAllReservationsService;
 import com.example.CarRentalService_DbFinalProject.services.employee.vehicle.AddVehicleService;
@@ -18,6 +19,7 @@ import com.example.CarRentalService_DbFinalProject.services.employee.vehicle.Get
 import com.example.CarRentalService_DbFinalProject.services.employee.vehicle.UpdateVehicleService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,6 +40,7 @@ public class EmployeeControllerJson {
     private final CreateMaintenanceService createMaintenanceService;
     private final UpdateMaintenanceService updateMaintenanceService;
     private final GetAllMaintenanceService getAllMaintenanceService;
+    private final GetMaintenanceViaIdService getMaintenanceViaIdService;
 
     public EmployeeControllerJson(
             AddVehicleService addVehicleService,
@@ -50,7 +53,9 @@ public class EmployeeControllerJson {
             EditCouponService editCouponService,
             GetCouponsService getCouponsService,
             CreateMaintenanceService createMaintenanceService,
-            UpdateMaintenanceService updateMaintenanceService, GetAllMaintenanceService getAllMaintenanceService
+            UpdateMaintenanceService updateMaintenanceService,
+            GetAllMaintenanceService getAllMaintenanceService,
+            GetMaintenanceViaIdService getMaintenanceViaIdService
     ) {
         this.addVehicleService = addVehicleService;
         this.deleteVehicleService = deleteVehicleService;
@@ -64,6 +69,7 @@ public class EmployeeControllerJson {
         this.createMaintenanceService = createMaintenanceService;
         this.updateMaintenanceService = updateMaintenanceService;
         this.getAllMaintenanceService = getAllMaintenanceService;
+        this.getMaintenanceViaIdService = getMaintenanceViaIdService;
     }
 
     /**
@@ -160,6 +166,12 @@ public class EmployeeControllerJson {
     @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
     public ResponseEntity<List<Maintenance>> getAllMaintenances(@RequestParam(required = false) String keyword) {
         return getAllMaintenanceService.execute(keyword);
+    }
+
+    @GetMapping("/maintenance/{maintenanceId}")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
+    public ResponseEntity<Maintenance> getMaintenanceViaID (@PathVariable int maintenanceId) {
+        return getMaintenanceViaIdService.execute(maintenanceId);
     }
 
 
