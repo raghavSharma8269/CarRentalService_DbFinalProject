@@ -11,10 +11,7 @@ import com.example.CarRentalService_DbFinalProject.services.employee.maintenance
 import com.example.CarRentalService_DbFinalProject.services.employee.maintenance.UpdateMaintenanceService;
 import com.example.CarRentalService_DbFinalProject.services.employee.reservation.GetAllReservationsService;
 import com.example.CarRentalService_DbFinalProject.services.employee.reservation.GetReservationViaIdService;
-import com.example.CarRentalService_DbFinalProject.services.employee.vehicle.AddVehicleService;
-import com.example.CarRentalService_DbFinalProject.services.employee.vehicle.DeleteVehicleService;
-import com.example.CarRentalService_DbFinalProject.services.employee.vehicle.GetAllVehicles;
-import com.example.CarRentalService_DbFinalProject.services.employee.vehicle.UpdateVehicleService;
+import com.example.CarRentalService_DbFinalProject.services.employee.vehicle.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -40,6 +37,7 @@ public class EmployeeControllerJson {
     private final GetMaintenanceViaIdService getMaintenanceViaIdService;
     private final GetCouponViaIdService getCouponViaIdService;
     private final GetReservationViaIdService getReservationViaIdService;
+    private final GetVehicleViaIdService getVehicleViaIdService;
 
     public EmployeeControllerJson(
             AddVehicleService addVehicleService,
@@ -56,7 +54,7 @@ public class EmployeeControllerJson {
             GetAllMaintenanceService getAllMaintenanceService,
             GetMaintenanceViaIdService getMaintenanceViaIdService,
             GetCouponViaIdService getCouponViaIdService,
-            GetReservationViaIdService getReservationViaIdService
+            GetReservationViaIdService getReservationViaIdService, GetVehicleViaIdService getVehicleViaIdService
     ) {
         this.addVehicleService = addVehicleService;
         this.deleteVehicleService = deleteVehicleService;
@@ -73,6 +71,7 @@ public class EmployeeControllerJson {
         this.getMaintenanceViaIdService = getMaintenanceViaIdService;
         this.getCouponViaIdService = getCouponViaIdService;
         this.getReservationViaIdService = getReservationViaIdService;
+        this.getVehicleViaIdService = getVehicleViaIdService;
     }
 
     /**
@@ -105,6 +104,12 @@ public class EmployeeControllerJson {
             @RequestParam(required = false) Double maxPrice
     ) {
         return getAllVehicles.execute(keyword, minPrice, maxPrice);
+    }
+
+    @GetMapping("/vehicles/{vehicleId}")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
+    public ResponseEntity<Vehicle> getVehicleViaId(@PathVariable int vehicleId) {
+        return getVehicleViaIdService.execute(vehicleId);
     }
 
     /**
