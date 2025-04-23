@@ -2,10 +2,7 @@ package com.example.CarRentalService_DbFinalProject.controllers.jsonTestControll
 
 import com.example.CarRentalService_DbFinalProject.model.entities.Reservation;
 import com.example.CarRentalService_DbFinalProject.model.entities.Vehicle;
-import com.example.CarRentalService_DbFinalProject.services.customer.CreateReservationRequest;
-import com.example.CarRentalService_DbFinalProject.services.customer.CreateReservationService;
-import com.example.CarRentalService_DbFinalProject.services.customer.GetAllAvailableVehiclesService;
-import com.example.CarRentalService_DbFinalProject.services.customer.GetVehicleViaIdService;
+import com.example.CarRentalService_DbFinalProject.services.customer.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -19,15 +16,17 @@ public class CustomerController {
     private final GetAllAvailableVehiclesService getAllAvailableVehiclesService;
     private final GetVehicleViaIdService getVehicleViaIdService;
     private final CreateReservationService createReservationService;
+    private final GetReservationsService getReservationsService;
 
     public CustomerController(
             GetAllAvailableVehiclesService getAllAvailableVehiclesService,
             GetVehicleViaIdService getVehicleViaIdService,
-            CreateReservationService createReservationService
+            CreateReservationService createReservationService, GetReservationsService getReservationsService
     ) {
         this.getAllAvailableVehiclesService = getAllAvailableVehiclesService;
         this.getVehicleViaIdService = getVehicleViaIdService;
         this.createReservationService = createReservationService;
+        this.getReservationsService = getReservationsService;
     }
 
     //Vehicle Requests for Customer
@@ -58,6 +57,12 @@ public class CustomerController {
                 request.getVehicleId(),
                 request.getTotalPrice()
         );
+    }
+
+    @GetMapping("/reservation")
+    @PreAuthorize("hasRole('CUSTOMER') or hasRole('EMPLOYEE') or hasRole('ADMIN')")
+    public ResponseEntity<List<Reservation>> getReservations(@RequestParam(required = false) String reservationId) {
+        return getReservationsService.execute(reservationId);
     }
 
 
