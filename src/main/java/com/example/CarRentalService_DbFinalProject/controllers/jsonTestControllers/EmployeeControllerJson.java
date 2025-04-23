@@ -10,13 +10,13 @@ import com.example.CarRentalService_DbFinalProject.services.employee.maintenance
 import com.example.CarRentalService_DbFinalProject.services.employee.maintenance.GetMaintenanceViaIdService;
 import com.example.CarRentalService_DbFinalProject.services.employee.maintenance.UpdateMaintenanceService;
 import com.example.CarRentalService_DbFinalProject.services.employee.reservation.GetAllReservationsService;
+import com.example.CarRentalService_DbFinalProject.services.employee.reservation.GetReservationViaIdService;
 import com.example.CarRentalService_DbFinalProject.services.employee.vehicle.AddVehicleService;
 import com.example.CarRentalService_DbFinalProject.services.employee.vehicle.DeleteVehicleService;
 import com.example.CarRentalService_DbFinalProject.services.employee.vehicle.GetAllVehicles;
 import com.example.CarRentalService_DbFinalProject.services.employee.vehicle.UpdateVehicleService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,6 +39,7 @@ public class EmployeeControllerJson {
     private final GetAllMaintenanceService getAllMaintenanceService;
     private final GetMaintenanceViaIdService getMaintenanceViaIdService;
     private final GetCouponViaIdService getCouponViaIdService;
+    private final GetReservationViaIdService getReservationViaIdService;
 
     public EmployeeControllerJson(
             AddVehicleService addVehicleService,
@@ -54,7 +55,8 @@ public class EmployeeControllerJson {
             UpdateMaintenanceService updateMaintenanceService,
             GetAllMaintenanceService getAllMaintenanceService,
             GetMaintenanceViaIdService getMaintenanceViaIdService,
-            GetCouponViaIdService getCouponViaIdService
+            GetCouponViaIdService getCouponViaIdService,
+            GetReservationViaIdService getReservationViaIdService
     ) {
         this.addVehicleService = addVehicleService;
         this.deleteVehicleService = deleteVehicleService;
@@ -70,6 +72,7 @@ public class EmployeeControllerJson {
         this.getAllMaintenanceService = getAllMaintenanceService;
         this.getMaintenanceViaIdService = getMaintenanceViaIdService;
         this.getCouponViaIdService = getCouponViaIdService;
+        this.getReservationViaIdService = getReservationViaIdService;
     }
 
     /**
@@ -116,6 +119,14 @@ public class EmployeeControllerJson {
         return getAllReservationsService.execute(keyword);
     }
 
+    @GetMapping("/reservations/{reservationId}")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
+    public ResponseEntity<Reservation> getReservationViaId(
+            @PathVariable int reservationId
+    ) {
+        return getReservationViaIdService.execute(reservationId);
+    }
+
     /**
      COUPON CRUD OPERATIONS
      */
@@ -146,7 +157,7 @@ public class EmployeeControllerJson {
 
     @GetMapping("/coupons/{couponId}")
     @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
-    public ResponseEntity<Coupon> getAllCoupons(@PathVariable int couponId) {
+    public ResponseEntity<Coupon> getCouponViaId (@PathVariable int couponId) {
         return getCouponViaIdService.execute(couponId);
     }
 
