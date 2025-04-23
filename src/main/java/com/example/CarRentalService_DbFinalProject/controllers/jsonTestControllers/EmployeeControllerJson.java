@@ -1,7 +1,12 @@
 package com.example.CarRentalService_DbFinalProject.controllers.jsonTestControllers;
 
+import com.example.CarRentalService_DbFinalProject.model.entities.Coupon;
 import com.example.CarRentalService_DbFinalProject.model.entities.Reservation;
 import com.example.CarRentalService_DbFinalProject.model.entities.Vehicle;
+import com.example.CarRentalService_DbFinalProject.services.employee.coupon.CreateCouponService;
+import com.example.CarRentalService_DbFinalProject.services.employee.coupon.DeleteCouponService;
+import com.example.CarRentalService_DbFinalProject.services.employee.coupon.EditCouponService;
+import com.example.CarRentalService_DbFinalProject.services.employee.coupon.GetCouponsService;
 import com.example.CarRentalService_DbFinalProject.services.employee.reservation.GetAllReservationsService;
 import com.example.CarRentalService_DbFinalProject.services.employee.vehicle.AddVehicleService;
 import com.example.CarRentalService_DbFinalProject.services.employee.vehicle.DeleteVehicleService;
@@ -22,19 +27,31 @@ public class EmployeeControllerJson {
     private final UpdateVehicleService updateVehicleService;
     private final GetAllVehicles getAllVehicles;
     private final GetAllReservationsService getAllReservationsService;
+    private final CreateCouponService createCouponService;
+    private final DeleteCouponService deleteCouponService;
+    private final EditCouponService editCouponService;
+    private final GetCouponsService getCouponsService;
 
     public EmployeeControllerJson(
             AddVehicleService addVehicleService,
             DeleteVehicleService deleteVehicleService,
             UpdateVehicleService updateVehicleService,
             GetAllVehicles getAllVehicles,
-            GetAllReservationsService getAllReservationsService
+            GetAllReservationsService getAllReservationsService,
+            CreateCouponService createCouponService,
+            DeleteCouponService deleteCouponService,
+            EditCouponService editCouponService,
+            GetCouponsService getCouponsService
     ) {
         this.addVehicleService = addVehicleService;
         this.deleteVehicleService = deleteVehicleService;
         this.updateVehicleService = updateVehicleService;
         this.getAllVehicles = getAllVehicles;
         this.getAllReservationsService = getAllReservationsService;
+        this.createCouponService = createCouponService;
+        this.deleteCouponService = deleteCouponService;
+        this.editCouponService = editCouponService;
+        this.getCouponsService = getCouponsService;
     }
 
     /**
@@ -80,5 +97,35 @@ public class EmployeeControllerJson {
     ) {
         return getAllReservationsService.execute(keyword);
     }
+
+    /**
+     COUPON CRUD OPERATIONS
+     */
+
+    @PostMapping("/coupons")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
+    public ResponseEntity<String> createCoupon(@RequestBody Coupon coupon) {
+        return createCouponService.execute(coupon);
+    }
+
+    @PutMapping("/coupons/{couponId}")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
+    public ResponseEntity<String> editCoupon (@RequestBody Coupon coupon, @PathVariable int couponId) {
+        return editCouponService.execute(coupon, couponId);
+    }
+
+    @DeleteMapping("/coupons/{couponId}")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
+    public ResponseEntity<String> deleteCoupon(@PathVariable int couponId) {
+        return deleteCouponService.execute(couponId);
+    }
+
+    @GetMapping("/coupons")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
+    public ResponseEntity<List<Coupon>> getAllCoupons(@RequestParam(required = false) String couponCode) {
+        return getCouponsService.execute(couponCode);
+    }
+
+
 
 }
