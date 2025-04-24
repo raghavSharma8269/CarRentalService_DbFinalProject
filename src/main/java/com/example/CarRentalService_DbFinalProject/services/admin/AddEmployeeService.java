@@ -50,7 +50,7 @@ public class AddEmployeeService {
                 stmt.executeUpdate();
 
             } catch (Exception e) {
-                System.out.println("Error inserting employee: " + e.getMessage());
+                throw new RuntimeException("Error adding employee: " + e.getMessage(), e);
             }
 
 
