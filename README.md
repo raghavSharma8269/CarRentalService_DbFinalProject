@@ -5,8 +5,8 @@
 
 ## Customer Endpoints
 ### URL for Vehicles: http://localhost:8080/api/customer/vehicle
-### URL for Vehicles Details: http://localhost:8080//api/customer/vehicle/{id}
-### URL for Checkout Page: http://localhost:8080//api/customer/checkout/{id}
+### URL for Vehicles Details: http://localhost:8080/api/customer/vehicle/{id}
+### URL for Checkout Page: http://localhost:8080/api/customer/checkout/{id}
 
 ## Dashboard Endpoints
 ### URL for Dashboard: http://localhost:8080/api/dashboard
