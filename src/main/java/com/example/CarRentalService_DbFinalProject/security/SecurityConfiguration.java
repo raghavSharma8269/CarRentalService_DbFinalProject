@@ -18,11 +18,32 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 @EnableMethodSecurity
 public class SecurityConfiguration {
 
-    @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
-        return http
-                .getSharedObject(AuthenticationManagerBuilder.class).build();
-    }
+//    @Bean
+//    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+//        return http
+//                .getSharedObject(AuthenticationManagerBuilder.class).build();
+//    }
+//
+//    @Bean
+//    public PasswordEncoder passwordEncoder() {
+//        return new BCryptPasswordEncoder();
+//    }
+//
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//        http
+//                .csrf(AbstractHttpConfigurer::disable)
+//                .authorizeHttpRequests(auth -> auth
+//                        .requestMatchers("/api/json/auth/**").permitAll()
+//                        .requestMatchers("/error", "/api/auth/**").permitAll()
+//                        .anyRequest().authenticated()
+//                )
+//                .addFilterBefore(
+//                        new BasicAuthenticationFilter(authenticationManager(http)),
+//                        UsernamePasswordAuthenticationFilter.class
+//                );
+//        return http.build();
+//    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -34,14 +55,12 @@ public class SecurityConfiguration {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/json/auth/**").permitAll()
-                        .requestMatchers("/error", "/api/auth/**").permitAll()
-                        .anyRequest().authenticated()
-                )
-                .addFilterBefore(
-                        new BasicAuthenticationFilter(authenticationManager(http)),
-                        UsernamePasswordAuthenticationFilter.class
+                        .anyRequest().permitAll() // ✅ allow every page, no login
                 );
+
         return http.build();
-    }
+}
+
+
+
 }
