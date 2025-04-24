@@ -50,13 +50,8 @@ public class CustomerController {
     //Reservation Requests for Customer
     @PostMapping("/reservation")
     @PreAuthorize("hasRole('CUSTOMER') or hasRole('EMPLOYEE') or hasRole('ADMIN')")
-    public ResponseEntity<String> createReservation(@RequestBody CreateReservationRequest request) {
-        return createReservationService.execute(
-                request.getStart(),
-                request.getEnd(),
-                request.getVehicleId(),
-                request.getTotalPrice()
-        );
+    public ResponseEntity<String> createReservation(@RequestBody Reservation reservation) {
+        return createReservationService.execute(reservation);
     }
 
     @GetMapping("/reservation")

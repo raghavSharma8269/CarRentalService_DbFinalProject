@@ -1,5 +1,7 @@
 package com.example.CarRentalService_DbFinalProject.services.customer;
 
+import com.example.CarRentalService_DbFinalProject.errorHandling.validations.ReservationValidation;
+import com.example.CarRentalService_DbFinalProject.model.entities.Reservation;
 import com.example.CarRentalService_DbFinalProject.model.entities.Users;
 import com.example.CarRentalService_DbFinalProject.model.entities.Vehicle;
 import com.example.CarRentalService_DbFinalProject.model.repositories.UserRepository;
@@ -30,13 +32,17 @@ public class CreateReservationService {
         this.authUtil = authUtil;
     }
 
-    public ResponseEntity<String> execute(LocalDateTime start, LocalDateTime end, int vehicleId, double totalPrice) {
+    public ResponseEntity<String> execute(Reservation reservation) {
+
+        // Validate the reservation object
+        ReservationValidation.validate(reservation);
+
         String username = authUtil.getLoggedInUsername();
 
         Users user = userRepository.findByUserName(username).orElseThrow(() ->
                 new RuntimeException("User not found"));
 
-        Vehicle vehicle = vehicleRepository.findById(vehicleId).orElseThrow(() ->
+        Vehicle vehicle = vehicleRepository.findById(reservation.getVehicleId().getVehicleId()).orElseThrow(() ->
                 new RuntimeException("Vehicle not found"));
 
         String sql = "INSERT INTO reservation (user_id, vehicle_id, start, end, total_price) VALUES (?, ?, ?, ?, ?)";
@@ -46,15 +52,14 @@ public class CreateReservationService {
 
             stmt.setInt(1, user.getUserId());
             stmt.setInt(2, vehicle.getVehicleId());
-            stmt.setTimestamp(3, Timestamp.valueOf(start));
-            stmt.setTimestamp(4, Timestamp.valueOf(end));
-            stmt.setDouble(5, totalPrice);
+            stmt.setTimestamp(3, Timestamp.valueOf(reservation.getStart()));
+            stmt.setTimestamp(4, Timestamp.valueOf(reservation.getEnd()));
+            stmt.setDouble(5, reservation.getTotalPrice());
 
             stmt.executeUpdate();
             return ResponseEntity.ok("Reservation created");
 
         } catch (Exception e) {
-            System.out.println("Error creating reservation: " + e.getMessage());
             return ResponseEntity.status(500).body("Failed to create reservation");
         }
     }
