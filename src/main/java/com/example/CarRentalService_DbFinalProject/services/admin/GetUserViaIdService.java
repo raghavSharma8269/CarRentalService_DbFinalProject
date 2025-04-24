@@ -1,5 +1,6 @@
 package com.example.CarRentalService_DbFinalProject.services.admin;
 
+import com.example.CarRentalService_DbFinalProject.errorHandling.Exceptions.NotFoundException;
 import com.example.CarRentalService_DbFinalProject.model.entities.Users;
 import com.example.CarRentalService_DbFinalProject.model.repositories.UserRepository;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,7 @@ public class GetUserViaIdService {
     public ResponseEntity<Users> execute(int userId) {
 
         Users user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new NotFoundException("User not found"));
 
         return ResponseEntity.ok(user);
 
