@@ -1,14 +1,11 @@
 package com.example.CarRentalService_DbFinalProject.controllers;
 
 import com.example.CarRentalService_DbFinalProject.model.entities.Users;
-import com.example.CarRentalService_DbFinalProject.model.entities.Vehicle;
-import com.example.CarRentalService_DbFinalProject.model.repositories.VehicleRepository;
 import com.example.CarRentalService_DbFinalProject.services.auth.RegisterService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
 
 @Controller
 public class AuthController {
@@ -31,7 +28,7 @@ public class AuthController {
             registerService.execute(user);
             model.addAttribute("message", "Registration successful!");
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Error: " + e.getMessage());
             model.addAttribute("message", "Error: " + e.getMessage());
         }
         return "register";
