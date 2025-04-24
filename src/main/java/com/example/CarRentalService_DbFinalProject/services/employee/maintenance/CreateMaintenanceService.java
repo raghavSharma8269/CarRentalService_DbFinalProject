@@ -1,5 +1,6 @@
 package com.example.CarRentalService_DbFinalProject.services.employee.maintenance;
 
+import com.example.CarRentalService_DbFinalProject.errorHandling.validations.MaintenanceValidation;
 import com.example.CarRentalService_DbFinalProject.model.entities.Maintenance;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,8 @@ public class CreateMaintenanceService {
     }
 
     public ResponseEntity<String> execute (Maintenance maintenance) {
+
+        MaintenanceValidation.validate(maintenance);
 
 
         // Adds maintenance to the database
