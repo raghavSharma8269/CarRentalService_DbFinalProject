@@ -14,17 +14,17 @@ import java.util.List;
 public class CustomerControllerJson {
 
     private final GetAllAvailableVehiclesService getAllAvailableVehiclesService;
-    private final GetVehicleViaIdService getVehicleViaIdService;
+    private final GetVehicleViaIdServiceForCustomer getVehicleViaIdServiceForCustomer;
     private final CreateReservationService createReservationService;
     private final GetReservationsService getReservationsService;
 
     public CustomerControllerJson(
             GetAllAvailableVehiclesService getAllAvailableVehiclesService,
-            GetVehicleViaIdService getVehicleViaIdService,
+            GetVehicleViaIdServiceForCustomer getVehicleViaIdServiceForCustomer,
             CreateReservationService createReservationService, GetReservationsService getReservationsService
     ) {
         this.getAllAvailableVehiclesService = getAllAvailableVehiclesService;
-        this.getVehicleViaIdService = getVehicleViaIdService;
+        this.getVehicleViaIdServiceForCustomer = getVehicleViaIdServiceForCustomer;
         this.createReservationService = createReservationService;
         this.getReservationsService = getReservationsService;
     }
@@ -44,7 +44,7 @@ public class CustomerControllerJson {
     @GetMapping("/vehicles/{id}")
     @PreAuthorize("hasRole('CUSTOMER') or hasRole('EMPLOYEE') or hasRole('ADMIN')")
     public ResponseEntity<Vehicle> getVehicleById(@PathVariable int id) {
-        return getVehicleViaIdService.execute(id);
+        return getVehicleViaIdServiceForCustomer.execute(id);
     }
 
     //Reservation Requests for Customer

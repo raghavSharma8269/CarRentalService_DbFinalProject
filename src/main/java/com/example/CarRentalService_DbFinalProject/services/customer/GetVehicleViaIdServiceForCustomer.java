@@ -10,11 +10,11 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Optional;
 
 @Service
-public class GetVehicleViaIdService {
+public class GetVehicleViaIdServiceForCustomer {
 
     private final VehicleRepository vehicleRepository;
 
-    public GetVehicleViaIdService(VehicleRepository vehicleRepository) {
+    public GetVehicleViaIdServiceForCustomer(VehicleRepository vehicleRepository) {
         this.vehicleRepository = vehicleRepository;
     }
 
