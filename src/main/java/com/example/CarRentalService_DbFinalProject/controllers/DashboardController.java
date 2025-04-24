@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class DashboardController {
 
     // Default Dashboard Page
-    @GetMapping("/dashboard")
+    @GetMapping()
     public String dashboard(Model model) {
         model.addAttribute("page", "dashboard");
         return "pages/employee-admin-dash";
@@ -53,9 +53,4 @@ public class DashboardController {
         return "pages/employee-admin-dash";
     }
 
-    // Root path redirects to dashboard
-    @GetMapping("")
-    public String defaultDashboard() {
-        return "redirect:/api/dashboard";
-    }
 }
