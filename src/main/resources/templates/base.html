@@ -6,41 +6,74 @@
 <head th:fragment="base_head">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-…" crossorigin="anonymous">
+    <!-- Bootstrap CSS + Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" th:href="@{/css/custom.css}">
+
     <title th:text="${pageTitle}">Car Rental Platform</title>
 </head>
 
 <!-- Base HTML structure for navigation bar -->
 <body th:fragment="base_navigation">
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-        <div class="container-fluid">
+<nav class="navbar bg-white shadow-sm">
+    <div class="container-fluid d-flex align-items-center">
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+        <!-- 1) Brand -->
+        <a class="navbar-brand text-primary fw-bold me-4" th:href="@{/}">CarFlow </a>
 
-            <a class="navbar-brand" href="#">CarFlow</a>
+        <!-- 2) Search + filter button as one Input Group -->
+        <form class="flex-grow-1 me-4" th:action="@{/search}" role="search">
+            <div class="input-group">
+                <!-- search icon -->
+                <span class="input-group-text bg-white border-end-0">
+          <i class="bi bi-search"></i>
+        </span>
 
-            <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+                <!-- text input -->
+                <input type="search" class="form-control border-start-0 border-end-0" placeholder="Search something here"  aria-label="Search">
 
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
-                    </li>
-                </ul>
-
-                <form class="d-flex" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
-
+                <!-- filter/sliders button -->
+                <button class="btn btn-outline-secondary border-start-0" type="submit">
+                    <i class="bi bi-sliders"></i>
+                </button>
             </div>
+        </form>
 
+        <!-- 3) Utility icons on the right -->
+        <div class="d-flex align-items-center">
+            <!-- favorites -->
+            <a class="nav-link text-dark me-3 heart-hover" th:href="@{/favorites}">
+                <i class="bi bi-heart fs-5"></i>
+            </a>
+
+            <!-- notifications -->
+            <a class="nav-link text-dark position-relative me-3" th:href="@{/notifications}">
+                <i class="bi bi-bell fs-5"></i>
+                <span
+                        class="position-absolute top-0 start-100 translate-middle p-1 bg-danger
+                 border border-light rounded-circle"
+                ></span>
+            </a>
+
+            <!-- settings -->
+            <a class="nav-link text-dark me-3" th:href="@{/settings}">
+                <i class="bi bi-gear fs-5"></i>
+            </a>
+
+            <!-- avatar: make sure you have a valid src here! -->
+            <a class="nav-link p-0" th:href="@{/profile}">
+                <img th:src="@{/images/DefaultUser2.png}" alt="Profile" class="rounded-circle" width="40" height="40">
+            </a>
         </div>
-    </nav>
-</body>
+    </div>
+</nav>
 
+<!-- Bootstrap JS (for collapse, dropdowns, etc) -->
+<script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+></script>
+</body>
 </html>
