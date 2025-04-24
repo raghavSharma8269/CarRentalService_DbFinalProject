@@ -1,5 +1,6 @@
 package com.example.CarRentalService_DbFinalProject.services.employee.coupon;
 
+import com.example.CarRentalService_DbFinalProject.errorHandling.validations.CouponValidation;
 import com.example.CarRentalService_DbFinalProject.model.entities.Coupon;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,9 @@ public class CreateCouponService {
     }
 
     public ResponseEntity<String> execute(Coupon coupon) {
+
+        CouponValidation.validate(coupon);
+
         String sql = "INSERT INTO coupon (coupon_code, discount_percentage) VALUES (?, ?)";
 
         try (Connection conn = dataSource.getConnection();
