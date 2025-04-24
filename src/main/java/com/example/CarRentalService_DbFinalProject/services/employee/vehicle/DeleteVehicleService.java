@@ -39,10 +39,14 @@ public class DeleteVehicleService {
             reservationRepository.deleteReservationByVehicleId(vehicleId);
             maintenanceRepository.deleteMaintenanceByVehicleId(vehicleId);
 
-            stmt.executeUpdate();
+            int numRowsAffected = stmt.executeUpdate();
+            if (numRowsAffected <= 0) {
+                return ResponseEntity.badRequest().body("Vehicle ID not found");
+            }
 
         } catch (SQLException e) {
             System.out.println("Error deleting vehicle: " + e.getMessage());
+            return ResponseEntity.internalServerError().body("Vehicle deletion failed");
         }
         return ResponseEntity.ok("Vehicle deleted successfully");
     }

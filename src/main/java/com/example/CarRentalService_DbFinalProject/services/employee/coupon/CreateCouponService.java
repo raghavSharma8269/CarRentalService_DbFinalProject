@@ -29,6 +29,8 @@ public class CreateCouponService {
             stmt.executeUpdate();
         } catch (Exception e) {
             System.out.println("Error adding coupon: " + e.getMessage());
+            return ResponseEntity.internalServerError().body("Coupon creation failed");
+
         }
 
         return ResponseEntity.ok("Successfully added coupon");

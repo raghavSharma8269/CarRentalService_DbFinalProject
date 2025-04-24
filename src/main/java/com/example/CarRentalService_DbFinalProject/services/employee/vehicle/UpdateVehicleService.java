@@ -38,9 +38,14 @@ public class UpdateVehicleService {
             stmt.setString(8, updatedVehicle.getImageUrl());
             stmt.setInt(9, vehicleId);
 
-            stmt.executeUpdate();
+            int numRowsEffected = stmt.executeUpdate();
+            if (numRowsEffected == 0) {
+                return ResponseEntity.badRequest().body("Vehicle ID not found");
+            }
+
         } catch (Exception e) {
             System.out.println("Error updating vehicle: " + e.getMessage());
+            return ResponseEntity.internalServerError().body("Vehicle update failed");
         }
 
         return ResponseEntity.ok("Vehicle updated successfully");

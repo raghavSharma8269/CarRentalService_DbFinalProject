@@ -42,6 +42,7 @@ public class AddVehicleService {
             stmt.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Error inserting vehicle: " + e.getMessage());
+            return ResponseEntity.internalServerError().body("Vehicle creation failed");
         }
 
         return ResponseEntity.ok("Vehicle added successfully");

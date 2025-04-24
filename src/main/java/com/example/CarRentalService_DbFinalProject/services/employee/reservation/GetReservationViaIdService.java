@@ -2,8 +2,10 @@ package com.example.CarRentalService_DbFinalProject.services.employee.reservatio
 
 import com.example.CarRentalService_DbFinalProject.model.entities.Reservation;
 import com.example.CarRentalService_DbFinalProject.model.repositories.ReservationRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class GetReservationViaIdService {
@@ -16,7 +18,8 @@ public class GetReservationViaIdService {
 
     public ResponseEntity<Reservation> execute (int reservationId) {
         Reservation reservation = reservationRepository.findById(reservationId)
-                .orElseThrow(() -> new RuntimeException("Reservation not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Reservation not found with id: " + reservationId));
 
         return ResponseEntity.ok(reservation);
     }

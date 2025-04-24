@@ -52,7 +52,8 @@ public class CreateMaintenanceService {
 
             stmt.executeUpdate();
         }catch (Exception e) {
-            throw new RuntimeException("Error updating vehicle to unavailable: " + e.getMessage());
+            System.out.println("Error updating vehicle to unavailable: " + e.getMessage());
+            return ResponseEntity.internalServerError().body("Failed to create maintenance");
         }
 
 

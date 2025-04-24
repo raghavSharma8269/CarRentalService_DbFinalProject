@@ -29,7 +29,7 @@ public class EmployeeControllerJson {
     private final GetAllReservationsService getAllReservationsService;
     private final CreateCouponService createCouponService;
     private final DeleteCouponService deleteCouponService;
-    private final EditCouponService editCouponService;
+    private final UpdateCouponService updateCouponService;
     private final GetCouponsService getCouponsService;
     private final CreateMaintenanceService createMaintenanceService;
     private final UpdateMaintenanceService updateMaintenanceService;
@@ -47,7 +47,7 @@ public class EmployeeControllerJson {
             GetAllReservationsService getAllReservationsService,
             CreateCouponService createCouponService,
             DeleteCouponService deleteCouponService,
-            EditCouponService editCouponService,
+            UpdateCouponService updateCouponService,
             GetCouponsService getCouponsService,
             CreateMaintenanceService createMaintenanceService,
             UpdateMaintenanceService updateMaintenanceService,
@@ -63,7 +63,7 @@ public class EmployeeControllerJson {
         this.getAllReservationsService = getAllReservationsService;
         this.createCouponService = createCouponService;
         this.deleteCouponService = deleteCouponService;
-        this.editCouponService = editCouponService;
+        this.updateCouponService = updateCouponService;
         this.getCouponsService = getCouponsService;
         this.createMaintenanceService = createMaintenanceService;
         this.updateMaintenanceService = updateMaintenanceService;
@@ -145,7 +145,7 @@ public class EmployeeControllerJson {
     @PutMapping("/coupons/{couponId}")
     @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
     public ResponseEntity<String> editCoupon (@RequestBody Coupon coupon, @PathVariable int couponId) {
-        return editCouponService.execute(coupon, couponId);
+        return updateCouponService.execute(coupon, couponId);
     }
 
     @DeleteMapping("/coupons/{couponId}")

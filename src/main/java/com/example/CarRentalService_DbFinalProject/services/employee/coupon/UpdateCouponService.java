@@ -9,11 +9,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 
 @Service
-public class EditCouponService {
+public class UpdateCouponService {
 
     private final DataSource dataSource;
 
-    public EditCouponService(DataSource dataSource) {
+    public UpdateCouponService(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
