@@ -14,11 +14,9 @@ import java.util.Optional;
 public class AuthController {
 
     private final RegisterService registerService;
-    private final VehicleRepository vehicleRepository;
 
-    public AuthController(RegisterService registerService, VehicleRepository vehicleRepository) {
+    public AuthController(RegisterService registerService) {
         this.registerService = registerService;
-        this.vehicleRepository = vehicleRepository;
     }
 
     @GetMapping("/api/auth/register")
@@ -37,36 +35,6 @@ public class AuthController {
             model.addAttribute("message", "Error: " + e.getMessage());
         }
         return "register";
-    }
-
-    // ✅ Loads the vehicle list page
-    @GetMapping("/vehicle")
-    public String showVehiclePage() {
-        return "index";
-    }
-
-    // ✅ Loads the details page when you click on a car
-    @GetMapping("/vehicle/{id}")
-    public String showVehicleDetails(@PathVariable int id, Model model) {
-        Optional<Vehicle> vehicle = vehicleRepository.findById(id);
-        if (vehicle.isPresent()) {
-            model.addAttribute("vehicle", vehicle.get());
-            return "vehicle"; // this renders vehicle.html
-        } else {
-            model.addAttribute("message", "Vehicle not found.");
-            return "vehicle"; // still show the page with a message
-        }
-    }
-
-    @GetMapping("/checkout/{id}")
-    public String showCheckout(@PathVariable int id, Model model) {
-        Optional<Vehicle> vehicle = vehicleRepository.findById(id);
-        if (vehicle.isPresent()) {
-            model.addAttribute("vehicle", vehicle.get());
-            return "checkout";
-        } else {
-            return "redirect:/vehicle";
-        }
     }
 
 }

@@ -30,7 +30,7 @@
           <li class="list-group-item"><strong>Available:</strong> <span th:text="${vehicle.availability ? 'Yes' : 'No'}"></span></li>
         </ul>
         <div class="text-end mt-3">
-          <a th:href="@{/checkout/{id}(id=${vehicle.vehicleId})}" class="btn btn-primary btn-lg">Rent Now</a>
+          <a th:href="@{/api/customer/checkout/{id}(id=${vehicle.vehicleId})}" class="btn btn-primary btn-lg">Rent Now</a>
         </div>
       </div>
     </div>
