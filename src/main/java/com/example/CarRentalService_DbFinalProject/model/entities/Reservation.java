@@ -28,14 +28,26 @@ public class Reservation {
     @Column(name = "end", nullable = false)
     private LocalDateTime end;
 
-    public Reservation(Users user, Vehicle vehicleId, LocalDateTime start, LocalDateTime end) {
+    @Column(name = "total_price", nullable = false)
+    private double totalPrice;
+
+    public Reservation(Users user, Vehicle vehicleId, LocalDateTime start, LocalDateTime end, double totalPrice) {
         this.user = user;
         this.vehicleId = vehicleId;
         this.start = start;
         this.end = end;
+        this.totalPrice = totalPrice;
     }
 
     public Reservation() {
+    }
+
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
     public int getReservationId() {
