@@ -23,4 +23,19 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
     @Query("DELETE FROM Reservation query WHERE query.user.userId = :userId")
     void deleteReservationByUserId(@Param("userId") int userId);
 
+    // Delete all reservations associated with a specific vehicle ID
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM Reservation r WHERE r.vehicleId.vehicleId = :vehicleId")
+    void deleteReservationByVehicleId(int vehicleId);
+
+    // Search reservations by keyword via full name, email, username, licence plate
+    @Query("SELECT query FROM Reservation query WHERE " +
+            "(:keyword IS NULL OR :keyword = '' OR " +
+            "LOWER(query.user.fullName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+            "LOWER(query.user.email) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+            "LOWER(query.user.userName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+            "LOWER(query.vehicleId.licensePlate) LIKE LOWER(CONCAT('%', :keyword, '%')))")
+    List<Reservation> searchByKeywordAndPrice(String keyword);
+
 }
