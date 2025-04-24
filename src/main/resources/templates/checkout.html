@@ -1,12 +1,100 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Checkout</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container py-5">
+    <h2 class="mb-4">Rental Checkout</h2>
+    <div class="row">
+        <!-- Form Left Side -->
+        <div class="col-md-8">
+            <!-- Billing Info -->
+            <div class="card mb-4">
+                <div class="card-header fw-bold">Billing Info</div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" placeholder="Your name">
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" placeholder="Phone number">
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" placeholder="Address">
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" placeholder="City">
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-<!-- Inherit BootStrap CDN From Base.html -->
-<head th:replace="base.html :: base_head"></head>
+            <!-- Rental Info -->
+            <div class="card mb-4">
+                <div class="card-header fw-bold">Rental Info</div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label>Pick-Up Date</label>
+                            <input type="date" class="form-control">
+                        </div>
+                        <div class="col-md-6">
+                            <label>Drop-Off Date</label>
+                            <input type="date" class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-<body>
-    <!-- Inherit Default Navigation Bar From Base.html -->
-    <div th:replace="base.html :: base_navigation"></div>
+            <!-- Payment -->
+            <div class="card mb-4">
+                <div class="card-header fw-bold">Payment Method</div>
+                <div class="card-body">
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="radio" name="paymentMethod" id="credit" checked>
+                        <label class="form-check-label" for="credit">Credit Card</label>
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-md-6"><input type="text" class="form-control" placeholder="Card Number"></div>
+                        <div class="col-md-3"><input type="text" class="form-control" placeholder="MM/YY"></div>
+                        <div class="col-md-3"><input type="text" class="form-control" placeholder="CVC"></div>
+                    </div>
+                </div>
+            </div>
 
+            <!-- Confirmation -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="agree2">
+                        <label class="form-check-label" for="agree2">I agree to terms and privacy policy.</label>
+                    </div>
+                    <button class="btn btn-primary btn-lg">Rent Now</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Summary Right Side -->
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="mb-3">Rental Summary</h5>
+                    <div class="d-flex align-items-center mb-3">
+                        <img th:src="${vehicle.imageUrl}" alt="Vehicle" class="img-fluid me-2" style="width: 60px;">
+                        <div>
+                            <strong th:text="${vehicle.make + ' ' + vehicle.model}">Car Name</strong><br>
+                            <small>$<span th:text="${vehicle.pricePerDay}">80.00</span> / day</small>
+                        </div>
+                    </div>
+                    <hr>
+                    <p><strong>Total:</strong> $<span th:text="${vehicle.pricePerDay}">80.00</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
