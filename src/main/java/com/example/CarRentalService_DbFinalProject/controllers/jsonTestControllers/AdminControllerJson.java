@@ -1,10 +1,7 @@
 package com.example.CarRentalService_DbFinalProject.controllers.jsonTestControllers;
 
 import com.example.CarRentalService_DbFinalProject.model.entities.Users;
-import com.example.CarRentalService_DbFinalProject.services.admin.AddEmployeeService;
-import com.example.CarRentalService_DbFinalProject.services.admin.DeleteUserService;
-import com.example.CarRentalService_DbFinalProject.services.admin.GetAllUsersService;
-import com.example.CarRentalService_DbFinalProject.services.admin.UpdateUserService;
+import com.example.CarRentalService_DbFinalProject.services.admin.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -19,15 +16,19 @@ public class AdminControllerJson {
     private final GetAllUsersService getAllUsersService;
     private final DeleteUserService deleteUserService;
     private final UpdateUserService updateUserService;
+    private final GetUserViaIdService getUserViaIdService;
 
     public AdminControllerJson(AddEmployeeService addEmployeeService,
                                GetAllUsersService getAllUsersService,
                                DeleteUserService deleteUserService,
-                               UpdateUserService updateUserService) {
+                               UpdateUserService updateUserService,
+                               GetUserViaIdService getUserViaIdService
+    ) {
         this.addEmployeeService = addEmployeeService;
         this.getAllUsersService = getAllUsersService;
         this.deleteUserService = deleteUserService;
         this.updateUserService = updateUserService;
+        this.getUserViaIdService = getUserViaIdService;
     }
 
     @PostMapping("/add-employee")
@@ -60,6 +61,13 @@ public class AdminControllerJson {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> updateUser(@RequestBody Users updatedUser, @PathVariable int userId) {
         return updateUserService.execute(updatedUser, userId);
+    }
+
+    // Get user by ID
+    @GetMapping("/users/{userId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Users> getUserById(@PathVariable int userId) {
+        return getUserViaIdService.execute(userId);
     }
 
 
