@@ -36,8 +36,8 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(auth -> auth
                         // Allow access to the following endpoints without authentication, add more here as needed
                         .requestMatchers("/api/json/auth/**").permitAll()
-                        .requestMatchers("/error", "/api/auth/**", "/api/test/**").permitAll()
-                        .requestMatchers("/css/**", "/images/**").permitAll()
+                        .requestMatchers("/error", "/api/auth/**", "/api/dashboard/**").permitAll()
+                        .requestMatchers("/css/**", "/images/**", "/templates/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(
