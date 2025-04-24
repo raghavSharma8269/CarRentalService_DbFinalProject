@@ -11,14 +11,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/json/customer")
-public class CustomerController {
+public class CustomerControllerJson {
 
     private final GetAllAvailableVehiclesService getAllAvailableVehiclesService;
     private final GetVehicleViaIdService getVehicleViaIdService;
     private final CreateReservationService createReservationService;
     private final GetReservationsService getReservationsService;
 
-    public CustomerController(
+    public CustomerControllerJson(
             GetAllAvailableVehiclesService getAllAvailableVehiclesService,
             GetVehicleViaIdService getVehicleViaIdService,
             CreateReservationService createReservationService, GetReservationsService getReservationsService

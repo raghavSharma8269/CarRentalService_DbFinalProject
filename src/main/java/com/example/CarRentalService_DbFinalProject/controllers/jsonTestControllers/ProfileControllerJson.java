@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/json/profile")
-public class ProfileController {
+public class ProfileControllerJson {
 
     private final GetProfileService getProfileService;
     private final ChangePasswordService changePasswordService;
 
-    public ProfileController(GetProfileService getProfileService, ChangePasswordService changePasswordService) {
+    public ProfileControllerJson(GetProfileService getProfileService, ChangePasswordService changePasswordService) {
         this.getProfileService = getProfileService;
         this.changePasswordService = changePasswordService;
     }
