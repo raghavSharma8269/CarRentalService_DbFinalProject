@@ -74,7 +74,6 @@ public class DashboardController {
         // If the vehicle is found, add it to the model otherwise add an error message
         if (vehicle.isPresent()) {
             model.addAttribute("vehicle", vehicle.get());
-            System.out.println("Vehicle ID: " + id + " | Model: " + model);
             return "/pages/employee-admin-dash";
         } else {
             model.addAttribute("message", "Vehicle not found.");
