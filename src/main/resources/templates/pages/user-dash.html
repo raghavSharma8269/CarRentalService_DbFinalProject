@@ -18,6 +18,10 @@
              th:replace="fragments/dashboard/vehicles :: content">
         </div>
 
+        <div th:if="${page == 'vehicleDetails'}"
+             th:replace="fragments/dashboard/vehicle-card :: content">
+        </div>
+
         <!-- You can add other tabs here:
              <div th:if="${page == 'reservations'}"
                   th:replace="fragments/dashboard/reservations :: content">
@@ -25,10 +29,11 @@
         -->
 
         <!-- fallback for unknown page -->
-        <div th:unless="${page == 'vehicles'}">
+        <div th:if="${page!='vehicles' and page!='vehicleDetails'}">
             <h2>404—Page Not Found</h2>
             <p>The section you’re trying to access doesn’t exist.</p>
         </div>
+
 
     </main>
 </div>

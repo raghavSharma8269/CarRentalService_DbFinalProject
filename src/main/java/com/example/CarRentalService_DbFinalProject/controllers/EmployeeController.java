@@ -4,6 +4,7 @@ import com.example.CarRentalService_DbFinalProject.model.entities.Vehicle;
 import com.example.CarRentalService_DbFinalProject.model.repositories.VehicleRepository;
 import com.example.CarRentalService_DbFinalProject.services.customer.GetAllAvailableVehiclesService;
 import com.example.CarRentalService_DbFinalProject.services.employee.vehicle.GetAllVehicles;
+import com.example.CarRentalService_DbFinalProject.services.employee.vehicle.GetVehicleViaIdService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,13 +21,15 @@ public class EmployeeController {
 
     private final VehicleRepository vehicleRepository;
     private final GetAllVehicles getAllVehicles;
+    private final GetVehicleViaIdService getVehicleViaIdService;
 
     public EmployeeController(
             VehicleRepository vehicleRepository,
-            GetAllVehicles getAllVehicles
+            GetAllVehicles getAllVehicles, GetVehicleViaIdService getVehicleViaIdService
     ) {
         this.vehicleRepository = vehicleRepository;
         this.getAllVehicles = getAllVehicles;
+        this.getVehicleViaIdService = getVehicleViaIdService;
     }
 
     // Default Dashboard Page
