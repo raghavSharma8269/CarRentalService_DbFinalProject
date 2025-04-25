@@ -12,11 +12,11 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/api/dashboard")
-public class DashboardController {
+public class EmployeeController {
 
     private final VehicleRepository vehicleRepository;
 
-    public DashboardController(VehicleRepository vehicleRepository) {
+    public EmployeeController(VehicleRepository vehicleRepository) {
         this.vehicleRepository = vehicleRepository;
     }
 
