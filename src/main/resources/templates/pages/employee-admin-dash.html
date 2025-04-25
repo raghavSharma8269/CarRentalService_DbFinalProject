@@ -2,55 +2,20 @@
 <html lang="en">
 
 <!-- Inherit BootStrap CDN From Base.html -->
-<head th:replace="base.html :: base_head"></head>
+<head th:replace="fragments/base.html :: base_head"></head>
 
 <body>
 <!-- Inherit Default Navigation Bar From Base.html -->
-<div th:replace="base.html :: base_navigation"></div>
+<div th:replace="fragments/base.html :: base_navigation"></div>
 
-<!-- Sidebar -->
+<!-- Container for holding contents of the entire page -->
 <div class="d-flex">
 
-    <nav class="sidebar d-flex flex-column justify-content-between p-3">
-        <ul class="nav nav-pills flex-column">
-            <!-- 1) Dashboard -->
-            <li class="nav-item">
-                <a th:class="${page == 'dashboard'} ? 'nav-link active' : 'nav-link'" th:href="@{/api/dashboard}"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a>
-            </li>
-            <!-- 2) Reservation Management -->
-            <li class="nav-item">
-                <a th:class="${page == 'reservations'} ? 'nav-link active' : 'nav-link'" th:href="@{/api/dashboard/reservations}"><i class="bi bi-clipboard2-check me-2"></i>Reservations</a>
-            </li>
-            <!-- 3) Vehicle Management -->
-            <li class="nav-item">
-                <a th:class="${page == 'vehicles'} ? 'nav-link active' : 'nav-link'" th:href="@{/api/dashboard/vehicles}"><i class="bi bi-car-front-fill me-2"></i>Vehicles</a>
-            </li>
-            <!-- 4) Maintenance Management -->
-            <li class="nav-item">
-                <a th:class="${page == 'maintenance'} ? 'nav-link active' : 'nav-link'" th:href="@{/api/dashboard/maintenance}"><i class="bi bi-tools me-2"></i>Maintenance</a>
-            </li>
-            <!-- 5) Coupons -->
-            <li class="nav-item">
-                <a th:class="${page == 'coupons'} ? 'nav-link active' : 'nav-link'" th:href="@{/api/dashboard/coupons}"><i class="bi bi-tag me-2"></i>Coupons</a>
-            </li>
-        
-            <!-- 6) Account Management (Visible To Admin Only)
-            th:if="${#authorization.expression('hasRole(''ADMIN'')')}"
-            -->
-            <li class="nav-item">
-                <a th:class="${page == 'accounts'} ? 'nav-link active' : 'nav-link'" th:href="@{/api/dashboard/accounts}"><i class="bi bi-person-gear me-2"></i>Accounts</a>
-            </li>
-        </ul>
-
-        <!-- Log Out Button -->
-        <div class="mt-auto">
-            <a th:href="@{/api/auth/login}" class="nav-link text-muted">Log Out</a>
-        </div>
-
-    </nav>
+    <!-- Side Navigation Bar -->
+    <div th:replace="~{fragments/sidebar.html :: sidebar}"></div>
 
     <!-- Separate Main Content from Sidebar & Use Inheritance-->
-    <main class="flex-grow-1 p-4"> <!-- Potential Edge Case: class could interfere with other layouts -->
+    <main class="flex-grow-1 p-4">
 
         <!-- First match -->
         <div th:if="${page == 'dashboard'}">
