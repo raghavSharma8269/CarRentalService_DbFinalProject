@@ -62,7 +62,7 @@ public class EmployeeController {
     }
 
     // Load details page when you click into a car
-    @GetMapping("/vehicle/{id}")
+    @GetMapping("/vehicles/{id}")
     public String showVehicleDetails(@PathVariable int id, Model model) {
         // Check for the vehicle in the database
         Optional<Vehicle> vehicle = vehicleRepository.findById(id);

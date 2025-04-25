@@ -7,7 +7,7 @@
             <!-- Create column div for each vehicle in a single row -->
             <div th:each="veh : ${vehicles}" class="col-md-4 col-sm-6 col-12">
                 <div class="p-3 border rounded bg-white shadow-sm">
-                    <a th:href="@{/dashboard/vehicle/{id}(id=${veh.vehicleId})}">
+                    <a th:href="@{/dashboard/employee/vehicles/{id}(id=${veh.vehicleId})}">
                         <img th:src="${veh.imageUrl}"
                              class="img-fluid mb-3"
                              th:alt="${veh.make + ' ' + veh.model}"/>

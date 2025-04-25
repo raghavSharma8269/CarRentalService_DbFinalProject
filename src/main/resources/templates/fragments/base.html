@@ -12,7 +12,7 @@
     <link
             href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
             rel="stylesheet">
-    <!-- your custom CSS -->
+    <!-- custom CSS -->
     <link rel="stylesheet" th:href="@{/css/custom.css}">
     <!-- dynamic title -->
     <title th:text="${pageTitle} ?: 'Car Rental Platform'">
@@ -27,16 +27,22 @@
         <a class="navbar-brand text-primary fw-bold me-4" th:href="@{/}">
             CarFlow
         </a>
-        <form class="flex-grow-1 me-4" th:action="@{/search}" role="search">
+
+        <form class="flex-grow-1 me-4"
+              th:action="@{/dashboard/employee/vehicles}"
+              method="get"
+              role="search">
             <div class="input-group">
             <span class="input-group-text bg-white border-end-0">
               <i class="bi bi-search"></i>
             </span>
                 <input
                         type="search"
+                        name="keyword"
                         class="form-control border-start-0 border-end-0"
-                        placeholder="Search something here"
-                        aria-label="Search">
+                        placeholder="Search vehicles..."
+                        aria-label="Search"
+                        th:value="${keyword}">
                 <button
                         class="btn btn-outline-secondary border-start-0"
                         type="submit">
@@ -44,13 +50,12 @@
                 </button>
             </div>
         </form>
+
         <div class="d-flex align-items-center">
             <a class="nav-link text-dark me-3 heart-hover" th:href="@{/favorites}">
                 <i class="bi bi-heart fs-5"></i>
             </a>
-            <a
-                    class="nav-link text-dark position-relative me-3"
-                    th:href="@{/notifications}">
+            <a class="nav-link text-dark position-relative me-3" th:href="@{/notifications}">
                 <i class="bi bi-bell fs-5"></i>
                 <span
                         class="position-absolute top-0 start-100 translate-middle p-1 bg-danger
