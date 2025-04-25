@@ -24,21 +24,21 @@ public class DashboardController {
     @GetMapping()
     public String dashboard(Model model) {
         model.addAttribute("page", "dashboard");
-        return "pages/employee-admin-dash";
+        return "/pages/user-dash";
     }
 
     // Reservation Dashboard Page
     @GetMapping("/reservations")
     public String reservations(Model model) {
         model.addAttribute("page", "reservations");
-        return "pages/employee-admin-dash";
+        return "/pages/user-dash";
     }
 
     // Vehicles Dashboard Page (Vehicle.HTML page will be embedded w/Manage button)
     @GetMapping("/vehicles")
     public String vehicles(Model model) {
         model.addAttribute("page", "vehicles");
-        return "pages/employee-admin-dash";
+        return "/pages/user-dash";
     }
 
     // Load details page when you click into a car
@@ -58,7 +58,7 @@ public class DashboardController {
         }
 
         // Return the vehicle-card.html fragment to be rendered
-        return "pages/employee-admin-dash";
+        return "/pages/user-dash";
     }
 
     // Load the checkout page when you click on a 'Rent Now' button
@@ -74,7 +74,7 @@ public class DashboardController {
         // If the vehicle is found, add it to the model otherwise add an error message
         if (vehicle.isPresent()) {
             model.addAttribute("vehicle", vehicle.get());
-            return "/pages/employee-admin-dash";
+            return "/pages/user-dash";
         } else {
             model.addAttribute("message", "Vehicle not found.");
             return "redirect:/api/dashboard/vehicles"; // Redirect to the vehicle page if not found
@@ -85,14 +85,14 @@ public class DashboardController {
     @GetMapping("/maintenance")
     public String maintenance(Model model) {
         model.addAttribute("page", "maintenance");
-        return "pages/employee-admin-dash";
+        return "/pages/user-dash";
     }
 
     // Coupons Dashboard Page
     @GetMapping("/coupons")
     public String coupons(Model model) {
         model.addAttribute("page", "coupons");
-        return "pages/employee-admin-dash";
+        return "/pages/user-dash";
     }
 
     // Account Management Dashboard Page
@@ -100,7 +100,7 @@ public class DashboardController {
     // @PreAuthorize("hasRole('ADMIN')")
     public String accounts(Model model) {
         model.addAttribute("page", "accounts");
-        return "pages/employee-admin-dash";
+        return "/pages/user-dash";
     }
 
 }
