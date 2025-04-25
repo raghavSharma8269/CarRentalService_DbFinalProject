@@ -1,64 +1,39 @@
+<!-- src/main/resources/templates/pages/user-dash.html -->
 <!DOCTYPE html>
-<html lang="en">
-
-<!-- Inherit BootStrap CDN From Base.html -->
-<head th:replace="fragments/base.html :: base_head"></head>
-
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="fragments/base :: base_head"></head>
 <body>
-<!-- Inherit Default Navigation Bar From Base.html -->
-<div th:replace="fragments/base.html :: base_navigation"></div>
+<!-- inject navbar -->
+<div th:replace="fragments/base :: base_navigation"></div>
 
-<!-- Container for holding contents of the entire page -->
 <div class="d-flex">
+    <!-- inject sidebar -->
+    <div th:replace="fragments/sidebar :: sidebar"></div>
 
-    <!-- Implement Side Navigation Bar Fragment -->
-    <div th:replace="~{fragments/sidebar.html :: sidebar}"></div>
-
-    <!-- Separate Main Content from Sidebar & Use Inheritance-->
+    <!-- main content area -->
     <main class="flex-grow-1 p-4">
 
-        <!-- First match -->
-        <div th:if="${page == 'dashboard'}">
-            <p>This is the dashboard page.</p>
-            <div th:replace="~{fragments/dashboard/dashboard.html :: content}"></div>
+        <!-- Vehicles tab -->
+        <div th:if="${page == 'vehicles'}"
+             th:replace="fragments/dashboard/vehicles :: content">
         </div>
 
-        <div th:if="${page == 'reservations'}">
-            <div th:replace="~{fragments/dashboard/reservations.html :: content}"></div>
-        </div>
+        <!-- You can add other tabs here:
+             <div th:if="${page == 'reservations'}"
+                  th:replace="fragments/dashboard/reservations :: content">
+             </div>
+        -->
 
-        <div th:if="${page == 'vehicles'}">
-            <div th:replace="~{fragments/dashboard/vehicles.html :: content}"></div>
-        </div>
-
-        <div th:if="${page == 'vehicleDetails'}">
-            <div th:replace="~{fragments/dashboard/vehicle-card.html :: content}"></div>
-        </div>
-
-        <div th:if="${page == 'vehicleCheckout'}">
-            <div th:replace="~{fragments/dashboard/checkout.html :: content}"></div>
-        </div>
-
-        <div th:if="${page == 'maintenance'}">
-            <div th:replace="~{fragments/dashboard/maintenance.html :: content}"></div>
-        </div>
-
-        <div th:if="${page == 'coupons'}">
-            <div th:replace="~{fragments/dashboard/coupons.html :: content}"></div>
-        </div>
-
-        <div th:if="${page == 'accounts'}">
-            <div th:replace="~{fragments/dashboard/accounts.html :: content}"></div>
-        </div>
-
-        <div th:unless="${page == 'dashboard' or page == 'reservations' or page == 'vehicles' or page == 'vehicleDetails' or page == 'vehicleCheckout' or page == 'maintenance' or page == 'coupons' or page == 'accounts'}">
+        <!-- fallback for unknown page -->
+        <div th:unless="${page == 'vehicles'}">
             <h2>404—Page Not Found</h2>
-            <p>The section you're trying to access doesn't exist.</p>
+            <p>The section you’re trying to access doesn’t exist.</p>
         </div>
 
     </main>
-
 </div>
 
+<!-- inject scripts -->
+<div th:replace="fragments/base :: base_footer"></div>
 </body>
 </html>

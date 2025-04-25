@@ -2,22 +2,31 @@ package com.example.CarRentalService_DbFinalProject.controllers;
 
 import com.example.CarRentalService_DbFinalProject.model.entities.Vehicle;
 import com.example.CarRentalService_DbFinalProject.model.repositories.VehicleRepository;
+import com.example.CarRentalService_DbFinalProject.services.customer.GetAllAvailableVehiclesService;
+import com.example.CarRentalService_DbFinalProject.services.employee.vehicle.GetAllVehicles;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/api/dashboard")
+@RequestMapping("/dashboard/employee")
 public class EmployeeController {
 
     private final VehicleRepository vehicleRepository;
+    private final GetAllVehicles getAllVehicles;
 
-    public EmployeeController(VehicleRepository vehicleRepository) {
+    public EmployeeController(
+            VehicleRepository vehicleRepository,
+            GetAllVehicles getAllVehicles
+    ) {
         this.vehicleRepository = vehicleRepository;
+        this.getAllVehicles = getAllVehicles;
     }
 
     // Default Dashboard Page
@@ -34,11 +43,22 @@ public class EmployeeController {
         return "/pages/user-dash";
     }
 
-    // Vehicles Dashboard Page (Vehicle.HTML page will be embedded w/Manage button)
     @GetMapping("/vehicles")
-    public String vehicles(Model model) {
+    public String listVehicles(
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) Double minPrice,
+            @RequestParam(required = false) Double maxPrice,
+            Model model
+    ) {
+        // fetch all vehicles (regardless of availability)
+        List<Vehicle> vehicles = getAllVehicles
+                .execute(keyword, minPrice, maxPrice)
+                .getBody();
+
+        model.addAttribute("vehicles", vehicles);
         model.addAttribute("page", "vehicles");
-        return "/pages/user-dash";
+        // renders src/main/resources/templates/pages/user-dash.html
+        return "pages/user-dash";
     }
 
     // Load details page when you click into a car
