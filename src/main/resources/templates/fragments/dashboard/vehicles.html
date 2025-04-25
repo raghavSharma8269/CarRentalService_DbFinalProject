@@ -20,6 +20,7 @@
                           th:text="${'$' + veh.pricePerDay + '/day'}">
                         $0.00/day
                     </span>
+                    <p class = "mt-2" th:text="${veh.availability} ? '✅ Available' : '❌ Unavailable'"></p>
                 </div>
             </div>
         </div>
