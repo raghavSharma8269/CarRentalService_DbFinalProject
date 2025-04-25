@@ -32,10 +32,10 @@ public class CustomerController {
         Optional<Vehicle> vehicle = vehicleRepository.findById(id);
         if (vehicle.isPresent()) {
             model.addAttribute("vehicle", vehicle.get());
-            return "vehicle"; // this renders vehicle.html
+            return "/fragments/dashboard/vehicle-card"; // this renders vehicle-card.html
         } else {
             model.addAttribute("message", "Vehicle not found.");
-            return "vehicle"; // still show the page with a message
+            return "/fragments/dashboard/vehicle-card"; // still show the page with a message
         }
     }
 

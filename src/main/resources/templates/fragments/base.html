@@ -13,7 +13,8 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" th:href="@{/css/custom.css}">
 
-    <title th:text="${pageTitle}">Car Rental Platform</title>
+    <!-- Set the page title dynamically -->
+    <title th:text="${pageTitle} ?: 'Car Rental Platform'">Car Rental Platform</title>
 </head>
 
 <!-- Base HTML structure for navigation bar -->

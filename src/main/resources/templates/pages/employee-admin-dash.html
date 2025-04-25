@@ -11,7 +11,7 @@
 <!-- Container for holding contents of the entire page -->
 <div class="d-flex">
 
-    <!-- Side Navigation Bar -->
+    <!-- Implement Side Navigation Bar Fragment -->
     <div th:replace="~{fragments/sidebar.html :: sidebar}"></div>
 
     <!-- Separate Main Content from Sidebar & Use Inheritance-->
@@ -31,6 +31,14 @@
             <div th:replace="~{fragments/dashboard/vehicles.html :: content}"></div>
         </div>
 
+        <div th:if="${page == 'vehicleDetails'}">
+            <div th:replace="~{fragments/dashboard/vehicle-card.html :: content}"></div>
+        </div>
+
+        <div th:if="${page == 'vehicleCheckout'}">
+            <div th:replace="~{fragments/dashboard/checkout.html :: content}"></div>
+        </div>
+
         <div th:if="${page == 'maintenance'}">
             <div th:replace="~{fragments/dashboard/maintenance.html :: content}"></div>
         </div>
@@ -43,7 +51,7 @@
             <div th:replace="~{fragments/dashboard/accounts.html :: content}"></div>
         </div>
 
-        <div th:unless="${page == 'dashboard' or page == 'reservations' or page == 'vehicles' or page == 'maintenance' or page == 'coupons' or page == 'accounts'}">
+        <div th:unless="${page == 'dashboard' or page == 'reservations' or page == 'vehicles' or page == 'vehicleDetails' or page == 'vehicleCheckout' or page == 'maintenance' or page == 'coupons' or page == 'accounts'}">
             <h2>404—Page Not Found</h2>
             <p>The section you're trying to access doesn't exist.</p>
         </div>
