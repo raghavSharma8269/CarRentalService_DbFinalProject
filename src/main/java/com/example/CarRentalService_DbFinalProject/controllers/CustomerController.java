@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/api/customer")
+@RequestMapping("/api/dashboard/customer")
 public class CustomerController {
 
     private final VehicleRepository vehicleRepository;
@@ -20,34 +20,64 @@ public class CustomerController {
         this.vehicleRepository = vehicleRepository;
     }
 
-    // ✅ Loads the vehicle list page
-    @GetMapping("/vehicle")
-    public String showVehiclePage() {
-        return "index";
+    // Default Dashboard Page
+    @GetMapping()
+    public String dashboard(Model model) {
+        model.addAttribute("page", "dashboard");
+        return "/pages/user-dash";
     }
 
-    // ✅ Loads the details page when you click on a car
+    // Reservation Dashboard Page
+    @GetMapping("/reservations")
+    public String reservations(Model model) {
+        model.addAttribute("page", "reservations");
+        return "/pages/user-dash";
+    }
+
+    // Vehicles Dashboard Page (Vehicle.HTML page will be embedded w/Manage button)
+    @GetMapping("/vehicles")
+    public String vehicles(Model model) {
+        model.addAttribute("page", "vehicles");
+        return "/pages/user-dash";
+    }
+
+    // Load details page when you click into a car
     @GetMapping("/vehicle/{id}")
     public String showVehicleDetails(@PathVariable int id, Model model) {
+        // Check for the vehicle in the database
         Optional<Vehicle> vehicle = vehicleRepository.findById(id);
+
+        // Set the page attribute to vehicleDetails for rendering
+        model.addAttribute("page", "vehicleDetails");
+
+        // If the vehicle is found, add it to the model otherwise add an error message
         if (vehicle.isPresent()) {
             model.addAttribute("vehicle", vehicle.get());
-            return "/fragments/dashboard/vehicle-card"; // this renders vehicle-card.html
         } else {
             model.addAttribute("message", "Vehicle not found.");
-            return "/fragments/dashboard/vehicle-card"; // still show the page with a message
         }
+
+        // Return the vehicle-card.html fragment to be rendered
+        return "/pages/user-dash";
     }
 
+    // Load the checkout page when you click on a 'Rent Now' button
     @GetMapping("/checkout/{id}")
     public String showCheckout(@PathVariable int id, Model model) {
+
+        // Check for the vehicle in the database
         Optional<Vehicle> vehicle = vehicleRepository.findById(id);
+
+        // Set the page attribute to vehicleDetails for rendering
+        model.addAttribute("page", "vehicleCheckout");
+
+        // If the vehicle is found, add it to the model otherwise add an error message
         if (vehicle.isPresent()) {
             model.addAttribute("vehicle", vehicle.get());
-            return "checkout";
+            return "/pages/user-dash";
         } else {
-            return "redirect:/vehicle";
+            model.addAttribute("message", "Vehicle not found.");
+            return "redirect:/api/dashboard/vehicles"; // Redirect to the vehicle page if not found
         }
     }
-
 }
