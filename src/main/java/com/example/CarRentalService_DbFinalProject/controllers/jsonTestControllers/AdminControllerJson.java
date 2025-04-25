@@ -34,8 +34,7 @@ public class AdminControllerJson {
     @PostMapping("/add-employee")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> addEmployee(@RequestBody Users user) {
-        addEmployeeService.execute(user);
-        return ResponseEntity.ok("Employee added successfully");
+        return addEmployeeService.execute(user);
     }
 
     // Get all users

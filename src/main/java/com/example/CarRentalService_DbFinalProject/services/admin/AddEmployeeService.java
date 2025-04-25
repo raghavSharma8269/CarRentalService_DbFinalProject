@@ -4,6 +4,7 @@ import com.example.CarRentalService_DbFinalProject.errorHandling.validations.Use
 import com.example.CarRentalService_DbFinalProject.errorHandling.validations.Username_Email_Availability;
 import com.example.CarRentalService_DbFinalProject.model.Roles;
 import com.example.CarRentalService_DbFinalProject.model.entities.Users;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -27,7 +28,7 @@ public class AddEmployeeService {
         username_email_availability = usernameEmailAvailability;
     }
 
-    public void execute (Users user) {
+    public ResponseEntity<String> execute (Users user) {
 
             // Check if the email/username is taken
             username_email_availability.execute(user);
@@ -53,7 +54,7 @@ public class AddEmployeeService {
                 throw new RuntimeException("Error adding employee: " + e.getMessage(), e);
             }
 
-
+        return ResponseEntity.ok("Employee added successfully");
     }
 
 }
