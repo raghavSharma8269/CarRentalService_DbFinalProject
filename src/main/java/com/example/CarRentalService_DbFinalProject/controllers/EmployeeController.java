@@ -2,7 +2,6 @@ package com.example.CarRentalService_DbFinalProject.controllers;
 
 import com.example.CarRentalService_DbFinalProject.model.entities.Vehicle;
 import com.example.CarRentalService_DbFinalProject.model.repositories.VehicleRepository;
-import com.example.CarRentalService_DbFinalProject.services.customer.GetAllAvailableVehiclesService;
 import com.example.CarRentalService_DbFinalProject.services.employee.vehicle.GetAllVehicles;
 import com.example.CarRentalService_DbFinalProject.services.employee.vehicle.GetVehicleViaIdService;
 import org.springframework.stereotype.Controller;
