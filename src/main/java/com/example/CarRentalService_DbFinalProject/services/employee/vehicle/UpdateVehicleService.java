@@ -16,7 +16,9 @@ public class UpdateVehicleService {
         this.dataSource = dataSource;
     }
 
-    public ResponseEntity<String> execute(int vehicleId, Vehicle updatedVehicle) {
+    public ResponseEntity<String> execute(Vehicle updatedVehicle) {
+
+        int vehicleId = updatedVehicle.getVehicleId();
 
         String sql = "UPDATE vehicle SET " +
                 "make = ?, model = ?, year = ?, license_plate = ?, price_per_day = ?, availability = ?, description = ?, image_url = ? " +

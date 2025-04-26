@@ -10,6 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Optional;
@@ -131,18 +132,18 @@ public class EmployeeController {
         return "pages/user-dash";
     }
 
-//    // Process the submitted form
-//    @PostMapping("/manage/{id}")
-//    public String updateVehicle(
-//            @PathVariable int id,
-//            @ModelAttribute("vehicle") Vehicle formData,
-//            RedirectAttributes redirectAttrs
-//    ) {
-//        formData.setVehicleId(id);
-//        updateVehicleService.execute(formData);
-//        redirectAttrs.addFlashAttribute("message", "Vehicle updated successfully!");
-//        return "redirect:/dashboard/employee/vehicles";
-//    }
+    // Process the submitted form
+    @PostMapping("/manage/{id}")
+    public String updateVehicle(
+            @PathVariable int id,
+            @ModelAttribute("vehicle") Vehicle vehicleFormData,
+            RedirectAttributes redirectAttrs
+    ) {
+        vehicleFormData.setVehicleId(id);
+        updateVehicleService.execute(vehicleFormData);
+        redirectAttrs.addFlashAttribute("message", "Vehicle updated successfully!");
+        return "redirect:/dashboard/employee/manage/{id}";
+    }
 
 
 }
