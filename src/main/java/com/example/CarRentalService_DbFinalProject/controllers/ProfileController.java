@@ -40,7 +40,6 @@ public class ProfileController {
         String username = principal.getName();
         try {
             Users updated = updateProfileService.execute(username, formData);
-            // redirect with a success flag so GET can show the message
             return "redirect:/profile?success=true";
         } catch (Exception e) {
             model.addAttribute("error", "Could not update profile: " + e.getMessage());

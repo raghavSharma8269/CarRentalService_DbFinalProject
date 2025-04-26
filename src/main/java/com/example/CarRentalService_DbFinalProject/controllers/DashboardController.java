@@ -25,7 +25,6 @@ public class DashboardController {
         Users user = getProfileService.execute(principal.getName());
         model.addAttribute("user", user);
 
-        // tell Thymeleaf to render the "dashboard" fragment
         model.addAttribute("page", "dashboard");
         return "pages/user-dash";
     }

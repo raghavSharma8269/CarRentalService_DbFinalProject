@@ -55,7 +55,7 @@ public class EmployeeController {
             @RequestParam(required = false) Double maxPrice,
             Model model
     ) {
-        // fetch all vehicles (regardless of availability)
+        // fetch all vehicles
         List<Vehicle> vehicles = getAllVehicles
                 .execute(keyword, minPrice, maxPrice)
                 .getBody();
@@ -95,10 +95,8 @@ public class EmployeeController {
         // Check for the vehicle in the database
         Optional<Vehicle> vehicle = vehicleRepository.findById(id);
 
-        // Set the page attribute to vehicleDetails for rendering
         model.addAttribute("page", "vehicleCheckout");
 
-        // If the vehicle is found, add it to the model otherwise add an error message
         if (vehicle.isPresent()) {
             model.addAttribute("vehicle", vehicle.get());
             return "/pages/user-dash";
@@ -146,7 +144,6 @@ public class EmployeeController {
             updateVehicleService.execute(vehicleFormData);
             redirectAttrs.addFlashAttribute("success", "Vehicle updated successfully!");
         } catch (Exception ex) {
-            // on any exception (validation or SQL), flash an error message
             redirectAttrs.addFlashAttribute("error", ex.getMessage());
         }
         return "redirect:/dashboard/employee/manage/"+id;
@@ -154,7 +151,6 @@ public class EmployeeController {
 
 
     // Show the “Add Vehicle” form
-
     @GetMapping("/vehicles/add")
     @PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
     public String showAddVehiclePage (Model model) {

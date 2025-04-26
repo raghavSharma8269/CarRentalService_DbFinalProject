@@ -49,7 +49,6 @@ public class CustomerController {
 
         model.addAttribute("vehicles", vehicles);
         model.addAttribute("page", "vehicles");
-        // renders src/main/resources/templates/pages/user-dash.html
         return "pages/user-dash";
     }
 
@@ -60,7 +59,6 @@ public class CustomerController {
         // Check for the vehicle in the database
         Optional<Vehicle> vehicle = vehicleRepository.findById(id);
 
-        // Set the page attribute to vehicleDetails for rendering
         model.addAttribute("page", "vehicleDetails");
 
         // If the vehicle is found, add it to the model otherwise add an error message
@@ -70,7 +68,6 @@ public class CustomerController {
             model.addAttribute("message", "Vehicle not found.");
         }
 
-        // Return the vehicle-card.html fragment to be rendered
         return "/pages/user-dash";
     }
 
@@ -81,7 +78,6 @@ public class CustomerController {
         // Check for the vehicle in the database
         Optional<Vehicle> vehicle = vehicleRepository.findById(id);
 
-        // Set the page attribute to vehicleDetails for rendering
         model.addAttribute("page", "vehicleCheckout");
 
         // If the vehicle is found, add it to the model otherwise add an error message
