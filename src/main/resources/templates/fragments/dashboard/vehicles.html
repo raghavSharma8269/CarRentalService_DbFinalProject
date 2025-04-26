@@ -1,5 +1,5 @@
 <!-- src/main/resources/templates/fragments/dashboard/vehicles.html -->
-<div th:fragment="content">
+<div th:fragment="content" xmlns:sec="http://www.w3.org/1999/xhtml">
     <div class="container py-5">
         <h2 class="mb-4">All Vehicles</h2>
 
@@ -27,8 +27,13 @@
 
         </div>
 
-        <div th:if="${vehicles == null or vehicles.size() == 0}">
-            <p class="text-muted">No vehicles found.</p>
-        </div>
+        <li class="nav-item"
+            sec:authorize="hasRole('EMPLOYEE')">
+            <a th:class="${page == 'accounts'} ? 'nav-link active' : 'nav-link'"
+               th:href="@{/api/dashboard/accounts}">
+                <i class="bi bi-person-gear me-2"></i>Accounts
+            </a>
+        </li>
+
     </div>
 </div>

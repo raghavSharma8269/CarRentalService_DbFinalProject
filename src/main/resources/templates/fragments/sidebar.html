@@ -1,4 +1,5 @@
-<nav th:fragment="sidebar" class="sidebar d-flex flex-column justify-content-between p-3">
+<nav th:fragment="sidebar" class="sidebar d-flex flex-column justify-content-between p-3"
+     xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <ul class="nav nav-pills flex-column">
         <!-- 1) Dashboard -->
         <li class="nav-item">
@@ -13,19 +14,28 @@
             <a th:class="${page == 'vehicles' or page == 'vehicleDetails' or page == 'vehicleCheckout'} ? 'nav-link active' : 'nav-link'" th:href="@{/dashboard/employee/vehicles}"><i class="bi bi-car-front-fill me-2"></i>Vehicles</a>
         </li>
         <!-- 4) Maintenance Management -->
-        <li class="nav-item">
-            <a th:class="${page == 'maintenance'} ? 'nav-link active' : 'nav-link'" th:href="@{/api/dashboard/maintenance}"><i class="bi bi-tools me-2"></i>Maintenance</a>
+        <li class="nav-item"
+            sec:authorize="hasAnyRole('ADMIN','EMPLOYEE')">
+            <a th:class="${page=='accounts'} ? 'nav-link active' : 'nav-link'"
+               th:href="@{/api/dashboard/accounts}">
+                <i class="bi bi-tools me-2"></i>Maintenance
+            </a>
         </li>
         <!-- 5) Coupons -->
-        <li class="nav-item">
-            <a th:class="${page == 'coupons'} ? 'nav-link active' : 'nav-link'" th:href="@{/api/dashboard/coupons}"><i class="bi bi-tag me-2"></i>Coupons</a>
+        <li class="nav-item"
+            sec:authorize="hasAnyRole('ADMIN','EMPLOYEE')">
+            <a th:class="${page=='accounts'} ? 'nav-link active' : 'nav-link'"
+               th:href="@{/api/dashboard/accounts}">
+                <i class="bi bi-tag me-2"></i>Coupons
+            </a>
         </li>
-
-        <!-- 6) Account Management (Visible To Admin Only)
-        th:if="${#authorization.expression('hasRole(''ADMIN'')')}"
-        -->
-        <li class="nav-item">
-            <a th:class="${page == 'accounts'} ? 'nav-link active' : 'nav-link'" th:href="@{/api/dashboard/accounts}"><i class="bi bi-person-gear me-2"></i>Accounts</a>
+        <!-- 6) Accounts -->
+        <li class="nav-item"
+            sec:authorize="hasAnyRole('ADMIN')">
+            <a th:class="${page=='accounts'} ? 'nav-link active' : 'nav-link'"
+               th:href="@{/api/dashboard/accounts}">
+                <i class="bi bi-person-gear me-2"></i>Accounts
+            </a>
         </li>
     </ul>
 
