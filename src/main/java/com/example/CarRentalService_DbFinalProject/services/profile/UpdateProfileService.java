@@ -14,9 +14,6 @@ public class UpdateProfileService {
         this.userRepository = userRepository;
     }
 
-    /**
-     * Merge the form's fullName/email into the existing user and save.
-     */
     public Users execute(String username, Users formData) {
         Users user = userRepository
             .findByUserName(username)
@@ -24,7 +21,6 @@ public class UpdateProfileService {
 
         user.setFullName(formData.getFullName());
         user.setEmail(formData.getEmail());
-        // (add any other editable fields here)
 
         return userRepository.save(user);
     }
