@@ -1,0 +1,16 @@
+<!-- File: src/main/resources/templates/error/403.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="fragments/base :: base_head">
+  <title>Access Denied</title>
+</head>
+<body>
+<div class="container text-center py-5">
+  <h1 class="display-1 text-warning">403</h1>
+  <h2>Access Denied</h2>
+  <p class="lead">You don’t have permission to view this page.</p>
+  <a th:href="@{/dashboard}" class="btn btn-primary mt-3">Back to Dashboard</a>
+</div>
+<div th:replace="fragments/base :: base_footer"></div>
+</body>
+</html>
