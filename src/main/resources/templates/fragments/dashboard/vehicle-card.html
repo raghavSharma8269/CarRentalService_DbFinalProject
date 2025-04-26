@@ -1,9 +1,7 @@
-<!-- Inherit BootStrap CDN From Base.html + Pass vehicle name as a parameter
-<head th:replace="fragments/base.html :: base_head (pageTitle=${vehicle.make} + ' ' + ${vehicle.model})"></head>
--->
 
 <!-- Vehicle Card Page Fragment -->
-<div th:fragment="content" class="bg-light">
+<div th:fragment="content" class="bg-light" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
   <div class="container py-5">
     <div class="row">
       <!-- Vehicle Image & Gallery -->
@@ -37,10 +35,25 @@
             </li>
           </ul>
           <div class="text-end mt-3">
-            <a th:href="@{/dashboard/employee/checkout/{id}(id=${vehicle.vehicleId})}"
+
+
+
+            <!-- Employee & Admin “Rent Now” button -->
+            <a sec:authorize="hasAnyRole('ADMIN','EMPLOYEE')"
+               th:href="@{/dashboard/employee/checkout/{id}(id=${vehicle.vehicleId})}"
                class="btn btn-primary btn-lg">
               Rent Now
             </a>
+
+            <!-- Customer “Rent Now” button -->
+            <a sec:authorize="hasRole('CUSTOMER')"
+               th:href="@{/dashboard/customer/checkout/{id}(id=${vehicle.vehicleId})}"
+               class="btn btn-primary btn-lg">
+              Rent Now
+            </a>
+
+
+
           </div>
         </div>
       </div>
