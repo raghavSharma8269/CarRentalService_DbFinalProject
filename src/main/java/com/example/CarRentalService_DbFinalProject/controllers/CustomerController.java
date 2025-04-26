@@ -26,12 +26,6 @@ public class CustomerController {
         this.getAllAvailableVehiclesService = getAllAvailableVehiclesService;
     }
 
-    // Default Dashboard Page
-    @GetMapping()
-    public String dashboard(Model model) {
-        model.addAttribute("page", "dashboard");
-        return "/pages/user-dash";
-    }
 
     // Reservation Dashboard Page
     @GetMapping("/reservations")
