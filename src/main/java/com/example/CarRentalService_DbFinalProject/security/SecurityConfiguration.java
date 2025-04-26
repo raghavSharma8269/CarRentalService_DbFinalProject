@@ -1,22 +1,21 @@
 package com.example.CarRentalService_DbFinalProject.security;
 
+import com.example.CarRentalService_DbFinalProject.security.CustomUserDetailsService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 
 import java.io.IOException;
 
@@ -46,27 +45,38 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(AbstractHttpConfigurer::disable)
+                // disable CSRF only if you have no non-GET forms; otherwise remove this
+                .csrf(csrf -> csrf.disable())
+
+                // AUTHORIZE
                 .authorizeHttpRequests(auth -> auth
-                        // allow anonymous access to login page & static resources
-                        .requestMatchers("/login", "/register").permitAll()
-                        // profile and other secured endpoints
-                        .requestMatchers("/profile").authenticated()
-                        .anyRequest().permitAll()
+                        // public pages
+                        .requestMatchers(
+                                "/login",
+                                "/api/auth/register",
+                                "/css/**",
+                                "/js/**"
+                        ).permitAll()
+                        // everything else requires login
+                        .anyRequest().authenticated()
                 )
-                // enable HTTP Basic for API clients
-                .httpBasic(Customizer.withDefaults())
-                // enable form-login for browser users
+
+                // FORM LOGIN
                 .formLogin(form -> form
-                        .loginPage("/login")
-                        .loginProcessingUrl("/perform_login")
+                        .loginPage("/login")                   // GET /login → your login.html
+                        .loginProcessingUrl("/perform_login")  // POST target for credentials
                         .successHandler(roleBasedSuccessHandler())
+                        .failureUrl("/login?error")            // on failure
                         .permitAll()
                 )
+
+                // LOGOUT
                 .logout(logout -> logout
                         .logoutUrl("/perform_logout")
                         .logoutSuccessUrl("/login")
+                        .permitAll()
                 );
+
         return http.build();
     }
 
@@ -79,21 +89,21 @@ public class SecurityConfiguration {
                     HttpServletResponse response,
                     Authentication authentication
             ) throws IOException, ServletException {
-                String redirectUrl = "/";
-                for (GrantedAuthority authority : authentication.getAuthorities()) {
-                    String role = authority.getAuthority();
+                String target = "/profile";
+                for (GrantedAuthority ga : authentication.getAuthorities()) {
+                    String role = ga.getAuthority();
                     if ("ROLE_ADMIN".equals(role)) {
-                        redirectUrl = "/dashboard/employee/vehicles";
+                        target = "/admin/home";
                         break;
                     } else if ("ROLE_EMPLOYEE".equals(role)) {
-                        redirectUrl = "/dashboard/employee/vehicles";
+                        target = "/dashboard/employee/vehicles";
                         break;
                     } else if ("ROLE_CUSTOMER".equals(role)) {
-                        redirectUrl = "/dashboard/customer/vehicles";
+                        target = "/dashboard/customer/vehicles";
                         break;
                     }
                 }
-                response.sendRedirect(request.getContextPath() + redirectUrl);
+                response.sendRedirect(request.getContextPath() + target);
             }
         };
     }

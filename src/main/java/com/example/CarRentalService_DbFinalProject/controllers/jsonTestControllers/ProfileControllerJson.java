@@ -19,12 +19,12 @@ public class ProfileControllerJson {
         this.getProfileService = getProfileService;
         this.changePasswordService = changePasswordService;
     }
-
-    @GetMapping
-    @PreAuthorize("hasRole('CUSTOMER') or hasRole('EMPLOYEE') or hasRole('ADMIN')")
-    public ResponseEntity<Users> getProfile() {
-        return getProfileService.execute();
-    }
+//
+//    @GetMapping
+//    @PreAuthorize("hasRole('CUSTOMER') or hasRole('EMPLOYEE') or hasRole('ADMIN')")
+//    public ResponseEntity<Users> getProfile() {
+//        return getProfileService.execute();
+//    }
 
     @PutMapping
     @PreAuthorize("hasRole('CUSTOMER') or hasRole('EMPLOYEE') or hasRole('ADMIN')")
