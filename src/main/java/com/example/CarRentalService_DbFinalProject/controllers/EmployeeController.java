@@ -140,9 +140,14 @@ public class EmployeeController {
             RedirectAttributes redirectAttrs
     ) {
         vehicleFormData.setVehicleId(id);
-        updateVehicleService.execute(vehicleFormData);
-        redirectAttrs.addFlashAttribute("message", "Vehicle updated successfully!");
-        return "redirect:/dashboard/employee/manage/{id}";
+        try {
+            updateVehicleService.execute(vehicleFormData);
+            redirectAttrs.addFlashAttribute("success", "Vehicle updated successfully!");
+        } catch (Exception ex) {
+            // on any exception (validation or SQL), flash an error message
+            redirectAttrs.addFlashAttribute("error", ex.getMessage());
+        }
+        return "redirect:/dashboard/employee/manage/"+id;
     }
 
 
