@@ -3,7 +3,7 @@ package com.example.CarRentalService_DbFinalProject.controllers;
 import com.example.CarRentalService_DbFinalProject.model.entities.Vehicle;
 import com.example.CarRentalService_DbFinalProject.model.repositories.VehicleRepository;
 import com.example.CarRentalService_DbFinalProject.services.employee.vehicle.GetAllVehicles;
-import com.example.CarRentalService_DbFinalProject.services.employee.vehicle.GetVehicleViaIdService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,15 +20,13 @@ public class EmployeeController {
 
     private final VehicleRepository vehicleRepository;
     private final GetAllVehicles getAllVehicles;
-    private final GetVehicleViaIdService getVehicleViaIdService;
 
     public EmployeeController(
             VehicleRepository vehicleRepository,
-            GetAllVehicles getAllVehicles, GetVehicleViaIdService getVehicleViaIdService
+            GetAllVehicles getAllVehicles
     ) {
         this.vehicleRepository = vehicleRepository;
         this.getAllVehicles = getAllVehicles;
-        this.getVehicleViaIdService = getVehicleViaIdService;
     }
 
     // Default Dashboard Page
@@ -46,6 +44,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/vehicles")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
     public String listVehicles(
             @RequestParam(required = false) String keyword,
             @RequestParam(required = false) Double minPrice,
