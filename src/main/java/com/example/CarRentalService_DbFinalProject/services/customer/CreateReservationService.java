@@ -14,7 +14,6 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
 @Service
 public class CreateReservationService {
@@ -24,8 +23,10 @@ public class CreateReservationService {
     private final VehicleRepository vehicleRepository;
     private final AuthUtil authUtil;
 
-    public CreateReservationService(DataSource dataSource, UserRepository userRepository,
-                                    VehicleRepository vehicleRepository, AuthUtil authUtil) {
+    public CreateReservationService(DataSource dataSource,
+                                    UserRepository userRepository,
+                                    VehicleRepository vehicleRepository,
+                                    AuthUtil authUtil) {
         this.dataSource = dataSource;
         this.userRepository = userRepository;
         this.vehicleRepository = vehicleRepository;
@@ -33,34 +34,50 @@ public class CreateReservationService {
     }
 
     public ResponseEntity<String> execute(Reservation reservation) {
-
-        // Validate the reservation object
+        // 1) Validate the incoming Reservation DTO
         ReservationValidation.validate(reservation);
 
+        // 2) Resolve the logged-in user and target vehicle
         String username = authUtil.getLoggedInUsername();
+        Users user = userRepository.findByUserName(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        Vehicle vehicle = vehicleRepository.findById(reservation.getVehicleId().getVehicleId())
+                .orElseThrow(() -> new RuntimeException("Vehicle not found"));
 
-        Users user = userRepository.findByUserName(username).orElseThrow(() ->
-                new RuntimeException("User not found"));
+        // 3) Raw‐SQL insert + availability update
+        String insertSql = """
+            INSERT INTO reservation 
+              (user_id, vehicle_id, start, end, total_price) 
+            VALUES (?, ?, ?, ?, ?)""";
+        String updateSql = """
+            UPDATE vehicle
+               SET availability = FALSE
+             WHERE vehicle_id = ?""";
 
-        Vehicle vehicle = vehicleRepository.findById(reservation.getVehicleId().getVehicleId()).orElseThrow(() ->
-                new RuntimeException("Vehicle not found"));
+        try (Connection conn = dataSource.getConnection()) {
+            try (PreparedStatement insertStmt = conn.prepareStatement(insertSql);
+                 PreparedStatement updateStmt = conn.prepareStatement(updateSql)) {
 
-        String sql = "INSERT INTO reservation (user_id, vehicle_id, start, end, total_price) VALUES (?, ?, ?, ?, ?)";
+                // insert reservation
+                insertStmt.setInt(1, user.getUserId());
+                insertStmt.setInt(2, vehicle.getVehicleId());
+                insertStmt.setTimestamp(3, Timestamp.valueOf(reservation.getStart()));
+                insertStmt.setTimestamp(4, Timestamp.valueOf(reservation.getEnd()));
+                insertStmt.setDouble(5, reservation.getTotalPrice());
+                insertStmt.executeUpdate();
 
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setInt(1, user.getUserId());
-            stmt.setInt(2, vehicle.getVehicleId());
-            stmt.setTimestamp(3, Timestamp.valueOf(reservation.getStart()));
-            stmt.setTimestamp(4, Timestamp.valueOf(reservation.getEnd()));
-            stmt.setDouble(5, reservation.getTotalPrice());
-
-            stmt.executeUpdate();
-            return ResponseEntity.ok("Reservation created");
-
+                // mark vehicle unavailable
+                updateStmt.setInt(1, vehicle.getVehicleId());
+                int updated = updateStmt.executeUpdate();
+                if (updated == 0) {
+                    return ResponseEntity.status(500)
+                            .body("Failed to update vehicle availability");
+                }
+            }
+            return ResponseEntity.ok("Reservation created and vehicle marked unavailable");
         } catch (Exception e) {
-            return ResponseEntity.status(500).body("Failed to create reservation");
+            return ResponseEntity.status(500)
+                    .body("Failed to create reservation: " + e.getMessage());
         }
     }
 }
