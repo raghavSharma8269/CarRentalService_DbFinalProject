@@ -27,13 +27,5 @@
 
         </div>
 
-        <li class="nav-item"
-            sec:authorize="hasRole('EMPLOYEE')">
-            <a th:class="${page == 'accounts'} ? 'nav-link active' : 'nav-link'"
-               th:href="@{/api/dashboard/accounts}">
-                <i class="bi bi-person-gear me-2"></i>Accounts
-            </a>
-        </li>
-
     </div>
 </div>
