@@ -4,7 +4,7 @@
 
         <!-- 1) Dashboard -->
         <li class="nav-item">
-            <a th:class="${page == 'dashboard'} ? 'nav-link active' : 'nav-link'" th:href="@{/api/dashboard}"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a>
+            <a th:class="${page == 'dashboard'} ? 'nav-link active' : 'nav-link'" th:href="@{/dashboard}"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a>
         </li>
 
         <!-- 2) Reservation Management -->
@@ -36,7 +36,7 @@
         <li class="nav-item"
             sec:authorize="hasAnyRole('ADMIN','EMPLOYEE')">
             <a th:class="${page=='accounts'} ? 'nav-link active' : 'nav-link'"
-               th:href="@{/api/dashboard/accounts}">
+               th:href="@{/dashboard/employee/maintenance}">
                 <i class="bi bi-tools me-2"></i>Maintenance
             </a>
         </li>
@@ -44,7 +44,7 @@
         <li class="nav-item"
             sec:authorize="hasAnyRole('ADMIN','EMPLOYEE')">
             <a th:class="${page=='accounts'} ? 'nav-link active' : 'nav-link'"
-               th:href="@{/api/dashboard/accounts}">
+               th:href="@{/dashboard/employee/coupons}">
                 <i class="bi bi-tag me-2"></i>Coupons
             </a>
         </li>
@@ -52,7 +52,7 @@
         <li class="nav-item"
             sec:authorize="hasAnyRole('ADMIN')">
             <a th:class="${page=='accounts'} ? 'nav-link active' : 'nav-link'"
-               th:href="@{/api/dashboard/accounts}">
+               th:href="@{/dashboard/admin/accounts}">
                 <i class="bi bi-person-gear me-2"></i>Accounts
             </a>
         </li>
