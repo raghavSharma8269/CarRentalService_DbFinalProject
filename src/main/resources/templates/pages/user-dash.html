@@ -54,9 +54,13 @@
             <div th:replace="~{fragments/dashboard/manage-vehicle.html :: content}"></div>
         </div>
 
+        <div th:if="${page == 'addVehicle'}">
+            <div th:replace="~{fragments/dashboard/add-vehicle.html :: content}"></div>
+        </div>
 
 
-        <div th:unless="${page == 'dashboard' or page == 'reservations' or page == 'vehicles' or page == 'vehicleDetails' or page == 'vehicleCheckout' or page == 'maintenance' or page == 'coupons' or page == 'accounts' or page == 'vehicleEdit'}">
+
+        <div th:unless="${page == 'dashboard' or page == 'reservations' or page == 'vehicles' or page == 'vehicleDetails' or page == 'vehicleCheckout' or page == 'maintenance' or page == 'coupons' or page == 'accounts' or page == 'vehicleEdit' or page == 'addVehicle'}">
             <h2>404—Page Not Found</h2>
             <p>The section you're trying to access doesn't exist.</p>
         </div>

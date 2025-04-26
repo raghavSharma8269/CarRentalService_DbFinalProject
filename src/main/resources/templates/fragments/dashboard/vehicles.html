@@ -4,7 +4,15 @@
      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
      lang="en">
     <div class="container py-5">
-        <h2 class="mb-4">All Vehicles</h2>
+
+        <h2 class="mb-4">All Vehicles
+
+<!--            Add New Vehicle-->
+            <a th:href="@{/dashboard/employee/vehicles/add}">
+                <i class="bi bi-plus-circle me-1"></i>
+            </a>
+
+        </h2>
 
         <div class="row g-4" th:if="${vehicles != null and vehicles.size() > 0}">
             <div th:each="veh : ${vehicles}" class="col-md-4 col-sm-6 col-12">

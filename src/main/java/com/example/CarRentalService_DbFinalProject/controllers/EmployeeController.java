@@ -2,10 +2,10 @@ package com.example.CarRentalService_DbFinalProject.controllers;
 
 import com.example.CarRentalService_DbFinalProject.model.entities.Vehicle;
 import com.example.CarRentalService_DbFinalProject.model.repositories.VehicleRepository;
+import com.example.CarRentalService_DbFinalProject.services.employee.vehicle.AddVehicleService;
 import com.example.CarRentalService_DbFinalProject.services.employee.vehicle.GetAllVehicles;
 import com.example.CarRentalService_DbFinalProject.services.employee.vehicle.GetVehicleViaIdService;
 import com.example.CarRentalService_DbFinalProject.services.employee.vehicle.UpdateVehicleService;
-import jakarta.annotation.security.RolesAllowed;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,17 +23,19 @@ public class EmployeeController {
     private final GetAllVehicles getAllVehicles;
     private final GetVehicleViaIdService getVehicleViaIdService;
     private final UpdateVehicleService updateVehicleService;
+    private final AddVehicleService addVehicleService;
 
     public EmployeeController(
             VehicleRepository vehicleRepository,
             GetAllVehicles getAllVehicles,
             GetVehicleViaIdService getVehicleViaIdService,
-            UpdateVehicleService updateVehicleService
+            UpdateVehicleService updateVehicleService, AddVehicleService addVehicleService
     ) {
         this.vehicleRepository = vehicleRepository;
         this.getAllVehicles = getAllVehicles;
         this.getVehicleViaIdService = getVehicleViaIdService;
         this.updateVehicleService = updateVehicleService;
+        this.addVehicleService = addVehicleService;
     }
 
 
@@ -125,14 +127,14 @@ public class EmployeeController {
     // Show the “Edit Vehicle” form
     @GetMapping("/manage/{id}")
     @PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
-    public String showEditForm(@PathVariable int id, Model model) {
+    public String showEditPage(@PathVariable int id, Model model) {
         Vehicle vehicle = getVehicleViaIdService.execute(id).getBody();
         model.addAttribute("vehicle", vehicle);
         model.addAttribute("page", "vehicleEdit");
         return "pages/user-dash";
     }
 
-    // Process the submitted form
+    // Process the submitted manage vehicle form
     @PostMapping("/manage/{id}")
     public String updateVehicle(
             @PathVariable int id,
@@ -149,6 +151,34 @@ public class EmployeeController {
         }
         return "redirect:/dashboard/employee/manage/"+id;
     }
+
+
+    // Show the “Add Vehicle” form
+
+    @GetMapping("/vehicles/add")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
+    public String showAddVehiclePage (Model model) {
+        Vehicle vehicle = new Vehicle();
+        model.addAttribute("vehicle", vehicle);
+        model.addAttribute("page", "addVehicle");
+        return "pages/user-dash";
+    }
+
+    // Process the add vehicle form
+    @PostMapping("/vehicles/add")
+    public String addVehicle(
+            @ModelAttribute("vehicle") Vehicle vehicleFormData,
+            RedirectAttributes redirectAttrs
+    ) {
+        try {
+            addVehicleService.execute(vehicleFormData);
+            redirectAttrs.addFlashAttribute("success", "Vehicle added successfully!");
+        } catch (Exception ex) {
+            redirectAttrs.addFlashAttribute("error", ex.getMessage());
+        }
+        return "redirect:/dashboard/employee/vehicles/add";
+    }
+
 
 
 }
