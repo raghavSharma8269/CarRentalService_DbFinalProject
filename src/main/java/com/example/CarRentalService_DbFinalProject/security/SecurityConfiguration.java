@@ -93,7 +93,7 @@ public class SecurityConfiguration {
                 for (GrantedAuthority ga : authentication.getAuthorities()) {
                     String role = ga.getAuthority();
                     if ("ROLE_ADMIN".equals(role)) {
-                        target = "/admin/home";
+                        target = "/dashboard/employee/vehicles";
                         break;
                     } else if ("ROLE_EMPLOYEE".equals(role)) {
                         target = "/dashboard/employee/vehicles";
