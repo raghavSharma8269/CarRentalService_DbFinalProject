@@ -110,12 +110,5 @@ public class EmployeeController {
         return "/pages/user-dash";
     }
 
-    // Account Management Dashboard Page
-    @GetMapping("/accounts")
-    // @PreAuthorize("hasRole('ADMIN')")
-    public String accounts(Model model) {
-        model.addAttribute("page", "accounts");
-        return "/pages/user-dash";
-    }
 
 }

@@ -35,7 +35,7 @@
         <!-- 4) Maintenance Management -->
         <li class="nav-item"
             sec:authorize="hasAnyRole('ADMIN','EMPLOYEE')">
-            <a th:class="${page=='accounts'} ? 'nav-link active' : 'nav-link'"
+            <a th:class="${page=='maintenance'} ? 'nav-link active' : 'nav-link'"
                th:href="@{/dashboard/employee/maintenance}">
                 <i class="bi bi-tools me-2"></i>Maintenance
             </a>
@@ -43,7 +43,7 @@
         <!-- 5) Coupons -->
         <li class="nav-item"
             sec:authorize="hasAnyRole('ADMIN','EMPLOYEE')">
-            <a th:class="${page=='accounts'} ? 'nav-link active' : 'nav-link'"
+            <a th:class="${page=='coupons'} ? 'nav-link active' : 'nav-link'"
                th:href="@{/dashboard/employee/coupons}">
                 <i class="bi bi-tag me-2"></i>Coupons
             </a>
