@@ -1,0 +1,23 @@
+<!-- File: src/main/resources/templates/pages/profile.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="fragments/base :: base_head"></head>
+<body>
+<!-- top nav -->
+<div th:replace="fragments/base :: base_navigation"></div>
+
+<div class="container py-5">
+    <h2 class="mb-4">My Profile</h2>
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <p><strong>Full Name:</strong> <span th:text="${user.fullName}">John Doe</span></p>
+            <p><strong>Username:</strong> <span th:text="${user.userName}">jdoe</span></p>
+            <p><strong>Email:</strong> <span th:text="${user.email}">jdoe@example.com</span></p>
+            <p><strong>Role:</strong> <span th:text="${user.role}">CUSTOMER</span></p>
+        </div>
+    </div>
+</div>
+
+<div th:replace="fragments/base :: base_footer"></div>
+</body>
+</html>
