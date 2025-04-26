@@ -66,7 +66,8 @@ public class SecurityConfiguration {
                         .loginPage("/login")                   // GET /login → your login.html
                         .loginProcessingUrl("/perform_login")  // POST target for credentials
                         .successHandler(roleBasedSuccessHandler())
-                        .failureUrl("/login?error")            // on failure
+                        .defaultSuccessUrl("/dashboard") // on success
+                        .failureUrl("/login?error")// on failure
                         .permitAll()
                 )
 
