@@ -80,6 +80,14 @@
     </div>
 </nav>
 
+<!-- logo fragment: larger and centered -->
+<div th:fragment="brand_logo" class="text-center my-4">
+    <a class="navbar-brand text-primary fw-bold fs-1"
+       th:href="@{/}">
+        CarFlow
+    </a>
+</div>
+
 <!-- footer/scripts fragment -->
 <div th:fragment="base_footer">
     <script
