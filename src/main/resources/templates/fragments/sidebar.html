@@ -1,13 +1,22 @@
 <nav th:fragment="sidebar" class="sidebar d-flex flex-column justify-content-between p-3"
      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <ul class="nav nav-pills flex-column">
+
         <!-- 1) Dashboard -->
         <li class="nav-item">
             <a th:class="${page == 'dashboard'} ? 'nav-link active' : 'nav-link'" th:href="@{/api/dashboard}"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a>
         </li>
+
         <!-- 2) Reservation Management -->
         <li class="nav-item">
-            <a th:class="${page == 'reservations'} ? 'nav-link active' : 'nav-link'" th:href="@{/api/dashboard/reservations}"><i class="bi bi-clipboard2-check me-2"></i>Reservations</a>
+            <a th:class="${page=='reservations'}
+                 ? 'nav-link active' : 'nav-link'"
+               th:href="${#authorization.expression(
+                'hasAnyRole(''ADMIN'',''EMPLOYEE'')')}
+               ? @{/dashboard/employee/reservations}
+               : @{/dashboard/customer/reservations}">
+                <i class="bi bi-clipboard2-check me-2"></i>Reservations
+            </a>
         </li>
 
 
