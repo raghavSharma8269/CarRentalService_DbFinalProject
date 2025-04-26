@@ -49,9 +49,9 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         // allow anonymous access to login page & static resources
-                        .requestMatchers("/login", "/css/**", "/js/**").permitAll()
+                        .requestMatchers("/login", "/register").permitAll()
                         // profile and other secured endpoints
-                        .requestMatchers("/profile", "/api/**").authenticated()
+                        .requestMatchers("/profile").authenticated()
                         .anyRequest().permitAll()
                 )
                 // enable HTTP Basic for API clients
@@ -65,7 +65,7 @@ public class SecurityConfiguration {
                 )
                 .logout(logout -> logout
                         .logoutUrl("/perform_logout")
-                        .logoutSuccessUrl("/login?logout")
+                        .logoutSuccessUrl("/login")
                 );
         return http.build();
     }
