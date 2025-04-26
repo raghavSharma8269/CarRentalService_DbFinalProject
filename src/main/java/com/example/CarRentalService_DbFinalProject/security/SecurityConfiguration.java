@@ -53,7 +53,7 @@ public class SecurityConfiguration {
                         // public pages
                         .requestMatchers(
                                 "/login",
-                                "/api/auth/register",
+                                "/register",
                                 "/css/**",
                                 "/js/**"
                         ).permitAll()
