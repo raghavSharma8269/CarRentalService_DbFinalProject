@@ -1,10 +1,12 @@
 <!-- src/main/resources/templates/fragments/dashboard/vehicles.html -->
-<div th:fragment="content" xmlns:sec="http://www.w3.org/1999/xhtml">
+<div th:fragment="content"
+     xmlns:th="http://www.thymeleaf.org"
+     xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+     lang="en">
     <div class="container py-5">
         <h2 class="mb-4">All Vehicles</h2>
 
         <div class="row g-4" th:if="${vehicles != null and vehicles.size() > 0}">
-            <!-- Create column div for each vehicle in a single row -->
             <div th:each="veh : ${vehicles}" class="col-md-4 col-sm-6 col-12">
                 <div class="p-3 border rounded bg-white shadow-sm">
                     <a th:href="@{/dashboard/employee/vehicles/{id}(id=${veh.vehicleId})}">
@@ -19,12 +21,18 @@
                     <p class="text-muted" th:text="${veh.licensePlate}">License Plate</p>
                     <span class="fw-bold"
                           th:text="${'$' + veh.pricePerDay + '/day'}">
-                        $0.00/day
-                    </span>
-                    <p class = "mt-2" th:text="${veh.availability} ? '✅ Available' : '❌ Unavailable'"></p>
+            $0.00/day
+          </span>
+                    <p class="mt-2" th:text="${veh.availability} ? '✅ Available' : '❌ Unavailable'"></p>
+
+                    <!-- Manage button, only for ADMIN or EMPLOYEE -->
+                    <a sec:authorize="hasAnyRole('ADMIN','EMPLOYEE')"
+                       th:href="@{/dashboard/employee/manage/{id}(id=${veh.vehicleId})}"
+                       class="btn btn-warning mt-2 w-100">
+                        Manage
+                    </a>
                 </div>
             </div>
-
         </div>
 
     </div>

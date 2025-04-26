@@ -3,13 +3,13 @@ package com.example.CarRentalService_DbFinalProject.controllers;
 import com.example.CarRentalService_DbFinalProject.model.entities.Vehicle;
 import com.example.CarRentalService_DbFinalProject.model.repositories.VehicleRepository;
 import com.example.CarRentalService_DbFinalProject.services.employee.vehicle.GetAllVehicles;
+import com.example.CarRentalService_DbFinalProject.services.employee.vehicle.GetVehicleViaIdService;
+import com.example.CarRentalService_DbFinalProject.services.employee.vehicle.UpdateVehicleService;
+import jakarta.annotation.security.RolesAllowed;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,18 +20,25 @@ public class EmployeeController {
 
     private final VehicleRepository vehicleRepository;
     private final GetAllVehicles getAllVehicles;
+    private final GetVehicleViaIdService getVehicleViaIdService;
+    private final UpdateVehicleService updateVehicleService;
 
     public EmployeeController(
             VehicleRepository vehicleRepository,
-            GetAllVehicles getAllVehicles
+            GetAllVehicles getAllVehicles,
+            GetVehicleViaIdService getVehicleViaIdService,
+            UpdateVehicleService updateVehicleService
     ) {
         this.vehicleRepository = vehicleRepository;
         this.getAllVehicles = getAllVehicles;
+        this.getVehicleViaIdService = getVehicleViaIdService;
+        this.updateVehicleService = updateVehicleService;
     }
 
 
     // Reservation Dashboard Page
     @GetMapping("/reservations")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
     public String reservations(Model model) {
         model.addAttribute("page", "reservations");
         return "/pages/user-dash";
@@ -58,6 +65,7 @@ public class EmployeeController {
 
     // Load details page when you click into a car
     @GetMapping("/vehicles/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
     public String showVehicleDetails(@PathVariable int id, Model model) {
         // Check for the vehicle in the database
         Optional<Vehicle> vehicle = vehicleRepository.findById(id);
@@ -78,6 +86,7 @@ public class EmployeeController {
 
     // Load the checkout page when you click on a 'Rent Now' button
     @GetMapping("/checkout/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
     public String showCheckout(@PathVariable int id, Model model) {
 
         // Check for the vehicle in the database
@@ -98,6 +107,7 @@ public class EmployeeController {
 
     // Maintenance Dashboard Page
     @GetMapping("/maintenance")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
     public String maintenance(Model model) {
         model.addAttribute("page", "maintenance");
         return "/pages/user-dash";
@@ -105,10 +115,34 @@ public class EmployeeController {
 
     // Coupons Dashboard Page
     @GetMapping("/coupons")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
     public String coupons(Model model) {
         model.addAttribute("page", "coupons");
         return "/pages/user-dash";
     }
+
+    // Show the “Edit Vehicle” form
+    @GetMapping("/manage/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
+    public String showEditForm(@PathVariable int id, Model model) {
+        Vehicle vehicle = getVehicleViaIdService.execute(id).getBody();
+        model.addAttribute("vehicle", vehicle);
+        model.addAttribute("page", "vehicleEdit");
+        return "pages/user-dash";
+    }
+
+//    // Process the submitted form
+//    @PostMapping("/manage/{id}")
+//    public String updateVehicle(
+//            @PathVariable int id,
+//            @ModelAttribute("vehicle") Vehicle formData,
+//            RedirectAttributes redirectAttrs
+//    ) {
+//        formData.setVehicleId(id);
+//        updateVehicleService.execute(formData);
+//        redirectAttrs.addFlashAttribute("message", "Vehicle updated successfully!");
+//        return "redirect:/dashboard/employee/vehicles";
+//    }
 
 
 }
