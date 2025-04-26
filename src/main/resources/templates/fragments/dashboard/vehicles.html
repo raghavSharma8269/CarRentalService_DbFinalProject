@@ -8,9 +8,11 @@
         <h2 class="mb-4">All Vehicles
 
 <!--            Add New Vehicle-->
-            <a th:href="@{/dashboard/employee/vehicles/add}">
+            <a sec:authorize="hasAnyRole('ADMIN','EMPLOYEE')"
+               th:href="@{/dashboard/employee/vehicles/add}">
                 <i class="bi bi-plus-circle me-1"></i>
             </a>
+
 
         </h2>
 
