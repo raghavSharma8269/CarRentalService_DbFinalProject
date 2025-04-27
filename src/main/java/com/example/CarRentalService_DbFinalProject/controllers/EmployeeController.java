@@ -2,10 +2,7 @@ package com.example.CarRentalService_DbFinalProject.controllers;
 
 import com.example.CarRentalService_DbFinalProject.model.entities.Vehicle;
 import com.example.CarRentalService_DbFinalProject.model.repositories.VehicleRepository;
-import com.example.CarRentalService_DbFinalProject.services.employee.vehicle.AddVehicleService;
-import com.example.CarRentalService_DbFinalProject.services.employee.vehicle.GetAllVehicles;
-import com.example.CarRentalService_DbFinalProject.services.employee.vehicle.GetVehicleViaIdService;
-import com.example.CarRentalService_DbFinalProject.services.employee.vehicle.UpdateVehicleService;
+import com.example.CarRentalService_DbFinalProject.services.employee.vehicle.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,18 +21,20 @@ public class EmployeeController {
     private final GetVehicleViaIdService getVehicleViaIdService;
     private final UpdateVehicleService updateVehicleService;
     private final AddVehicleService addVehicleService;
+    private final DeleteVehicleService deleteVehicleService;
 
     public EmployeeController(
             VehicleRepository vehicleRepository,
             GetAllVehicles getAllVehicles,
             GetVehicleViaIdService getVehicleViaIdService,
-            UpdateVehicleService updateVehicleService, AddVehicleService addVehicleService
+            UpdateVehicleService updateVehicleService, AddVehicleService addVehicleService, DeleteVehicleService deleteVehicleService
     ) {
         this.vehicleRepository = vehicleRepository;
         this.getAllVehicles = getAllVehicles;
         this.getVehicleViaIdService = getVehicleViaIdService;
         this.updateVehicleService = updateVehicleService;
         this.addVehicleService = addVehicleService;
+        this.deleteVehicleService = deleteVehicleService;
     }
 
 
@@ -133,6 +132,7 @@ public class EmployeeController {
     }
 
     // Process the submitted manage vehicle form
+    //Edits vehicle details
     @PostMapping("/manage/{id}")
     public String updateVehicle(
             @PathVariable int id,
@@ -173,6 +173,18 @@ public class EmployeeController {
             redirectAttrs.addFlashAttribute("error", ex.getMessage());
         }
         return "redirect:/dashboard/employee/vehicles/add";
+    }
+
+    @PostMapping("/manage/delete/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
+    public String deleteVehicle(@PathVariable int id, RedirectAttributes redirectAttrs) {
+        try {
+            deleteVehicleService.execute(id);
+            redirectAttrs.addFlashAttribute("success", "Vehicle deleted successfully!");
+        } catch (Exception ex) {
+            redirectAttrs.addFlashAttribute("error", "Failed to delete vehicle: " + ex.getMessage());
+        }
+        return "redirect:/dashboard/employee/vehicles";
     }
 
 
