@@ -1,10 +1,10 @@
 <!-- File: src/main/resources/templates/fragments/dashboard/vehicle-edit.html -->
 <div th:fragment="content"
-     xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+     xmlns:th="http://www.thymeleaf.org"
 >
     <div class="container py-5">
         <h2 class="mb-4">Edit Vehicle</h2>
-        <form th:action="@{/dashboard/employee/manage/{id}(id=${vehicle.vehicleId})}"
+        <form th:action="@{/dashboard/employee/vehicles/manage/{id}(id=${vehicle.vehicleId})}"
               th:object="${vehicle}"
               method="post">
             <div class="row g-3">
@@ -52,7 +52,7 @@
         </form>
 
         <!-- Delete button form -->
-        <form th:action="@{/dashboard/employee/manage/delete/{id}(id=${vehicle.vehicleId})}"
+        <form th:action="@{/dashboard/employee/vehicles/manage/delete/{id}(id=${vehicle.vehicleId})}"
               method="post">
             <button type="submit" class="btn btn-danger"
                     onclick="return confirm('Really delete?');">

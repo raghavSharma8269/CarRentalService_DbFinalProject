@@ -122,7 +122,7 @@ public class EmployeeController {
     }
 
     // Show the “Edit Vehicle” form
-    @GetMapping("/manage/{id}")
+    @GetMapping("/vehicles/manage/{id}")
     @PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
     public String showEditPage(@PathVariable int id, Model model) {
         Vehicle vehicle = getVehicleViaIdService.execute(id).getBody();
@@ -133,7 +133,7 @@ public class EmployeeController {
 
     // Process the submitted manage vehicle form
     //Edits vehicle details
-    @PostMapping("/manage/{id}")
+    @PostMapping("/vehicles/manage/{id}")
     public String updateVehicle(
             @PathVariable int id,
             @ModelAttribute("vehicle") Vehicle vehicleFormData,
@@ -146,7 +146,20 @@ public class EmployeeController {
         } catch (Exception ex) {
             redirectAttrs.addFlashAttribute("error", ex.getMessage());
         }
-        return "redirect:/dashboard/employee/manage/"+id;
+        return "redirect:/dashboard/employee/vehicles/manage/"+id;
+    }
+
+    // Process the delete vehicle form
+    @PostMapping("/vehicles/manage/delete/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
+    public String deleteVehicle(@PathVariable int id, RedirectAttributes redirectAttrs) {
+        try {
+            deleteVehicleService.execute(id);
+            redirectAttrs.addFlashAttribute("success", "Vehicle deleted successfully!");
+        } catch (Exception ex) {
+            redirectAttrs.addFlashAttribute("error", "Failed to delete vehicle: " + ex.getMessage());
+        }
+        return "redirect:/dashboard/employee/vehicles";
     }
 
 
@@ -175,17 +188,6 @@ public class EmployeeController {
         return "redirect:/dashboard/employee/vehicles/add";
     }
 
-    @PostMapping("/manage/delete/{id}")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
-    public String deleteVehicle(@PathVariable int id, RedirectAttributes redirectAttrs) {
-        try {
-            deleteVehicleService.execute(id);
-            redirectAttrs.addFlashAttribute("success", "Vehicle deleted successfully!");
-        } catch (Exception ex) {
-            redirectAttrs.addFlashAttribute("error", "Failed to delete vehicle: " + ex.getMessage());
-        }
-        return "redirect:/dashboard/employee/vehicles";
-    }
 
 
 

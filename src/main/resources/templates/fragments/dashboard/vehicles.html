@@ -49,7 +49,7 @@
 
                     <!-- Manage button, only for ADMIN or EMPLOYEE -->
                     <a sec:authorize="hasAnyRole('ADMIN','EMPLOYEE')"
-                       th:href="@{/dashboard/employee/manage/{id}(id=${veh.vehicleId})}"
+                       th:href="@{/dashboard/employee/vehicles/manage/{id}(id=${veh.vehicleId})}"
                        class="btn btn-warning mt-2 w-100">
                         Manage
                     </a>
