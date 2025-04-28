@@ -31,23 +31,38 @@
             CarFlow
         </a>
 
-        <form class="flex-grow-1 me-4"
+        <!-- Vehicles search -->
+        <form th:if="${page=='vehicles'}"
+              class="flex-grow-1 me-4"
               th:action="${#authorization.expression('hasAnyRole(''ADMIN'',''EMPLOYEE'')')
-                ? '/dashboard/employee/vehicles'
-                : '/dashboard/customer/vehicles'}"
-              method="get"
-              role="search">
+                      ? '/dashboard/employee/vehicles'
+                      : '/dashboard/customer/vehicles'}"
+              method="get" role="search">
             <div class="input-group">
         <span class="input-group-text bg-white border-end-0">
-            <i class="bi bi-search"></i>
+          <i class="bi bi-search"></i>
         </span>
-                <input type="search"
-                       name="keyword"
-                       class="form-control border-start-0 border-end-0"
-                       placeholder="Search..."
-                       aria-label="Search"
-                       th:value="${keyword}">
+                <input type="search" name="keyword"
+                       class="form-control border-start-0 rounded-end"
+                       placeholder="Search vehicles…"
+                       aria-label="Search" th:value="${keyword}">
+            </div>
+        </form>
 
+        <!-- Coupons search (only employee) -->
+        <form th:if="${page=='coupons'}"
+              class="flex-grow-1 me-4"
+              th:action="@{/dashboard/employee/coupons}"
+              method="get" role="search">
+            <div class="input-group">
+        <span class="input-group-text bg-white border-end-0">
+          <i class="bi bi-search"></i>
+        </span>
+                <input type="search" name="couponCode"
+                       class="form-control border-start-0 rounded-end"
+                       placeholder="Search coupons…"
+                       aria-label="Search"
+                       th:value="${couponCode}">
             </div>
         </form>
 
