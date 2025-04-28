@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface MaintenanceRepository extends JpaRepository<Maintenance, Integer> {
 
-    // Delete all maintenance associated with a specific vehicle ID
+    // Delete all maintenance associated with a specific vehicle ID to avoid deletion anomaly
     @Modifying
     @Transactional
     @Query("DELETE FROM Maintenance r WHERE r.vehicleId.vehicleId = :vehicleId")

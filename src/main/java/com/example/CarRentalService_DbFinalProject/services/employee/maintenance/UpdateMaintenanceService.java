@@ -20,7 +20,7 @@ public class UpdateMaintenanceService {
 
     public ResponseEntity<String> execute (Maintenance updatedMaintenance, int maintenanceId) {
 
-
+        // SQL query to update a maintenance record via maintenance_id
         String sql = "UPDATE maintenance SET vehicle_id = ?, start = ?, end = ?, description = ? WHERE maintenance_id = ?";
 
         try (Connection conn = dataSource.getConnection();

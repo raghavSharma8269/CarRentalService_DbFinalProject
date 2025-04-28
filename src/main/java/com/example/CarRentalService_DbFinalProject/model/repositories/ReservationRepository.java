@@ -13,11 +13,13 @@ import java.util.List;
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Integer> {
 
+    // Retrieve all reservations associated with a specific user ID, allows for searching by reservation ID
     @Query("SELECT r FROM Reservation r WHERE r.user.userId = :userId " +
             "AND (:reservationId IS NULL OR :reservationId = '' OR CAST(r.reservationId AS string) LIKE %:reservationId%)")
     List<Reservation> findAllByUserIdAndReservationIdKeyword(int userId, String reservationId);
 
 
+    // Deletes all reservations associated with a specific user ID to avoid deletion anomaly
     @Modifying
     @Transactional
     @Query("DELETE FROM Reservation query WHERE query.user.userId = :userId")

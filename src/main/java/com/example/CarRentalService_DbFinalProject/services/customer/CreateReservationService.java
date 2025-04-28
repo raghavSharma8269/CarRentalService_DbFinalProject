@@ -34,21 +34,25 @@ public class CreateReservationService {
     }
 
     public ResponseEntity<String> execute(Reservation reservation) {
-        // 1) Validate the incoming Reservation DTO
+        // validate reservation
         ReservationValidation.validate(reservation);
 
-        // 2) Resolve the logged-in user and target vehicle
+        // find the user
         String username = authUtil.getLoggedInUsername();
         Users user = userRepository.findByUserName(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // find the vehicle
         Vehicle vehicle = vehicleRepository.findById(reservation.getVehicleId().getVehicleId())
                 .orElseThrow(() -> new RuntimeException("Vehicle not found"));
 
-        // 3) Raw‐SQL insert + availability update
+        // sql query to insert reservation
         String insertSql = """
             INSERT INTO reservation 
               (user_id, vehicle_id, start, end, total_price) 
             VALUES (?, ?, ?, ?, ?)""";
+
+        // sql query to update vehicle availability to false in vehicle table
         String updateSql = """
             UPDATE vehicle
                SET availability = FALSE

@@ -18,6 +18,8 @@ public class UpdateCouponService {
     }
 
     public ResponseEntity<String> execute(Coupon coupon, int id) {
+
+        // SQL query to update the coupon via coupon_id
         String sql = "UPDATE coupon SET coupon_code = ?, discount_percentage = ? WHERE coupon_id = ?";
 
         try (Connection conn = dataSource.getConnection();

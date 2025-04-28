@@ -18,9 +18,11 @@ public class UpdateVehicleService {
 
 
     public void execute(Vehicle v) {
+
         // validate first (throws VehicleException if invalid)
         VehicleValidation.execute(v);
 
+        // SQL query to update vehicle
         String sql = """
             UPDATE vehicle
                SET make           = ?,

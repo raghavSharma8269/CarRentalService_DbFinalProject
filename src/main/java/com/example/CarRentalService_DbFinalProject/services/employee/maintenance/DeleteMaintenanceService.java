@@ -17,6 +17,8 @@ public class DeleteMaintenanceService {
     }
 
     public ResponseEntity<String> execute(int maintenanceId) {
+
+        // SQL query to delete a maintenance via maintenance_id
         String sql = "DELETE FROM maintenance WHERE maintenance_id = ?";
 
         try (Connection conn = dataSource.getConnection();
