@@ -167,15 +167,21 @@ public class EmployeeController {
     @GetMapping("/vehicles/add")
     @PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
     public String showAddVehiclePage (Model model) {
+        // Create a new Vehicle object to bind to the form
         Vehicle vehicle = new Vehicle();
+
+        // Add the vehicle object to the model
         model.addAttribute("vehicle", vehicle);
+
+        // Set the page attribute to addVehicle for rendering
         model.addAttribute("page", "addVehicle");
         return "pages/user-dash";
     }
 
-    // Process the add vehicle form
+    // Call AddVehicleService to add a vehicle into the database
     @PostMapping("/vehicles/add")
     public String addVehicle(
+            // RedirectAttribute is used to pass flash attributes (temporary data) to the redirected page (Such as success/error messages)
             @ModelAttribute("vehicle") Vehicle vehicleFormData,
             RedirectAttributes redirectAttrs
     ) {
