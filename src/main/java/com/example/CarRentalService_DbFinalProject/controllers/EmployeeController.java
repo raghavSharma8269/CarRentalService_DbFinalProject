@@ -3,6 +3,7 @@ package com.example.CarRentalService_DbFinalProject.controllers;
 import com.example.CarRentalService_DbFinalProject.model.entities.Coupon;
 import com.example.CarRentalService_DbFinalProject.model.entities.Vehicle;
 import com.example.CarRentalService_DbFinalProject.model.repositories.VehicleRepository;
+import com.example.CarRentalService_DbFinalProject.services.employee.coupon.CreateCouponService;
 import com.example.CarRentalService_DbFinalProject.services.employee.coupon.GetCouponsService;
 import com.example.CarRentalService_DbFinalProject.services.employee.vehicle.*;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,6 +26,7 @@ public class EmployeeController {
     private final AddVehicleService addVehicleService;
     private final DeleteVehicleService deleteVehicleService;
     private final GetCouponsService getCouponsService;
+    private final CreateCouponService createCouponService;
 
     public EmployeeController(
             VehicleRepository vehicleRepository,
@@ -33,7 +35,8 @@ public class EmployeeController {
             UpdateVehicleService updateVehicleService,
             AddVehicleService addVehicleService,
             DeleteVehicleService deleteVehicleService,
-            GetCouponsService getCouponsService
+            GetCouponsService getCouponsService,
+            CreateCouponService createCouponService
     ) {
         this.vehicleRepository = vehicleRepository;
         this.getAllVehicles = getAllVehicles;
@@ -42,6 +45,7 @@ public class EmployeeController {
         this.addVehicleService = addVehicleService;
         this.deleteVehicleService = deleteVehicleService;
         this.getCouponsService = getCouponsService;
+        this.createCouponService = createCouponService;
     }
 
 
@@ -137,6 +141,30 @@ public class EmployeeController {
         return "/pages/user-dash";
     }
 
+    // Shows add coupon form
+    @GetMapping("/coupons/add")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
+    public String showAddCouponPage(Model model) {
+        Coupon coupon = new Coupon();
+        model.addAttribute("coupon", coupon);
+        model.addAttribute("page", "addCoupon");
+        return "/pages/user-dash";
+    }
+
+    @PostMapping("/coupons/add")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
+    public String addCoupon(
+            @ModelAttribute("coupon") Coupon couponFormData,
+            RedirectAttributes redirectAttrs
+    ) {
+        try {
+            createCouponService.execute(couponFormData);
+            redirectAttrs.addFlashAttribute("success", "Coupon added successfully!");
+        } catch (Exception ex) {
+            redirectAttrs.addFlashAttribute("error", ex.getMessage());
+        }
+        return "redirect:/dashboard/employee/coupons/add";
+    }
 
 
     // Show the “Edit Vehicle” form
