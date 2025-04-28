@@ -3,7 +3,7 @@
      xmlns:th="http://www.thymeleaf.org"
 >
     <div class="container py-5">
-        <h2 class="mb-4">Edit Vehicle</h2>
+        <h2 class="mb-4">Manage Vehicle</h2>
         <form th:action="@{/dashboard/employee/vehicles/manage/{id}(id=${vehicle.vehicleId})}"
               th:object="${vehicle}"
               method="post">
@@ -55,7 +55,7 @@
         <form th:action="@{/dashboard/employee/vehicles/manage/delete/{id}(id=${vehicle.vehicleId})}"
               method="post">
             <button type="submit" class="btn btn-danger"
-                    onclick="return confirm('Really delete?');">
+                    onclick="return confirm('Are you sure you want to delete this vehicle?');">
                 <i class="bi bi-trash"></i>
             </button>
         </form>
