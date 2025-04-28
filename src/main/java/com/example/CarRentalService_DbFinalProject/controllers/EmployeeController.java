@@ -1,7 +1,9 @@
 package com.example.CarRentalService_DbFinalProject.controllers;
 
+import com.example.CarRentalService_DbFinalProject.model.entities.Coupon;
 import com.example.CarRentalService_DbFinalProject.model.entities.Vehicle;
 import com.example.CarRentalService_DbFinalProject.model.repositories.VehicleRepository;
+import com.example.CarRentalService_DbFinalProject.services.employee.coupon.GetCouponsService;
 import com.example.CarRentalService_DbFinalProject.services.employee.vehicle.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -22,12 +24,16 @@ public class EmployeeController {
     private final UpdateVehicleService updateVehicleService;
     private final AddVehicleService addVehicleService;
     private final DeleteVehicleService deleteVehicleService;
+    private final GetCouponsService getCouponsService;
 
     public EmployeeController(
             VehicleRepository vehicleRepository,
             GetAllVehicles getAllVehicles,
             GetVehicleViaIdService getVehicleViaIdService,
-            UpdateVehicleService updateVehicleService, AddVehicleService addVehicleService, DeleteVehicleService deleteVehicleService
+            UpdateVehicleService updateVehicleService,
+            AddVehicleService addVehicleService,
+            DeleteVehicleService deleteVehicleService,
+            GetCouponsService getCouponsService
     ) {
         this.vehicleRepository = vehicleRepository;
         this.getAllVehicles = getAllVehicles;
@@ -35,6 +41,7 @@ public class EmployeeController {
         this.updateVehicleService = updateVehicleService;
         this.addVehicleService = addVehicleService;
         this.deleteVehicleService = deleteVehicleService;
+        this.getCouponsService = getCouponsService;
     }
 
 
@@ -116,10 +123,21 @@ public class EmployeeController {
     // Coupons Dashboard Page
     @GetMapping("/coupons")
     @PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
-    public String coupons(Model model) {
+    public String listCoupons(
+            Model model,
+            @RequestParam(required = false) String couponCode
+
+    ) {
+
+        List<Coupon> coupons = getCouponsService
+                .execute(couponCode)
+                .getBody();
+        model.addAttribute("coupons", coupons);
         model.addAttribute("page", "coupons");
         return "/pages/user-dash";
     }
+
+
 
     // Show the “Edit Vehicle” form
     @GetMapping("/vehicles/manage/{id}")

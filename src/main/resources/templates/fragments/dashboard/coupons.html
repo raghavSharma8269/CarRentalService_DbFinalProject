@@ -26,48 +26,9 @@
         </thead>
         <tbody>
         <!-- Row 1 -->
-        <tr>
-          <td><strong>SAVE10</strong></td>
-          <td>10%</td>
-          <td class="text-end">
-            <button class="btn btn-sm btn-outline-danger me-2">
-              <i class="bi bi-trash"></i>
-            </button>
-            <button class="btn btn-sm btn-outline-secondary">
-              <i class="bi bi-pencil"></i>
-            </button>
-          </td>
-        </tr>
-        <!-- Row 2 -->
-        <tr>
-          <td><strong>SPRING20</strong></td>
-          <td>20%</td>
-          <td class="text-end">
-            <button class="btn btn-sm btn-outline-danger me-2">
-              <i class="bi bi-trash"></i>
-            </button>
-            <button class="btn btn-sm btn-outline-secondary">
-              <i class="bi bi-pencil"></i>
-            </button>
-          </td>
-        </tr>
-        <!-- Row 3 -->
-        <tr>
-          <td><strong>FALL15</strong></td>
-          <td>15%</td>
-          <td class="text-end">
-            <button class="btn btn-sm btn-outline-danger me-2">
-              <i class="bi bi-trash"></i>
-            </button>
-            <button class="btn btn-sm btn-outline-secondary">
-              <i class="bi bi-pencil"></i>
-            </button>
-          </td>
-        </tr>
-        <!-- Row 4 -->
-        <tr>
-          <td><strong>VIP25</strong></td>
-          <td>25%</td>
+        <tr th:each="coupon : ${coupons}">
+          <td th:text="${coupon.couponCode}">CODE</td>
+          <td th:text="${coupon.discountPercentage}">0</td>
           <td class="text-end">
             <button class="btn btn-sm btn-outline-danger me-2">
               <i class="bi bi-trash"></i>
