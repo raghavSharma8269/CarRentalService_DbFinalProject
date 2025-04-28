@@ -116,11 +116,11 @@ public class CustomerController {
         try {
             // Call the service to create the reservation
             createReservationService.execute(reservation);
-            redirectAttrs.addFlashAttribute("success", "Vehicle added successfully!");
+            redirectAttrs.addFlashAttribute("success", "Reservation Created Successfully!");
         } catch (Exception ex) {
             redirectAttrs.addFlashAttribute("error", ex.getMessage());
         }
-        return "redirect:/api/dashboard/reservations"; // Redirect to the reservation page after creating the reservation
+        return "redirect:/dashboard"; // Redirect to the reservation page after creating the reservation
     }
 
 }
