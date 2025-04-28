@@ -18,7 +18,7 @@ public class AuthController {
     @GetMapping("/register")
     public String showRegisterForm(Model model) {
         model.addAttribute("user", new Users());
-        return "register";
+        return "/pages/register";
     }
 
     @PostMapping("/register")
@@ -29,7 +29,7 @@ public class AuthController {
         } catch (Exception e) {
             model.addAttribute("message", "Error: " + e.getMessage());
         }
-        return "register";
+        return "/pages/register";
     }
 
     @GetMapping("/login")
