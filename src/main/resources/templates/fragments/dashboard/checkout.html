@@ -81,7 +81,7 @@
                                     I agree to terms and privacy policy.
                                 </label>
                             </div>
-                            <button class="btn btn-primary btn-lg">Rent Now</button>
+                            <button type="submit" class="btn btn-primary btn-lg">Rent Now</button>
                         </div>
                     </div>
                 </div>
@@ -105,6 +105,12 @@
 
                                 <!-- Hidden total price for form submission -->
                                 <input type="hidden" id="totalPriceHidden" th:field="*{totalPrice}"/>
+
+                                <!-- Hidden vehicle for form submission -->
+                                <input type="hidden" th:field="*{vehicleId}"/>
+
+                                <!-- Hidden user for form submission -->
+                                <input type="hidden" th:field="*{user}"/>
                             </div>
 
                             <hr> <!-- Horizontal line -->

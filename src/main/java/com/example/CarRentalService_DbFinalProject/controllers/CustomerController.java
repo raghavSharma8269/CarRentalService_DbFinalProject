@@ -94,8 +94,7 @@ public class CustomerController {
             reservation.setUser(user);
             reservation.setVehicleId(vehicle);
 
-            // Debugging
-            System.out.println("Current Reservation: " + reservation);
+            // Debugging System.out.println("Current Reservation: " + reservation);
 
             // Add reservation, vehicle, and rendering page to the model
             model.addAttribute("reservationCheckoutForm", reservation);
@@ -114,6 +113,8 @@ public class CustomerController {
     @PostMapping("/checkout")
     public String createReservation(@ModelAttribute("reservationCheckoutForm") Reservation reservation, RedirectAttributes redirectAttrs) {
         try {
+            // Debugging System.out.println("Creating reservation: " + reservation);
+
             // Call the service to create the reservation
             createReservationService.execute(reservation);
             redirectAttrs.addFlashAttribute("success", "Reservation Created Successfully!");
