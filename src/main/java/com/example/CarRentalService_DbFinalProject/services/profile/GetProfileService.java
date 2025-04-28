@@ -14,7 +14,7 @@ public class GetProfileService {
         this.userRepository = userRepository;
     }
 
-    public Users execute(String username){
+    public Users findByUsername(String username){
         return userRepository
                 .findByUserName(username)
                 .orElseThrow(() -> new RuntimeException("User not found: " + username));

@@ -23,7 +23,7 @@ public class ProfileControllerJson {
 //    @GetMapping
 //    @PreAuthorize("hasRole('CUSTOMER') or hasRole('EMPLOYEE') or hasRole('ADMIN')")
 //    public ResponseEntity<Users> getProfile() {
-//        return getProfileService.execute();
+//        return getProfileService.findByUsername();
 //    }
 
     @PutMapping
