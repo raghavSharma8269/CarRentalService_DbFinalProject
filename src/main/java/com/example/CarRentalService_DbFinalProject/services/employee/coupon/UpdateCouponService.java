@@ -17,15 +17,17 @@ public class UpdateCouponService {
         this.dataSource = dataSource;
     }
 
-    public ResponseEntity<String> execute(Coupon coupon, int couponId) {
+    public ResponseEntity<String> execute(Coupon coupon, int id) {
         String sql = "UPDATE coupon SET coupon_code = ?, discount_percentage = ? WHERE coupon_id = ?";
 
         try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
+            System.out.println("Updating coupon with ID: " + coupon.getCouponId());
+
             stmt.setString(1, coupon.getCouponCode());
             stmt.setDouble(2, coupon.getDiscountPercentage());
-            stmt.setInt(3, couponId);
+            stmt.setInt(3, id);
 
             int rowsAffected = stmt.executeUpdate();
 

@@ -3,10 +3,7 @@ package com.example.CarRentalService_DbFinalProject.controllers;
 import com.example.CarRentalService_DbFinalProject.model.entities.Coupon;
 import com.example.CarRentalService_DbFinalProject.model.entities.Vehicle;
 import com.example.CarRentalService_DbFinalProject.model.repositories.VehicleRepository;
-import com.example.CarRentalService_DbFinalProject.services.employee.coupon.CreateCouponService;
-import com.example.CarRentalService_DbFinalProject.services.employee.coupon.GetCouponViaIdService;
-import com.example.CarRentalService_DbFinalProject.services.employee.coupon.GetCouponsService;
-import com.example.CarRentalService_DbFinalProject.services.employee.coupon.UpdateCouponService;
+import com.example.CarRentalService_DbFinalProject.services.employee.coupon.*;
 import com.example.CarRentalService_DbFinalProject.services.employee.vehicle.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -31,6 +28,7 @@ public class EmployeeController {
     private final CreateCouponService createCouponService;
     public final UpdateCouponService updateCouponService;
     private final GetCouponViaIdService getCouponViaIdService;
+    private final DeleteCouponService deleteCouponService;
 
     public EmployeeController(
             VehicleRepository vehicleRepository,
@@ -42,7 +40,7 @@ public class EmployeeController {
             GetCouponsService getCouponsService,
             CreateCouponService createCouponService,
             UpdateCouponService updateCouponService,
-            GetCouponViaIdService getCouponViaIdService
+            GetCouponViaIdService getCouponViaIdService, DeleteCouponService deleteCouponService
     ) {
         this.vehicleRepository = vehicleRepository;
         this.getAllVehicles = getAllVehicles;
@@ -54,6 +52,7 @@ public class EmployeeController {
         this.createCouponService = createCouponService;
         this.updateCouponService = updateCouponService;
         this.getCouponViaIdService = getCouponViaIdService;
+        this.deleteCouponService = deleteCouponService;
     }
 
 
@@ -176,6 +175,8 @@ public class EmployeeController {
     }
 
 
+
+
     // Show the “Edit Coupon” form
     @GetMapping("/coupons/manage/{id}")
     @PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
@@ -184,6 +185,37 @@ public class EmployeeController {
         model.addAttribute("coupon", coupon);
         model.addAttribute("page", "couponEdit");
         return "/pages/user-dash";
+    }
+
+    // Process the edit coupon form
+    @PostMapping("/coupons/manage/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
+    public String editCoupon(
+            @ModelAttribute("coupon") Coupon couponFormData,
+            RedirectAttributes redirectAttrs,
+            @PathVariable int id) {
+        try {
+            updateCouponService.execute(couponFormData, id);
+            redirectAttrs.addFlashAttribute("success", "Coupon updated successfully!");
+        } catch (Exception ex) {
+            redirectAttrs.addFlashAttribute("error", ex.getMessage());
+        }
+        return "redirect:/dashboard/employee/coupons/manage/" + id;
+    }
+
+    // Process the delete coupon form
+    @PostMapping("/coupons/delete/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
+    public String deleteCoupon(
+            RedirectAttributes redirectAttrs,
+            @PathVariable int id) {
+        try {
+            deleteCouponService.execute(id);
+            redirectAttrs.addFlashAttribute("success", "Coupon deleted successfully!");
+        } catch (Exception ex) {
+            redirectAttrs.addFlashAttribute("error", ex.getMessage());
+        }
+        return "redirect:/dashboard/employee/coupons";
     }
 
 
