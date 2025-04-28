@@ -4,11 +4,13 @@ import com.example.CarRentalService_DbFinalProject.model.entities.Reservation;
 import com.example.CarRentalService_DbFinalProject.model.entities.Users;
 import com.example.CarRentalService_DbFinalProject.model.entities.Vehicle;
 import com.example.CarRentalService_DbFinalProject.model.repositories.VehicleRepository;
+import com.example.CarRentalService_DbFinalProject.services.customer.CreateReservationService;
 import com.example.CarRentalService_DbFinalProject.services.customer.GetAllAvailableVehiclesService;
 import com.example.CarRentalService_DbFinalProject.services.profile.GetProfileService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.util.List;
@@ -21,11 +23,13 @@ public class CustomerController {
     private final VehicleRepository vehicleRepository;
     private final GetAllAvailableVehiclesService getAllAvailableVehiclesService;
     private final GetProfileService getProfileService;
+    private final CreateReservationService createReservationService;
 
-    public CustomerController(VehicleRepository vehicleRepository, GetAllAvailableVehiclesService getAllAvailableVehiclesService, GetProfileService getProfileService) {
+    public CustomerController(VehicleRepository vehicleRepository, GetAllAvailableVehiclesService getAllAvailableVehiclesService, GetProfileService getProfileService, CreateReservationService createReservationService) {
         this.vehicleRepository = vehicleRepository;
         this.getAllAvailableVehiclesService = getAllAvailableVehiclesService;
         this.getProfileService = getProfileService;
+        this.createReservationService = createReservationService;
     }
 
 
@@ -107,6 +111,16 @@ public class CustomerController {
 
     // Call CreateReservationService to create a reservation at the checkout page
     // IMPORTANT: THIS ENDPOINT IS SHARED FOR ALL USERS
-    // @PostMapping("/checkout")
+    @PostMapping("/checkout")
+    public String createReservation(@ModelAttribute("reservationCheckoutForm") Reservation reservation, RedirectAttributes redirectAttrs) {
+        try {
+            // Call the service to create the reservation
+            createReservationService.execute(reservation);
+            redirectAttrs.addFlashAttribute("success", "Vehicle added successfully!");
+        } catch (Exception ex) {
+            redirectAttrs.addFlashAttribute("error", ex.getMessage());
+        }
+        return "redirect:/api/dashboard/reservations"; // Redirect to the reservation page after creating the reservation
+    }
 
 }
