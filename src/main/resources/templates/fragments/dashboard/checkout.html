@@ -1,5 +1,5 @@
 <!-- Checkout Content Page Fragment -->
-<div th:fragment="content" class="bg-light">
+<div th:fragment="content" class="bg-light" xmlns:th="http://www.thymeleaf.org">
 
     <!-- Embed the HTML form for checkout into ThymeLeaf form -->
     <form th:action="@{/dashboard/customer/checkout}" th:object="${reservationCheckoutForm}" method="post" class="bg-light">
@@ -38,11 +38,13 @@
                             <div class="row g-3">
                                 <div class="col-md-6">
                                     <label>Pick-Up Date</label>
-                                    <input type="date" th:field="*{start}" class="form-control" required>
+                                    <!-- Reservation Start -->
+                                    <input type="datetime-local" id="start" th:field="*{start}" class="form-control" required onchange="calculateTotal()">
                                 </div>
                                 <div class="col-md-6">
                                     <label>Drop-Off Date</label>
-                                    <input type="date" th:field="*{end}" class="form-control" required>
+                                    <!--Reservation End -->
+                                    <input type="datetime-local" id="end" th:field="*{end}" class="form-control" required onchange="calculateTotal()">
                                 </div>
                             </div>
                         </div>
@@ -89,6 +91,7 @@
                     <div class="card shadow-sm">
                         <div class="card-body">
                             <h5 class="mb-3">Rental Summary</h5>
+
                             <div class="d-flex align-items-center mb-3">
                                 <img th:src="${vehicle.imageUrl}" alt="Vehicle" class="img-fluid me-2"
                                      style="width: 60px;">
@@ -96,16 +99,60 @@
                                     <strong th:text="${vehicle.make + ' ' + vehicle.model}">Car Name</strong><br>
                                     <small>$<span th:text="${vehicle.pricePerDay}">80.00</span> / day</small>
                                 </div>
+
+                                <!-- Hidden vehicle price for JavaScript total calculation -->
+                                <input type="hidden" id="pricePerDay" th:value="${vehicle.pricePerDay}"/>
+
+                                <!-- Hidden total price for form submission -->
+                                <input type="hidden" id="totalPriceHidden" th:field="*{totalPrice}"/>
                             </div>
-                            <hr>
+
+                            <hr> <!-- Horizontal line -->
+
                             <p>
                                 <strong>Total:</strong>
-                                $<span th:text="${vehicle.pricePerDay}">80.00</span>
+                                $<span id="displayTotalPrice" th:text="${vehicle.pricePerDay}">80.00</span>
                             </p>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </form>
+
+    <!-- JavaScript to calculate total price for reservation -->
+    <script>
+        function calculateTotal() {
+            // Get the start and end dates. If empty, return undefined (?)
+            const start= document.getElementById("start")?.value;
+            const end = document.getElementById("end")?.value;
+            const pricePerDay = parseFloat(document.getElementById("pricePerDay")?.value);
+
+            // Check if start and end dates are valid
+            if (start && end) {
+                // Convert to Date objects
+                const startDate = new Date(start);
+                const endDate = new Date(end);
+
+                const timeDiff = endDate.getTime() - startDate.getTime();
+                const dayDiff = timeDiff / (1000 * 3600 * 24); // Convert milliseconds to days
+
+                if (dayDiff > 0) {
+                    // Calculate total price
+                    const totalPrice = dayDiff * pricePerDay;
+
+                    // Update HTML elements with the calculated total price
+                    document.getElementById("displayTotalPrice").innerText = totalPrice.toFixed(2);
+                    document.getElementById("totalPriceHidden").value = totalPrice;
+                } else {
+                    alert("End date must be after start date.");
+                }
+            } else {
+                // If either date is not selected, reset the total price
+                document.getElementById("displayTotalPrice").innerText = "Please select both dates";
+            }
+        }
+    </script>
+
 </div>
