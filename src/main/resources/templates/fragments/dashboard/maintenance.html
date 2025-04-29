@@ -33,7 +33,7 @@
                     <td th:text="${#temporals.format(m.end, 'yyyy-MM-dd')}">2025-04-05</td>
                     <td th:text="${m.description}">Oil change</td>
                     <td class="text-end">
-                        <a th:href="@{/dashboard/employee/maintenance/edit/{id}(id=${m.maintenanceId})}"
+                        <a th:href="@{/dashboard/employee/maintenance/manage/{id}(id=${m.maintenanceId})}"
                            class="btn btn-sm btn-outline-secondary me-2">
                             <i class="bi bi-pencil"></i>
                         </a>

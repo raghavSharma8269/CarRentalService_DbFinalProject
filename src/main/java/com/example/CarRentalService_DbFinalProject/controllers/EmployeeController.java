@@ -5,6 +5,7 @@ import com.example.CarRentalService_DbFinalProject.model.repositories.VehicleRep
 import com.example.CarRentalService_DbFinalProject.services.employee.coupon.*;
 import com.example.CarRentalService_DbFinalProject.services.employee.maintenance.CreateMaintenanceService;
 import com.example.CarRentalService_DbFinalProject.services.employee.maintenance.GetAllMaintenanceService;
+import com.example.CarRentalService_DbFinalProject.services.employee.maintenance.GetMaintenanceViaIdService;
 import com.example.CarRentalService_DbFinalProject.services.employee.reservation.GetAllReservationsService;
 import com.example.CarRentalService_DbFinalProject.services.employee.vehicle.*;
 import com.example.CarRentalService_DbFinalProject.services.profile.GetProfileService;
@@ -37,6 +38,7 @@ public class EmployeeController {
     private final GetAllReservationsService getAllReservationsService;
     private final CreateMaintenanceService createMaintenanceService;
     private final GetAllMaintenanceService getAllMaintenanceService;
+    private final GetMaintenanceViaIdService getMaintenanceViaIdService;
 
     public EmployeeController(
             VehicleRepository vehicleRepository,
@@ -53,7 +55,8 @@ public class EmployeeController {
             GetProfileService getProfileService,
             GetAllReservationsService getAllReservationsService,
             CreateMaintenanceService createMaintenanceService,
-            GetAllMaintenanceService getAllMaintenanceService
+            GetAllMaintenanceService getAllMaintenanceService,
+            GetMaintenanceViaIdService getMaintenanceViaIdService
     ) {
         this.vehicleRepository = vehicleRepository;
         this.getAllVehicles = getAllVehicles;
@@ -70,6 +73,7 @@ public class EmployeeController {
         this.getAllReservationsService = getAllReservationsService;
         this.createMaintenanceService = createMaintenanceService;
         this.getAllMaintenanceService = getAllMaintenanceService;
+        this.getMaintenanceViaIdService = getMaintenanceViaIdService;
     }
 
 
@@ -210,6 +214,24 @@ public class EmployeeController {
         }
         return "redirect:/dashboard/employee/maintenance/add";
     }
+
+    // show the “Edit Maintenance” form
+    @GetMapping("/maintenance/manage/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
+    public String showMaintenanceManage(
+            Model model,
+            @PathVariable int id
+    ){
+        Maintenance maintenance = getMaintenanceViaIdService.execute(id).getBody();
+        List<Vehicle> vehicles = getAllVehicles.execute(null, null, null).getBody();
+
+        model.addAttribute("maintenance", maintenance);
+        model.addAttribute("vehicles", vehicles);
+        model.addAttribute("page", "maintenanceEdit");
+
+        return "/pages/user-dash";
+    }
+
 
 
 
