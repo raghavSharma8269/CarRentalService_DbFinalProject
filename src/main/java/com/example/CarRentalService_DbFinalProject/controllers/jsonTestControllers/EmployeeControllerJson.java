@@ -192,11 +192,11 @@ public class EmployeeControllerJson {
     }
 
 
-    @GetMapping("/maintenance")
-    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
-    public ResponseEntity<List<Maintenance>> getAllMaintenances(@RequestParam(required = false) String keyword) {
-        return getAllMaintenanceService.execute(keyword);
-    }
+//    @GetMapping("/maintenance")
+//    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
+//    public ResponseEntity<List<Maintenance>> getAllMaintenances(@RequestParam(required = false) String keyword) {
+//        return getAllMaintenanceService.execute(keyword);
+//    }
 
     @GetMapping("/maintenance/{maintenanceId}")
     @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")

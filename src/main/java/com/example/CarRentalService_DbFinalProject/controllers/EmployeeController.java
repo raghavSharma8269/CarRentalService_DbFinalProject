@@ -4,6 +4,7 @@ import com.example.CarRentalService_DbFinalProject.model.entities.*;
 import com.example.CarRentalService_DbFinalProject.model.repositories.VehicleRepository;
 import com.example.CarRentalService_DbFinalProject.services.employee.coupon.*;
 import com.example.CarRentalService_DbFinalProject.services.employee.maintenance.CreateMaintenanceService;
+import com.example.CarRentalService_DbFinalProject.services.employee.maintenance.GetAllMaintenanceService;
 import com.example.CarRentalService_DbFinalProject.services.employee.reservation.GetAllReservationsService;
 import com.example.CarRentalService_DbFinalProject.services.employee.vehicle.*;
 import com.example.CarRentalService_DbFinalProject.services.profile.GetProfileService;
@@ -35,6 +36,7 @@ public class EmployeeController {
     private final GetProfileService getProfileService;
     private final GetAllReservationsService getAllReservationsService;
     private final CreateMaintenanceService createMaintenanceService;
+    private final GetAllMaintenanceService getAllMaintenanceService;
 
     public EmployeeController(
             VehicleRepository vehicleRepository,
@@ -50,7 +52,8 @@ public class EmployeeController {
             DeleteCouponService deleteCouponService,
             GetProfileService getProfileService,
             GetAllReservationsService getAllReservationsService,
-            CreateMaintenanceService createMaintenanceService
+            CreateMaintenanceService createMaintenanceService,
+            GetAllMaintenanceService getAllMaintenanceService
     ) {
         this.vehicleRepository = vehicleRepository;
         this.getAllVehicles = getAllVehicles;
@@ -66,6 +69,7 @@ public class EmployeeController {
         this.getProfileService = getProfileService;
         this.getAllReservationsService = getAllReservationsService;
         this.createMaintenanceService = createMaintenanceService;
+        this.getAllMaintenanceService = getAllMaintenanceService;
     }
 
 
@@ -165,10 +169,16 @@ public class EmployeeController {
     // Maintenance Dashboard Page
     @GetMapping("/maintenance")
     @PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
-    public String maintenance(Model model) {
+    public String listMaintenance(
+            Model model,
+            @RequestParam(required = false) String keyword
+    ) {
+        List<Maintenance> maintenances = getAllMaintenanceService.execute(keyword);
+        model.addAttribute("maintenances", maintenances);
         model.addAttribute("page", "maintenance");
         return "/pages/user-dash";
     }
+
 
     @GetMapping("/maintenance/add")
     @PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")

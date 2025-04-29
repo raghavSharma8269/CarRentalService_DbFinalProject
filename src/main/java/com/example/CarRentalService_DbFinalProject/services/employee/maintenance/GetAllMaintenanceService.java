@@ -16,11 +16,9 @@ public class GetAllMaintenanceService {
         this.maintenanceRepository = maintenanceRepository;
     }
 
-    public ResponseEntity<List<Maintenance>> execute(String keyword) {
+    public List<Maintenance> execute(String keyword) {
 
-        List<Maintenance> maintenanceList = maintenanceRepository.searchByKeywordAndPrice(keyword);
-
-        return ResponseEntity.ok(maintenanceList);
+        return maintenanceRepository.searchByKeywordAndPrice(keyword);
 
     }
 }
