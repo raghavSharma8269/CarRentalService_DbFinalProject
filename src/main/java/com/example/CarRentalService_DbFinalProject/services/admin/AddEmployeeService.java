@@ -45,7 +45,7 @@ public class AddEmployeeService {
                 stmt.setString(2, passwordEncoder.encode(user.getPassword()));
                 stmt.setString(3, user.getEmail());
                 stmt.setString(4, user.getFullName());
-                stmt.setString(5, Roles.EMPLOYEE.name());
+                stmt.setString(5, user.getRole().toString());
 
                 stmt.executeUpdate();
 
