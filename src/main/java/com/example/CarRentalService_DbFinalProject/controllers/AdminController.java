@@ -104,4 +104,19 @@ public class AdminController {
         return "redirect:/dashboard/admin/accounts/manage/" + id;
     }
 
+    @PostMapping("/accounts/manage/delete/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String deleteUser(
+            @PathVariable int id,
+            RedirectAttributes redirectAttributes
+    ) {
+        try {
+            deleteUserService.execute(id);
+            redirectAttributes.addFlashAttribute("success", "User deleted successfully!");
+        } catch (Exception ex) {
+            redirectAttributes.addFlashAttribute("error", ex.getMessage());
+        }
+        return "redirect:/dashboard/admin/accounts";
+    }
+
 }

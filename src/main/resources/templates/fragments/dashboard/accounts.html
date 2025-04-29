@@ -35,14 +35,16 @@
           <td th:text="${user.email}">jdoe@example.com</td>
           <td th:text="${user.role}">EMPLOYEE</td>
           <td class="text-end">
-            <!-- delete form -->
-            <form th:action="@{/dashboard/admin/accounts/delete/{id}(id=${user.userId})}"
+
+
+            <!-- delete button -->
+            <form th:action="@{/dashboard/admin/accounts/manage/delete/{id}(id=${user.userId})}"
                   method="post"
                   style="display:inline-block;">
               <input type="hidden" name="_method" value="delete"/>
               <button type="submit"
                       class="btn btn-sm btn-outline-danger me-2"
-                      onclick="return confirm('Really delete this account?');">
+                      onclick="return confirm('Are you sure you want to delete this account?');">
                 <i class="bi bi-trash"></i>
               </button>
             </form>
