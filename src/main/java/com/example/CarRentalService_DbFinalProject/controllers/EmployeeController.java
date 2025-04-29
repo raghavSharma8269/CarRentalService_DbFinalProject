@@ -1,11 +1,9 @@
 package com.example.CarRentalService_DbFinalProject.controllers;
 
-import com.example.CarRentalService_DbFinalProject.model.entities.Coupon;
-import com.example.CarRentalService_DbFinalProject.model.entities.Users;
-import com.example.CarRentalService_DbFinalProject.model.entities.Reservation;
-import com.example.CarRentalService_DbFinalProject.model.entities.Vehicle;
+import com.example.CarRentalService_DbFinalProject.model.entities.*;
 import com.example.CarRentalService_DbFinalProject.model.repositories.VehicleRepository;
 import com.example.CarRentalService_DbFinalProject.services.employee.coupon.*;
+import com.example.CarRentalService_DbFinalProject.services.employee.maintenance.CreateMaintenanceService;
 import com.example.CarRentalService_DbFinalProject.services.employee.reservation.GetAllReservationsService;
 import com.example.CarRentalService_DbFinalProject.services.employee.vehicle.*;
 import com.example.CarRentalService_DbFinalProject.services.profile.GetProfileService;
@@ -36,6 +34,7 @@ public class EmployeeController {
     private final DeleteCouponService deleteCouponService;
     private final GetProfileService getProfileService;
     private final GetAllReservationsService getAllReservationsService;
+    private final CreateMaintenanceService createMaintenanceService;
 
     public EmployeeController(
             VehicleRepository vehicleRepository,
@@ -50,7 +49,8 @@ public class EmployeeController {
             GetCouponViaIdService getCouponViaIdService,
             DeleteCouponService deleteCouponService,
             GetProfileService getProfileService,
-            GetAllReservationsService getAllReservationsService
+            GetAllReservationsService getAllReservationsService,
+            CreateMaintenanceService createMaintenanceService
     ) {
         this.vehicleRepository = vehicleRepository;
         this.getAllVehicles = getAllVehicles;
@@ -65,6 +65,7 @@ public class EmployeeController {
         this.deleteCouponService = deleteCouponService;
         this.getProfileService = getProfileService;
         this.getAllReservationsService = getAllReservationsService;
+        this.createMaintenanceService = createMaintenanceService;
     }
 
 
@@ -168,6 +169,18 @@ public class EmployeeController {
         model.addAttribute("page", "maintenance");
         return "/pages/user-dash";
     }
+
+    @GetMapping("/maintenance/add")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
+    public String showAddMaintenance(Model model) {
+
+        Maintenance maintenance = new Maintenance();
+        model.addAttribute("maintenance", maintenance);
+        model.addAttribute("page", "addMaintenance");
+        return "/pages/user-dash";
+    }
+
+
 
     // Coupons Dashboard Page
     @GetMapping("/coupons")

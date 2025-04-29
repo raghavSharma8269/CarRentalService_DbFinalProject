@@ -74,6 +74,10 @@
             <div th:replace="~{fragments/dashboard/manage-user.html :: content}"></div>
         </div>
 
+        <div th:if="${page == 'addMaintenance'}">
+            <div th:replace="~{fragments/dashboard/add-maintenance :: content}"></div>
+        </div>
+
 
 
         <div th:unless="${
@@ -90,7 +94,8 @@
         page == 'addCoupon' or
         page == 'couponEdit' or
         page == 'addEmployee' or
-        page == 'accountEdit'
+        page == 'accountEdit' or
+        page == 'addMaintenance'
         }">
             <h2>404—Page Not Found</h2>
             <p>The section you're trying to access doesn't exist.</p>
