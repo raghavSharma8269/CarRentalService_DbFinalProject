@@ -186,6 +186,21 @@ public class EmployeeController {
         return "/pages/user-dash";
     }
 
+    @PostMapping("/maintenance/add")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
+    public String addMaintenance(
+            @ModelAttribute("maintenance") Maintenance maintenanceFormData,
+            RedirectAttributes redirectAttrs
+    ) {
+        try {
+            createMaintenanceService.execute(maintenanceFormData);
+            redirectAttrs.addFlashAttribute("success", "Maintenance added successfully!");
+        } catch (Exception ex) {
+            redirectAttrs.addFlashAttribute("error", ex.getMessage());
+        }
+        return "redirect:/dashboard/employee/maintenance/add";
+    }
+
 
 
     // Coupons Dashboard Page

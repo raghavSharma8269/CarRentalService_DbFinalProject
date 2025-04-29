@@ -22,9 +22,10 @@ public class CreateMaintenanceService {
 
     public ResponseEntity<String> execute (Maintenance maintenance) {
 
+        System.out.println("CURRENT MAINTENANCE: " + maintenance);
+
         // Validates the maintenance
         MaintenanceValidation.validate(maintenance);
-
 
         // Adds maintenance to the database
         String sql = "INSERT INTO maintenance (vehicle_id, start, end, description) VALUES (?, ?, ?, ?)";
