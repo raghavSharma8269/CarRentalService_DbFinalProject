@@ -139,7 +139,7 @@ public class EmployeeController {
             Vehicle vehicle = vehicleOpt.get();
 
             // Retrieve the current user from getProfileService, passing thought the user's name from principal
-            Users user = getProfileService.execute(principal.getName()); // TODO: CHECK AFTER
+            Users user = getProfileService.findByUsername(principal.getName()); // TODO: CHECK AFTER
 
             // Create a new Reservation and preset the user and vehicle objects
             Reservation reservation = new Reservation();
