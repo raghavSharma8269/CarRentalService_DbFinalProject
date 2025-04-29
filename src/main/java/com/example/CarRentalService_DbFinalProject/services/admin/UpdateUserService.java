@@ -3,6 +3,7 @@ package com.example.CarRentalService_DbFinalProject.services.admin;
 import com.example.CarRentalService_DbFinalProject.errorHandling.validations.UserValidation;
 import com.example.CarRentalService_DbFinalProject.errorHandling.validations.Username_Email_Availability;
 import com.example.CarRentalService_DbFinalProject.model.entities.Users;
+import com.example.CarRentalService_DbFinalProject.model.repositories.UserRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -15,20 +16,38 @@ import java.sql.SQLException;
 public class UpdateUserService {
 
     private final DataSource dataSource;
-    private final Username_Email_Availability username_email_availability;
+    private final Username_Email_Availability usernameEmailAvailability;
+    private final UserRepository userRepository;
 
-    public UpdateUserService(DataSource dataSource, Username_Email_Availability usernameEmailAvailability) {
+    public UpdateUserService(
+            DataSource dataSource,
+            Username_Email_Availability usernameEmailAvailability,
+            UserRepository userRepository
+    ) {
         this.dataSource = dataSource;
-        username_email_availability = usernameEmailAvailability;
+        this.usernameEmailAvailability = usernameEmailAvailability;
+        this.userRepository = userRepository;
     }
 
     public ResponseEntity<String> execute(Users updatedUser, int userId) {
+        Users existing = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
-        //checks if the email/username is taken
-        username_email_availability.execute(updatedUser);
+        if (!updatedUser.getUserName().equals(existing.getUserName())) {
+            usernameEmailAvailability.execute(updatedUser);
+            existing.setUserName(updatedUser.getUserName());
+        }
 
-        // Validate incoming data
-        UserValidation.execute(updatedUser);
+        if (!updatedUser.getEmail().equals(existing.getEmail())) {
+            usernameEmailAvailability.execute(updatedUser);
+            existing.setEmail(updatedUser.getEmail());
+        }
+
+        existing.setFullName(updatedUser.getFullName());
+
+        existing.setRole(updatedUser.getRole());
+
+        UserValidation.execute(existing);
 
         String sql = """
             UPDATE users
@@ -42,16 +61,14 @@ public class UpdateUserService {
         try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setString(1, updatedUser.getFullName());
-            stmt.setString(2, updatedUser.getEmail());
-            stmt.setString(3, updatedUser.getRole().name());
-            stmt.setString(4, updatedUser.getUserName());
+            stmt.setString(1, existing.getFullName());
+            stmt.setString(2, existing.getEmail());
+            stmt.setString(3, existing.getRole().name());
+            stmt.setString(4, existing.getUserName());
             stmt.setInt(5, userId);
 
-           stmt.executeUpdate();
-
+            stmt.executeUpdate();
             return ResponseEntity.ok("User updated successfully");
-
         } catch (SQLException e) {
             throw new RuntimeException("Error updating user: " + e.getMessage(), e);
         }
