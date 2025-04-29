@@ -21,8 +21,8 @@ public class DashboardController {
 
     @GetMapping
     public String dashboard(Principal principal, Model model) {
-        // load the currently-logged-in user
-        Users user = getProfileService.execute(principal.getName());
+        // Loads the currently logged-in user
+        Users user = getProfileService.findByUsername(principal.getName());
         model.addAttribute("user", user);
 
         model.addAttribute("page", "dashboard");

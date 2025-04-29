@@ -1,16 +1,21 @@
 package com.example.CarRentalService_DbFinalProject.controllers;
 
 import com.example.CarRentalService_DbFinalProject.model.entities.Coupon;
+import com.example.CarRentalService_DbFinalProject.model.entities.Users;
+import com.example.CarRentalService_DbFinalProject.model.entities.Reservation;
 import com.example.CarRentalService_DbFinalProject.model.entities.Vehicle;
 import com.example.CarRentalService_DbFinalProject.model.repositories.VehicleRepository;
 import com.example.CarRentalService_DbFinalProject.services.employee.coupon.*;
+import com.example.CarRentalService_DbFinalProject.services.employee.reservation.GetAllReservationsService;
 import com.example.CarRentalService_DbFinalProject.services.employee.vehicle.*;
+import com.example.CarRentalService_DbFinalProject.services.profile.GetProfileService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,6 +34,8 @@ public class EmployeeController {
     public final UpdateCouponService updateCouponService;
     private final GetCouponViaIdService getCouponViaIdService;
     private final DeleteCouponService deleteCouponService;
+    private final GetProfileService getProfileService;
+    private final GetAllReservationsService getAllReservationsService;
 
     public EmployeeController(
             VehicleRepository vehicleRepository,
@@ -40,7 +47,10 @@ public class EmployeeController {
             GetCouponsService getCouponsService,
             CreateCouponService createCouponService,
             UpdateCouponService updateCouponService,
-            GetCouponViaIdService getCouponViaIdService, DeleteCouponService deleteCouponService
+            GetCouponViaIdService getCouponViaIdService,
+            DeleteCouponService deleteCouponService,
+            GetProfileService getProfileService,
+            GetAllReservationsService getAllReservationsService
     ) {
         this.vehicleRepository = vehicleRepository;
         this.getAllVehicles = getAllVehicles;
@@ -53,6 +63,8 @@ public class EmployeeController {
         this.updateCouponService = updateCouponService;
         this.getCouponViaIdService = getCouponViaIdService;
         this.deleteCouponService = deleteCouponService;
+        this.getProfileService = getProfileService;
+        this.getAllReservationsService = getAllReservationsService;
     }
 
 
@@ -60,7 +72,19 @@ public class EmployeeController {
     @GetMapping("/reservations")
     @PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
     public String reservations(Model model) {
+        // fetch all reservations
+        List<Reservation> reservations = getAllReservationsService
+                .execute(null) // null keyword to fetch all reservations
+                .getBody();
+
+        // Add the reservations to the model
+        model.addAttribute("reservations", reservations);
+
+        System.out.println("reservations: " + reservations);
+
+        // Set the page attribute to reservations for rendering
         model.addAttribute("page", "reservations");
+
         return "/pages/user-dash";
     }
 
@@ -107,19 +131,33 @@ public class EmployeeController {
     // Load the checkout page when you click on a 'Rent Now' button
     @GetMapping("/checkout/{id}")
     @PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
-    public String showCheckout(@PathVariable int id, Model model) {
+    public String showCheckout(@PathVariable int id, Model model, Principal principal) {
+        Optional<Vehicle> vehicleOpt = vehicleRepository.findById(id);
 
         // Check for the vehicle in the database
-        Optional<Vehicle> vehicle = vehicleRepository.findById(id);
+        if (vehicleOpt.isPresent()) {
+            Vehicle vehicle = vehicleOpt.get();
 
-        model.addAttribute("page", "vehicleCheckout");
+            // Retrieve the current user from getProfileService, passing thought the user's name from principal
+            Users user = getProfileService.execute(principal.getName()); // TODO: CHECK AFTER
 
-        if (vehicle.isPresent()) {
-            model.addAttribute("vehicle", vehicle.get());
+            // Create a new Reservation and preset the user and vehicle objects
+            Reservation reservation = new Reservation();
+            reservation.setUser(user);
+            reservation.setVehicleId(vehicle);
+
+            // Debugging
+            System.out.println("Current Reservation: " + reservation);
+
+            // Add reservation, vehicle, and rendering page to the model
+            model.addAttribute("reservationCheckoutForm", reservation);
+            model.addAttribute("vehicle", vehicle);
+            model.addAttribute("page", "vehicleCheckout");
+
             return "/pages/user-dash";
         } else {
             model.addAttribute("message", "Vehicle not found.");
-            return "redirect:/api/dashboard/vehicles"; // Redirect to the vehicle page if not found
+            return "redirect:/api/dashboard/vehicles";
         }
     }
 
@@ -174,9 +212,6 @@ public class EmployeeController {
         return "redirect:/dashboard/employee/coupons/add";
     }
 
-
-
-
     // Show the “Edit Coupon” form
     @GetMapping("/coupons/manage/{id}")
     @PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
@@ -217,12 +252,6 @@ public class EmployeeController {
         }
         return "redirect:/dashboard/employee/coupons";
     }
-
-
-
-
-
-
 
     // Show the “Edit Vehicle” form
     @GetMapping("/vehicles/manage/{id}")
@@ -265,21 +294,26 @@ public class EmployeeController {
         return "redirect:/dashboard/employee/vehicles";
     }
 
-
     // Show the “Add Vehicle” form
     @GetMapping("/vehicles/add")
     @PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
     public String showAddVehiclePage (Model model) {
+        // Create a new Vehicle object to bind to the form
         Vehicle vehicle = new Vehicle();
+
+        // Add the vehicle object to the model
         model.addAttribute("vehicle", vehicle);
+
+        // Set the page attribute to addVehicle for rendering
         model.addAttribute("page", "addVehicle");
         return "pages/user-dash";
     }
 
-    // Process the add vehicle form
+    // Call AddVehicleService to add a vehicle into the database
     @PostMapping("/vehicles/add")
     @PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
     public String addVehicle(
+            // RedirectAttribute is used to pass flash attributes (temporary data) to the redirected page (Such as success/error messages)
             @ModelAttribute("vehicle") Vehicle vehicleFormData,
             RedirectAttributes redirectAttrs
     ) {
@@ -291,8 +325,5 @@ public class EmployeeController {
         }
         return "redirect:/dashboard/employee/vehicles/add";
     }
-
-
-
 
 }

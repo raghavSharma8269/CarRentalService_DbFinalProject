@@ -34,31 +34,13 @@
                         <div class="row mb-3">
                             <!-- Pick Up Section -->
                             <div class="col-md-6">
-                                <label class="form-label">Pick-Up</label>
-                                <select class="form-select mb-2">
-                                    <option value="">Select a city</option>
-                                    <option value="New York, NY">New York</option>
-                                    <option value="Los Angeles, CA">Los Angeles</option>
-                                    <option value="Chicago, IL">Chicago</option>
-                                    <option value="Houston, TX">Houston</option>
-                                    <option value="Miami, FL">Miami</option>
-                                    <option value="Seattle, WA">Seattle</option>
-                                </select>
+                                <label class="form-label">Pick-Up Date</label>
                                 <input type="date" class="form-control mb-2">
                                 <input type="time" class="form-control">
                             </div>
                             <!-- Drop Off Section -->
                             <div class="col-md-6">
-                                <label class="form-label">Drop-Off</label>
-                                <select class="form-select mb-2">
-                                    <option value="">Select a city</option>
-                                    <option value="New York, NY">New York</option>
-                                    <option value="Los Angeles, CA">Los Angeles</option>
-                                    <option value="Chicago, IL">Chicago</option>
-                                    <option value="Houston, TX">Houston</option>
-                                    <option value="Miami, FL">Miami</option>
-                                    <option value="Seattle, WA">Seattle</option>
-                                </select>
+                                <label class="form-label">Drop-Off Date</label>
                                 <input type="date" class="form-control mb-2">
                                 <input type="time" class="form-control">
                             </div>
@@ -85,23 +67,27 @@
                 <!-- Card Header -->
                 <div class="card-header">
                     <h5 class="mb-0">Recent Reservations</h5>
-                    <a th:href="@{/view-all}">View All</a>
+                    <!--<a th:href="@{/view-all}">View All</a>-->
                 </div>
 
                 <!-- Card Body: List of Vehicles -->
                 <ul class="list-group list-group-flush">
                     <!-- Placeholder for vehicle -->
-                    <li class="list-group-item d-flex justify-content-between">
+                    <li class="list-group-item d-flex justify-content-between"
+                        th:each="reservation : ${reservations}"
+                        style="cursor: pointer;">
+
                         <div class="d-flex align-items-center">
-                            <img th:src="@{/images/DefaultCar.png}" alt="Car Image" class="me-3" style="width: 50px;">
+                            <img th:src="@{${reservation.vehicleId.imageUrl}}" alt="Car Image" class="img-fluid rounded me-3" style="width: 30%; max-width: 100px;">
                             <div>
-                                <div>Nissan GT-R</div>
-                                <small class="text-muted">Sport Car</small>
+                                <div th:text="${reservation.vehicleId.make + ' ' + reservation.vehicleId.model}">Car Name</div>
+                                <small class="text-muted" th:text="${reservation.user.fullName}">User's Full Name</small>
                             </div>
                         </div>
+
                         <div class="text-end">
-                            <div class="small text-muted">20 July</div>
-                            <div>$80.00</div>
+                            <div class="small text-muted" th:text="${#temporals.format(reservation.start, 'dd MMM yyyy')}">20 July</div>
+                            <div><strong th:text="'$' + ${reservation.totalPrice}">$80.00</strong></div>
                         </div>
                     </li>
                 </ul>

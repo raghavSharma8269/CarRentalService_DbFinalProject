@@ -25,7 +25,7 @@ public class ProfileController {
     public String profileForm(Principal principal, Model model,
                               @RequestParam(value="success", required=false) Boolean success) {
         String username = principal.getName();
-        Users user = getProfileService.execute(username);
+        Users user = getProfileService.findByUsername(username);
         model.addAttribute("user", user);
         if (Boolean.TRUE.equals(success)) {
             model.addAttribute("success", true);
