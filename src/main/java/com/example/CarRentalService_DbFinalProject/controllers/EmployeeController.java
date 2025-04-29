@@ -172,10 +172,16 @@ public class EmployeeController {
 
     @GetMapping("/maintenance/add")
     @PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
-    public String showAddMaintenance(Model model) {
-
+    public String showAddMaintenance(
+            Model model,
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) Double minPrice
+    ) {
         Maintenance maintenance = new Maintenance();
+        List<Vehicle> vehicles = getAllVehicles.execute(null, null, null).getBody();
+
         model.addAttribute("maintenance", maintenance);
+        model.addAttribute("vehicles", vehicles);
         model.addAttribute("page", "addMaintenance");
         return "/pages/user-dash";
     }
