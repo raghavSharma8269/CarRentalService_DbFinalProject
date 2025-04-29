@@ -84,6 +84,23 @@
             </div>
         </form>
 
+        <!-- Maintenance search (only employee) -->
+        <form th:if="${page=='maintenance'}"
+              class="flex-grow-1 me-4"
+              th:action="@{/dashboard/employee/maintenance}"
+              method="get" role="search">
+            <div class="input-group">
+        <span class="input-group-text bg-white border-end-0">
+          <i class="bi bi-search"></i>
+        </span>
+                <input type="search" name="keyword"
+                       class="form-control border-start-0 rounded-end"
+                       placeholder="Search maintenances…"
+                       aria-label="Search"
+                       th:value="${keyword}">
+            </div>
+        </form>
+
         <!-- Accounts search (only admin) -->
         <form th:if="${page=='accounts'}"
               class="flex-grow-1 me-4"
