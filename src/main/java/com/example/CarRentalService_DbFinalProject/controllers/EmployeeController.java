@@ -6,6 +6,7 @@ import com.example.CarRentalService_DbFinalProject.services.employee.coupon.*;
 import com.example.CarRentalService_DbFinalProject.services.employee.maintenance.CreateMaintenanceService;
 import com.example.CarRentalService_DbFinalProject.services.employee.maintenance.GetAllMaintenanceService;
 import com.example.CarRentalService_DbFinalProject.services.employee.maintenance.GetMaintenanceViaIdService;
+import com.example.CarRentalService_DbFinalProject.services.employee.maintenance.UpdateMaintenanceService;
 import com.example.CarRentalService_DbFinalProject.services.employee.reservation.GetAllReservationsService;
 import com.example.CarRentalService_DbFinalProject.services.employee.vehicle.*;
 import com.example.CarRentalService_DbFinalProject.services.profile.GetProfileService;
@@ -39,6 +40,7 @@ public class EmployeeController {
     private final CreateMaintenanceService createMaintenanceService;
     private final GetAllMaintenanceService getAllMaintenanceService;
     private final GetMaintenanceViaIdService getMaintenanceViaIdService;
+    private final UpdateMaintenanceService updateMaintenanceService;
 
     public EmployeeController(
             VehicleRepository vehicleRepository,
@@ -56,7 +58,8 @@ public class EmployeeController {
             GetAllReservationsService getAllReservationsService,
             CreateMaintenanceService createMaintenanceService,
             GetAllMaintenanceService getAllMaintenanceService,
-            GetMaintenanceViaIdService getMaintenanceViaIdService
+            GetMaintenanceViaIdService getMaintenanceViaIdService,
+            UpdateMaintenanceService updateMaintenanceService
     ) {
         this.vehicleRepository = vehicleRepository;
         this.getAllVehicles = getAllVehicles;
@@ -74,6 +77,7 @@ public class EmployeeController {
         this.createMaintenanceService = createMaintenanceService;
         this.getAllMaintenanceService = getAllMaintenanceService;
         this.getMaintenanceViaIdService = getMaintenanceViaIdService;
+        this.updateMaintenanceService = updateMaintenanceService;
     }
 
 
@@ -231,6 +235,30 @@ public class EmployeeController {
 
         return "/pages/user-dash";
     }
+
+    // Process the edit maintenance form
+    @PostMapping("/maintenance/manage/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
+    public String updateMaintenance(
+            @PathVariable int id,
+            @ModelAttribute("maintenance") Maintenance maintenanceForm,
+            RedirectAttributes redirectAttributes
+    ) {
+        // Ensure the path‐variable id is set on the form object
+        maintenanceForm.setMaintenanceId(id);
+        try {
+            // Call your service to perform the update (using raw SQL or JPA)
+            updateMaintenanceService.execute(maintenanceForm, id);
+            redirectAttributes.addFlashAttribute("success", "Maintenance updated successfully!");
+            // Redirect back to the list view
+            return "redirect:/dashboard/employee/maintenance";
+        } catch (Exception ex) {
+            // On error, flash and stay on the edit page
+            redirectAttributes.addFlashAttribute("error", ex.getMessage());
+            return "redirect:/dashboard/employee/maintenance/manage/" + id;
+        }
+    }
+
 
 
 

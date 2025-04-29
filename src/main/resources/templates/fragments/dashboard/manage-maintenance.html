@@ -2,8 +2,8 @@
 <div th:fragment="content"
      xmlns:th="http://www.thymeleaf.org">
     <div class="container py-5">
-        <h2 class="mb-4">Manage Maintenance</h2>
-        <form th:action="@{/dashboard/employee/maintenance/edit/{id}(id=${maintenance.maintenanceId})}"
+        <h2 class="mb-4">ManageO Maintenance</h2>
+        <form th:action="@{/dashboard/employee/maintenance/manage/{id}(id=${maintenance.maintenanceId})}"
               th:object="${maintenance}"
               method="post">
             <div class="row g-3">
