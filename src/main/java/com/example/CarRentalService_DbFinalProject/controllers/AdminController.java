@@ -1,8 +1,7 @@
 package com.example.CarRentalService_DbFinalProject.controllers;
 
 import com.example.CarRentalService_DbFinalProject.model.entities.Users;
-import com.example.CarRentalService_DbFinalProject.services.admin.AddEmployeeService;
-import com.example.CarRentalService_DbFinalProject.services.admin.GetAllUsersService;
+import com.example.CarRentalService_DbFinalProject.services.admin.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,17 +16,26 @@ public class AdminController {
 
     private final GetAllUsersService getAllUsersService;
     private final AddEmployeeService addEmployeeService;
+    private final DeleteUserService deleteUserService;
+    private final UpdateUserService updateUserService;
+    private final GetUserViaIdService getUserViaIdService;
 
     public AdminController(
             GetAllUsersService getAllUsersService,
-                           AddEmployeeService addEmployeeService
+            AddEmployeeService addEmployeeService,
+            DeleteUserService deleteUserService,
+            UpdateUserService updateUserService,
+            GetUserViaIdService getUserViaIdService
     ) {
         this.getAllUsersService = getAllUsersService;
         this.addEmployeeService = addEmployeeService;
+        this.deleteUserService = deleteUserService;
+        this.updateUserService = updateUserService;
+        this.getUserViaIdService = getUserViaIdService;
     }
 
 
-    // Account Management Dashboard Page
+    // show all accounts page
     @GetMapping("/accounts")
     @PreAuthorize("hasRole('ADMIN')")
     public String showAccounts(
@@ -41,6 +49,7 @@ public class AdminController {
         return "/pages/user-dash";
     }
 
+    // show add employee page
     @GetMapping("/accounts/add-employee")
     @PreAuthorize("hasRole('ADMIN')")
     public String showAddEmployee(Model model) {
@@ -49,7 +58,7 @@ public class AdminController {
         return "/pages/user-dash";
     }
 
-
+    //Add user (not just employee)
     @PostMapping("/accounts/add-employee")
     @PreAuthorize("hasRole('ADMIN')")
     public String addEmployee(
@@ -65,5 +74,34 @@ public class AdminController {
         return "redirect:/dashboard/admin/accounts/add-employee";
     }
 
+    @GetMapping("/accounts/manage/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String showManageAccounts(@PathVariable int id, Model model) {
+
+        Users user = getUserViaIdService.execute(id).getBody();
+        model.addAttribute("user", user);
+        model.addAttribute("page", "accountEdit");
+        return "/pages/user-dash";
+    }
+
+    @PostMapping("/accounts/manage/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String manageAccounts(
+            @PathVariable int id,
+            @ModelAttribute("user") Users user,
+            RedirectAttributes redirectAttributes
+    )
+    {
+        user.setUserId(id);
+
+        try {
+            updateUserService.execute(user, id);
+            redirectAttributes.addFlashAttribute("success", "User updated successfully!");
+        } catch (Exception ex) {
+            redirectAttributes.addFlashAttribute("error", ex.getMessage());
+        }
+
+        return "redirect:/dashboard/admin/accounts/manage/" + id;
+    }
 
 }

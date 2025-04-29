@@ -66,9 +66,9 @@
           <select id="role"
                   th:field="*{role}"
                   class="form-select">
-            <option value="ADMIN">CUSTOMER</option>
+            <option value="CUSTOMER">CUSTOMER</option>
             <option value="EMPLOYEE">EMPLOYEE</option>
-            <option value="CUSTOMER">ADMIN</option>
+            <option value="ADMIN">ADMIN</option>
           </select>
           <div class="text-danger mt-1"
                th:if="${#fields.hasErrors('role')}"

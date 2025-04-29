@@ -278,6 +278,7 @@ public class EmployeeController {
 
     // Process the add vehicle form
     @PostMapping("/vehicles/add")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
     public String addVehicle(
             @ModelAttribute("vehicle") Vehicle vehicleFormData,
             RedirectAttributes redirectAttrs
