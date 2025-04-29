@@ -4,6 +4,7 @@ import com.example.CarRentalService_DbFinalProject.model.entities.Reservation;
 import com.example.CarRentalService_DbFinalProject.model.entities.Users;
 import com.example.CarRentalService_DbFinalProject.model.entities.Vehicle;
 import com.example.CarRentalService_DbFinalProject.model.repositories.VehicleRepository;
+import com.example.CarRentalService_DbFinalProject.services.employee.reservation.GetAllReservationsService;
 import com.example.CarRentalService_DbFinalProject.services.employee.vehicle.*;
 import com.example.CarRentalService_DbFinalProject.services.profile.GetProfileService;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -27,12 +28,13 @@ public class EmployeeController {
     private final AddVehicleService addVehicleService;
     private final DeleteVehicleService deleteVehicleService;
     private final GetProfileService getProfileService;
+    private final GetAllReservationsService getAllReservationsService;
 
     public EmployeeController(
             VehicleRepository vehicleRepository,
             GetAllVehicles getAllVehicles,
             GetVehicleViaIdService getVehicleViaIdService,
-            UpdateVehicleService updateVehicleService, AddVehicleService addVehicleService, DeleteVehicleService deleteVehicleService, GetProfileService getProfileService
+            UpdateVehicleService updateVehicleService, AddVehicleService addVehicleService, DeleteVehicleService deleteVehicleService, GetProfileService getProfileService, GetAllReservationsService getAllReservationsService
     ) {
         this.vehicleRepository = vehicleRepository;
         this.getAllVehicles = getAllVehicles;
@@ -41,6 +43,7 @@ public class EmployeeController {
         this.addVehicleService = addVehicleService;
         this.deleteVehicleService = deleteVehicleService;
         this.getProfileService = getProfileService;
+        this.getAllReservationsService = getAllReservationsService;
     }
 
 
@@ -48,7 +51,19 @@ public class EmployeeController {
     @GetMapping("/reservations")
     @PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
     public String reservations(Model model) {
+        // fetch all reservations
+        List<Reservation> reservations = getAllReservationsService
+                .execute(null) // null keyword to fetch all reservations
+                .getBody();
+
+        // Add the reservations to the model
+        model.addAttribute("reservations", reservations);
+
+        System.out.println("reservations: " + reservations);
+
+        // Set the page attribute to reservations for rendering
         model.addAttribute("page", "reservations");
+
         return "/pages/user-dash";
     }
 

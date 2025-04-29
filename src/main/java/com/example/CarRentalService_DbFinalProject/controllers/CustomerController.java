@@ -6,6 +6,7 @@ import com.example.CarRentalService_DbFinalProject.model.entities.Vehicle;
 import com.example.CarRentalService_DbFinalProject.model.repositories.VehicleRepository;
 import com.example.CarRentalService_DbFinalProject.services.customer.CreateReservationService;
 import com.example.CarRentalService_DbFinalProject.services.customer.GetAllAvailableVehiclesService;
+import com.example.CarRentalService_DbFinalProject.services.customer.GetReservationsService;
 import com.example.CarRentalService_DbFinalProject.services.profile.GetProfileService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,18 +25,29 @@ public class CustomerController {
     private final GetAllAvailableVehiclesService getAllAvailableVehiclesService;
     private final GetProfileService getProfileService;
     private final CreateReservationService createReservationService;
+    private final GetReservationsService getReservationsService;
 
-    public CustomerController(VehicleRepository vehicleRepository, GetAllAvailableVehiclesService getAllAvailableVehiclesService, GetProfileService getProfileService, CreateReservationService createReservationService) {
+    public CustomerController(VehicleRepository vehicleRepository, GetAllAvailableVehiclesService getAllAvailableVehiclesService, GetProfileService getProfileService, CreateReservationService createReservationService, GetReservationsService getReservationsService) {
         this.vehicleRepository = vehicleRepository;
         this.getAllAvailableVehiclesService = getAllAvailableVehiclesService;
         this.getProfileService = getProfileService;
         this.createReservationService = createReservationService;
+        this.getReservationsService = getReservationsService;
     }
 
 
     // Reservation Dashboard Page
     @GetMapping("/reservations")
     public String reservations(Model model) {
+        // Fetch all reservations
+        List<Reservation> reservations = getReservationsService
+                .execute(null) // null keyword to fetch all reservations
+                .getBody();
+
+        // Add the reservations to the model
+        model.addAttribute("reservations", reservations);
+
+        // Set the page attribute to reservations for rendering
         model.addAttribute("page", "reservations");
         return "/pages/user-dash";
     }
