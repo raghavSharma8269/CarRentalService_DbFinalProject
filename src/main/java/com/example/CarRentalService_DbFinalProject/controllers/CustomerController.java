@@ -35,7 +35,6 @@ public class CustomerController {
         this.getReservationsService = getReservationsService;
     }
 
-
     // Reservation Dashboard Page
     @GetMapping("/reservations")
     public String reservations(Model model) {

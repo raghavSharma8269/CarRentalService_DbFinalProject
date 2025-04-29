@@ -255,7 +255,6 @@ public class EmployeeController {
         }
     }
 
-
     // Process the delete maintenance form
     @PostMapping("/maintenance/delete/{id}")
     @PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
@@ -271,9 +270,6 @@ public class EmployeeController {
         }
         return "redirect:/dashboard/employee/maintenance";
     }
-
-
-
 
     // Coupons Dashboard Page
     @GetMapping("/coupons")

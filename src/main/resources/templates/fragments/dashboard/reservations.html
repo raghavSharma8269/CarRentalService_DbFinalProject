@@ -13,20 +13,21 @@
 
                 <!-- Card Body -->
                 <div class="card-body">
-                    <!-- Placeholder for map -->
-                    <div class="map-placeholder mb-4">
 
+                    <!-- Placeholder for Vehicle Image -->
+                    <div class="image-placeholder mb-3">
+                        <img id="vehicleImage" th:src="@{/images/DefaultCar.png}" alt="Car Image" class="img-fluid rounded-3 me-3" style="width: 100%;">
                     </div>
 
                     <!-- Car Info + Form -->
                     <div class="d-flex align-items-center mb-4">
-                        <img th:src="@{/images/DefaultCar.png}" alt="Car Image" class="me-3" style="width: 60px;">
+                        <!-- Vehicle Details -->
                         <div>
-                            <h5 class="mb-1">
+                            <h5 id="vehicleName" class="mb-1">
                                 Nissan GT-R
-                                <span class="ms-1 text-muted">#2007</span>
+                                <span id="vehiclePlate" class="ms-1 text-muted">ABC123</span>
                             </h5>
-                            <p class="text-muted mb-0">Sport Car</p>
+                            <p id="reservationUser" class="text-muted mb-0">User's name</p>
                         </div>
                     </div>
 
@@ -35,14 +36,12 @@
                             <!-- Pick Up Section -->
                             <div class="col-md-6">
                                 <label class="form-label">Pick-Up Date</label>
-                                <input type="date" class="form-control mb-2">
-                                <input type="time" class="form-control">
+                                <input id="start" type="datetime-local" class="form-control mb-2">
                             </div>
-                            <!-- Drop Off Section -->
+                            <!-- Drop-Off Section -->
                             <div class="col-md-6">
                                 <label class="form-label">Drop-Off Date</label>
-                                <input type="date" class="form-control mb-2">
-                                <input type="time" class="form-control">
+                                <input id="end" type="datetime-local" class="form-control mb-2">
                             </div>
                         </div>
                     </form>
@@ -53,7 +52,7 @@
                             <h6 class="mb-0">Total Rental Price</h6>
                             <small class="text-muted">Overall Price</small>
                         </div>
-                        <h4 class="mb-0">$80.00</h4>
+                        <h4 id="totalPrice" class="mb-0">$80.00</h4>
                     </div>
 
                 </div>
@@ -72,11 +71,20 @@
 
                 <!-- Card Body: List of Vehicles -->
                 <ul class="list-group list-group-flush">
-                    <!-- Placeholder for vehicle -->
+                    <!-- Store reservation details to be dynamically loaded in column 1 -->
                     <li class="list-group-item d-flex justify-content-between"
                         th:each="reservation : ${reservations}"
-                        style="cursor: pointer;">
+                        style="cursor: pointer;"
+                        th:data-reservation-id="${reservation.reservationId}"
+                        th:data-reservation-user="${reservation.user.fullName}"
+                        th:data-vehicle-image="${reservation.vehicleId.imageUrl}"
+                        th:data-vehicle-name="${reservation.vehicleId.make + ' ' + reservation.vehicleId.model}"
+                        th:data-vehicle-plate="${reservation.vehicleId.licensePlate}"
+                        th:data-reservation-start="${reservation.start}"
+                        th:data-reservation-end="${reservation.end}"
+                        th:data-reservation-total-price="${reservation.totalPrice}">
 
+                        <!-- Load reservation in lists of reservations -->
                         <div class="d-flex align-items-center">
                             <img th:src="@{${reservation.vehicleId.imageUrl}}" alt="Car Image" class="img-fluid rounded me-3" style="width: 30%; max-width: 100px;">
                             <div>
@@ -95,4 +103,47 @@
         </div>
 
     </div>
+
+    <!-- JavaScript to handle reservation click event -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Get all reservation items that are clickable
+            const reservationItems = document.querySelectorAll('.list-group-item');
+
+            reservationItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    // Get reservation details from data attributes loaded by Thymeleaf
+                    const reservationId = item.getAttribute('data-reservation-id');
+                    const reservationUser = item.getAttribute('data-reservation-user');
+                    const vehicleImage = item.getAttribute('data-vehicle-image');
+                    const vehicleName = item.getAttribute('data-vehicle-name');
+                    const vehiclePlate = item.getAttribute('data-vehicle-plate');
+                    const reservationStart = item.getAttribute('data-reservation-start');
+                    const reservationEnd = item.getAttribute('data-reservation-end');
+                    const reservationTotalPrice = item.getAttribute('data-reservation-total-price');
+
+                    console.log(reservationUser, vehiclePlate);
+
+                    // Load reservation details into column 1
+                    document.getElementById('vehicleImage').src = vehicleImage;
+                    document.getElementById('vehicleName').innerText = vehicleName;
+                    document.getElementById('vehiclePlate').innerText = vehiclePlate;
+                    document.getElementById('reservationUser').innerText = reservationUser;
+
+                    // Format datetime-local inputs (Format: YYYY-MM-DDTHH:MM)
+                    const formatDateTime = (isoString) => {
+                        const date = new Date(isoString);
+                        const padding = (num) => num.toString().padStart(2, '0');
+                        return `${date.getFullYear()}-${padding(date.getMonth() + 1)}-${padding(date.getDate())}T${padding(date.getHours())}:${padding(date.getMinutes())}`;
+                    }
+
+                    document.getElementById('start').value = formatDateTime(reservationStart);
+                    document.getElementById('end').value = formatDateTime(reservationEnd);
+                    document.getElementById('totalPrice').innerText = `$${reservationTotalPrice}`;
+
+                })
+            })
+        })
+    </script>
+
 </div>
