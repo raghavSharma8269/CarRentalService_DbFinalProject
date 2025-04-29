@@ -23,6 +23,8 @@ public class AddVehicleService {
         // Validate  vehicle
         VehicleValidation.execute(vehicle);
 
+
+        // SQL query to insert the vehicle
         String sql = "INSERT INTO vehicle " +
                 "(make, model, year, license_plate, price_per_day, availability, description, image_url) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";

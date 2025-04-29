@@ -1,0 +1,62 @@
+
+<!-- Vehicle Card Page Fragment -->
+<div th:fragment="content" class="bg-light" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+  <div class="container py-5">
+    <div class="row">
+      <!-- Vehicle Image & Gallery -->
+      <div class="col-md-6">
+        <div class="card shadow-sm">
+          <img th:src="${vehicle.imageUrl}" class="card-img-top" alt="Vehicle Image">
+          <div class="card-body">
+            <h4 class="card-title text-primary" th:text="${vehicle.make + ' ' + vehicle.model}"></h4>
+            <p class="card-text" th:text="${vehicle.description}">Description here</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vehicle Details -->
+      <div class="col-md-6">
+        <div class="card p-3 shadow-sm">
+          <h5 class="mb-3">Vehicle Information</h5>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <strong>Year:</strong> <span th:text="${vehicle.year}"></span>
+            </li>
+            <li class="list-group-item">
+              <strong>License Plate:</strong> <span th:text="${vehicle.licensePlate}"></span>
+            </li>
+            <li class="list-group-item">
+              <strong>Price Per Day:</strong> $<span th:text="${vehicle.pricePerDay}"></span>
+            </li>
+            <li class="list-group-item">
+              <strong>Available:</strong>
+              <span th:text="${vehicle.availability ? 'Yes' : 'No'}"></span>
+            </li>
+          </ul>
+          <div class="text-end mt-3">
+
+
+
+            <!-- Employee & Admin “Rent Now” button -->
+            <a sec:authorize="hasAnyRole('ADMIN','EMPLOYEE')"
+               th:href="@{/dashboard/employee/checkout/{id}(id=${vehicle.vehicleId})}"
+               class="btn btn-primary btn-lg">
+              Rent Now
+            </a>
+
+            <!-- Customer “Rent Now” button -->
+            <a sec:authorize="hasRole('CUSTOMER')"
+               th:href="@{/dashboard/customer/checkout/{id}(id=${vehicle.vehicleId})}"
+               class="btn btn-primary btn-lg">
+              Rent Now
+            </a>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

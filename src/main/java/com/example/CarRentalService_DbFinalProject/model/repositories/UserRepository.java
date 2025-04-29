@@ -13,12 +13,15 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<Users, Integer> {
 
+    // Searches for users via their username
     @Query("SELECT query FROM Users query WHERE query.userName = :userName")
     Optional<Users> findByUserName(@Param("userName") String userName);
 
+    // Searches for users via their email
     @Query("SELECT query FROM Users query WHERE query.email = :email")
     Optional<Users> findByEmail(@Param("email") String email);
 
+    // Retrieves all users, can filter via role, and can search via username, email, and full name
     @Query("SELECT query FROM Users query WHERE " +
             "(:role IS NULL OR query.role = :role) AND " +
             "(:keyword IS NULL OR :keyword = '' OR " +

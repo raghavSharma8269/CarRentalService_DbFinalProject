@@ -22,6 +22,7 @@ public class CreateMaintenanceService {
 
     public ResponseEntity<String> execute (Maintenance maintenance) {
 
+        // Validates the maintenance
         MaintenanceValidation.validate(maintenance);
 
 

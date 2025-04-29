@@ -20,8 +20,10 @@ public class CreateCouponService {
 
     public ResponseEntity<String> execute(Coupon coupon) {
 
+        // Validate the coupon
         CouponValidation.validate(coupon);
 
+        // SQL query to insert the coupon
         String sql = "INSERT INTO coupon (coupon_code, discount_percentage) VALUES (?, ?)";
 
         try (Connection conn = dataSource.getConnection();

@@ -28,6 +28,8 @@ public class DeleteVehicleService {
     }
 
     public ResponseEntity<String> execute(int vehicleId) {
+
+        // SQL query to delete a vehicle via vehicle_id
         String sql = "DELETE FROM vehicle WHERE vehicle_id = ?";
 
         try (Connection conn = dataSource.getConnection();

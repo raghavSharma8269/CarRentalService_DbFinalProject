@@ -91,11 +91,11 @@ public class EmployeeControllerJson {
         return deleteVehicleService.execute(vehicleId);
     }
 
-    @PutMapping("/vehicles/{vehicleId}")
-    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
-    public ResponseEntity<String> updateVehicle(@PathVariable int vehicleId, @RequestBody Vehicle updatedVehicle) {
-        return updateVehicleService.execute(vehicleId, updatedVehicle);
-    }
+//    @PutMapping("/vehicles/{vehicleId}")
+//    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
+//    public ResponseEntity<String> updateVehicle(@PathVariable int vehicleId, @RequestBody Vehicle updatedVehicle) {
+//        return updateVehicleService.execute(vehicleId, updatedVehicle);
+//    }
 
     @GetMapping("/vehicles")
     @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
@@ -143,11 +143,11 @@ public class EmployeeControllerJson {
         return createCouponService.execute(coupon);
     }
 
-    @PutMapping("/coupons/{couponId}")
-    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
-    public ResponseEntity<String> editCoupon (@RequestBody Coupon coupon, @PathVariable int couponId) {
-        return updateCouponService.execute(coupon, couponId);
-    }
+//    @PutMapping("/coupons/{couponId}")
+//    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
+//    public ResponseEntity<String> editCoupon (@RequestBody Coupon coupon, @PathVariable int couponId) {
+//        return updateCouponService.execute(coupon, couponId);
+//    }
 
     @DeleteMapping("/coupons/{couponId}")
     @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")

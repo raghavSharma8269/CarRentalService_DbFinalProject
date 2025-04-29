@@ -1,0 +1,52 @@
+<!-- File: src/main/resources/templates/fragments/dashboard/coupon-create.html -->
+<div th:fragment="content"
+     xmlns:th="http://www.thymeleaf.org">
+    <div class="container py-5">
+        <h2 class="mb-4">Add New Coupon</h2>
+        <form th:action="@{/dashboard/employee/coupons/add}"
+              th:object="${coupon}"
+              method="post">
+            <div class="row g-3">
+                <!-- Coupon Code -->
+                <div class="col-md-6">
+                    <label for="couponCode" class="form-label">Coupon Code</label>
+                    <input id="couponCode"
+                           type="text"
+                           th:field="*{couponCode}"
+                           class="form-control"
+                           placeholder="Enter Coupon Code"/>
+                    <div class="text-danger mt-1"
+                         th:if="${#fields.hasErrors('couponCode')}"
+                         th:errors="*{couponCode}"></div>
+                </div>
+                <!-- Discount Percentage -->
+                <div class="col-md-6">
+                    <label for="discountPercentage" class="form-label">Discount (%) *In Decimal*</label>
+                    <input
+                            id="discountPercentage"
+                            type="number"
+                            th:field="*{discountPercentage}"
+                            class="form-control"
+                            placeholder="ex. 15% -> 0.15"
+                            step="0.01"
+                            min="0"
+                            max="1" />
+                    <div class="text-danger mt-1"
+                         th:if="${#fields.hasErrors('discountPercentage')}"
+                         th:errors="*{discountPercentage}"></div>
+                </div>
+            </div>
+
+            <div class="mt-4 d-flex justify-content-end">
+                <a th:href="@{/dashboard/employee/coupons}"
+                   class="btn btn-secondary me-2">Cancel</a>
+
+                <button type="submit"
+                        class="btn btn-primary">Create Coupon</button>
+            </div>
+
+            <p th:if="${success}" class="mt-3 text-success" th:text="${success}"></p>
+            <p th:if="${error}"   class="mt-3 text-danger"  th:text="${error}"></p>
+        </form>
+    </div>
+</div>

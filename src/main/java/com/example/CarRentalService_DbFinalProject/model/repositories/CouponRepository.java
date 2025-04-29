@@ -10,6 +10,7 @@ import java.util.List;
 @Repository
 public interface CouponRepository extends JpaRepository<Coupon, Integer> {
 
+    // Search coupons by keyword via coupon code
     @Query("SELECT c FROM Coupon c WHERE :couponCode " +
             "IS NULL OR :couponCode = '' " +
             "OR LOWER(c.couponCode) LIKE LOWER(CONCAT('%', :couponCode, '%'))")

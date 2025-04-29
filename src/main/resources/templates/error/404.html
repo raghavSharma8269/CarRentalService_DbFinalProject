@@ -1,0 +1,16 @@
+<!-- File: src/main/resources/templates/error/404.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="fragments/base :: base_head">
+    <title>Page Not Found</title>
+</head>
+<body>
+<div class="container text-center py-5">
+    <h1 class="display-1 text-danger">404</h1>
+    <h2>Oops! Page not found.</h2>
+    <p class="lead">The page you’re looking for doesn’t exist.</p>
+    <a th:href="@{/dashboard}" class="btn btn-primary mt-3">Back to Dashboard</a>
+</div>
+<div th:replace="fragments/base :: base_footer"></div>
+</body>
+</html>

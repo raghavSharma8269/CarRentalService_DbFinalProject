@@ -17,6 +17,8 @@ public class DeleteCouponService {
     }
 
     public ResponseEntity<String> execute(int couponId) {
+
+        // SQL query to delete the coupon via coupon_id
         String sql = "DELETE FROM coupon WHERE coupon_id = ?";
 
         try (Connection conn = dataSource.getConnection();

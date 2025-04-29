@@ -11,7 +11,7 @@ import java.util.List;
 public interface VehicleRepository extends JpaRepository<Vehicle, Integer> {
 
 
-    // Custom query to search for available vehicles by keyword and price range
+    // Custom query to search for ONLY AVAILABLE vehicles by keyword via make, model, year, license_plate
     @Query("SELECT v FROM Vehicle v WHERE " +
             "v.availability = true AND " +
             "(:keyword IS NULL OR :keyword = '' OR " +
@@ -25,7 +25,7 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Integer> {
 
 
 
-    // Search vehicles by keyword via make, model, year, license_plate, min price - max price
+    // Search all vehicles by keyword via make, model, year, license_plate, min price - max price
     @Query("SELECT query FROM Vehicle query WHERE " +
             "(:keyword IS NULL OR :keyword = '' OR " +
             "LOWER(query.make) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +

@@ -1,4 +1,10 @@
-<!-- Default Dashboard Page -->
+<!-- File: src/main/resources/templates/fragments/dashboard/dashboard.html -->
 <div th:fragment="content">
-    Hello World!
+    <div class="container py-5">
+        <div class="p-5 mb-4 bg-light rounded-3 text-center">
+            <h1 class="display-4 mb-3">
+                Welcome back, <span th:text="${user.fullName}">User</span>!
+            </h1>
+        </div>
+    </div>
 </div>

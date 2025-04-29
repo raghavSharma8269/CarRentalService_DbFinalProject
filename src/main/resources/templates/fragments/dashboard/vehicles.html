@@ -1,0 +1,62 @@
+<!-- src/main/resources/templates/fragments/dashboard/vehicles.html -->
+<div th:fragment="content"
+     xmlns:th="http://www.thymeleaf.org"
+     xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+     lang="en">
+    <div class="container py-5">
+
+        <h2 class="mb-4">All Vehicles
+
+<!--            Add New Vehicle-->
+            <a sec:authorize="hasAnyRole('ADMIN','EMPLOYEE')"
+               th:href="@{/dashboard/employee/vehicles/add}">
+                <i class="bi bi-plus-circle me-1"></i>
+            </a>
+
+
+        </h2>
+
+        <div class="row g-4" th:if="${vehicles != null and vehicles.size() > 0}">
+            <div th:each="veh : ${vehicles}" class="col-md-4 col-sm-6 col-12">
+                <div class="p-3 border rounded bg-white shadow-sm">
+
+
+                    <!-- Admin & Employee link -->
+                    <a sec:authorize="hasAnyRole('ADMIN','EMPLOYEE')"
+                       th:href="@{/dashboard/employee/vehicles/{id}(id=${veh.vehicleId})}">
+                        <img th:src="${veh.imageUrl}"
+                             class="img-fluid mb-3"
+                             th:alt="${veh.make + ' ' + veh.model}"/>
+                    </a>
+
+                    <!-- Customer link -->
+                    <a sec:authorize="hasRole('CUSTOMER')"
+                       th:href="@{/dashboard/customer/vehicles/{id}(id=${veh.vehicleId})}">
+                        <img th:src="${veh.imageUrl}"
+                             class="img-fluid mb-3"
+                             th:alt="${veh.make + ' ' + veh.model}"/>
+                    </a>
+
+                    <h5 th:text="${veh.make}">Make</h5>
+                    <p class="text-muted" th:text="${veh.model}">Model</p>
+                    <p class="text-muted" th:text="${veh.year}">Year</p>
+                    <p class="text-muted" th:text="${veh.licensePlate}">License Plate</p>
+                    <span class="fw-bold"
+                          th:text="${'$' + veh.pricePerDay + '/day'}">
+            $0.00/day
+          </span>
+                    <p class="mt-2" th:text="${veh.availability} ? '✅ Available' : '❌ Unavailable'"></p>
+
+                    <!-- Manage button, only for ADMIN or EMPLOYEE -->
+                    <a sec:authorize="hasAnyRole('ADMIN','EMPLOYEE')"
+                       th:href="@{/dashboard/employee/vehicles/manage/{id}(id=${veh.vehicleId})}"
+                       class="btn btn-warning mt-2 w-100">
+                        <i class="bi bi-gear"></i>
+                        Manage
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

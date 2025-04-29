@@ -1,56 +1,31 @@
 package com.example.CarRentalService_DbFinalProject.controllers;
 
-import org.springframework.security.access.prepost.PreAuthorize;
+import com.example.CarRentalService_DbFinalProject.model.entities.Users;
+import com.example.CarRentalService_DbFinalProject.services.profile.GetProfileService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.security.Principal;
+
 @Controller
-@RequestMapping("/api/dashboard")
+@RequestMapping("/dashboard")
 public class DashboardController {
 
-    // Default Dashboard Page
-    @GetMapping()
-    public String dashboard(Model model) {
+    private final GetProfileService getProfileService;
+
+    public DashboardController(GetProfileService getProfileService) {
+        this.getProfileService = getProfileService;
+    }
+
+    @GetMapping
+    public String dashboard(Principal principal, Model model) {
+        // load the currently-logged-in user
+        Users user = getProfileService.execute(principal.getName());
+        model.addAttribute("user", user);
+
         model.addAttribute("page", "dashboard");
-        return "pages/employee-admin-dash";
+        return "pages/user-dash";
     }
-
-    // Reservation Dashboard Page
-    @GetMapping("/reservations")
-    public String reservations(Model model) {
-        model.addAttribute("page", "reservations");
-        return "pages/employee-admin-dash";
-    }
-
-    // Vehicles Dashboard Page (Vehicle.HTML page will be embedded w/Manage button)
-    @GetMapping("/vehicles")
-    public String vehicles(Model model) {
-        model.addAttribute("page", "vehicles");
-        return "pages/employee-admin-dash";
-    }
-
-    // Maintenance Dashboard Page
-    @GetMapping("/maintenance")
-    public String maintenance(Model model) {
-        model.addAttribute("page", "maintenance");
-        return "pages/employee-admin-dash";
-    }
-
-    // Coupons Dashboard Page
-    @GetMapping("/coupons")
-    public String coupons(Model model) {
-        model.addAttribute("page", "coupons");
-        return "pages/employee-admin-dash";
-    }
-
-    // Account Management Dashboard Page
-    @GetMapping("/accounts")
-    // @PreAuthorize("hasRole('ADMIN')")
-    public String accounts(Model model) {
-        model.addAttribute("page", "accounts");
-        return "pages/employee-admin-dash";
-    }
-
 }
