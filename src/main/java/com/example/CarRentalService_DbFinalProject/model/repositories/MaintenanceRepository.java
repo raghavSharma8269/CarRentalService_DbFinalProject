@@ -17,9 +17,10 @@ public interface MaintenanceRepository extends JpaRepository<Maintenance, Intege
     @Query("DELETE FROM Maintenance r WHERE r.vehicleId.vehicleId = :vehicleId")
     void deleteMaintenanceByVehicleId(int vehicleId);
 
-    // Search maintenance by keyword via vehicle(make, model, license plate, year)
+    // Search maintenance by keyword via vehicle(make, model, license plate, year) and maintenance(description)
     @Query("SELECT query FROM Maintenance query WHERE " +
             "(:keyword IS NULL OR :keyword = '' OR " +
+            "LOWER(query.description) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
             "LOWER(query.vehicleId.make) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
             "LOWER(query.vehicleId.model) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
             "LOWER(query.vehicleId.licensePlate) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
