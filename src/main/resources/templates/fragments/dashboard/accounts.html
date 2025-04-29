@@ -6,18 +6,30 @@
 
     <!-- header controls -->
     <div class="d-flex justify-content-between align-items-center mb-4">
+
       <!-- Role filter dropdown -->
-      <form th:action="@{/dashboard/admin/accounts}" method="get" class="d-flex align-items-center">
-        <!-- preserve existing keyword search -->
+      <form th:action="@{/dashboard/admin/accounts}"
+            method="get"
+            class="d-flex align-items-center">
+
+        <!-- keep the keyword -->
         <input type="hidden" name="keyword" th:value="${keyword}" />
 
         <select name="role"
                 class="form-select me-2"
                 onchange="this.form.submit()">
-          <option th:value="''"       th:selected="${role == null}">All Roles</option>
-          <option th:value="'ADMIN'"    th:selected="${role == 'ADMIN'}">Admin</option>
-          <option th:value="'EMPLOYEE'" th:selected="${role == 'EMPLOYEE'}">Employee</option>
-          <option th:value="'CUSTOMER'" th:selected="${role == 'CUSTOMER'}">Customer</option>
+          <option value="" th:selected="${role == null or role == ''}">
+            All Roles
+          </option>
+          <option value="ADMIN"    th:selected="${role == 'ADMIN'}">
+            Admin
+          </option>
+          <option value="EMPLOYEE" th:selected="${role == 'EMPLOYEE'}">
+            Employee
+          </option>
+          <option value="CUSTOMER" th:selected="${role == 'CUSTOMER'}">
+            Customer
+          </option>
         </select>
       </form>
 
@@ -51,7 +63,8 @@
           <td class="text-end">
             <!-- delete form -->
             <form th:action="@{/dashboard/admin/accounts/manage/delete/{id}(id=${user.userId})}"
-                  method="post" style="display:inline-block;">
+                  method="post"
+                  style="display:inline-block;">
               <button type="submit"
                       class="btn btn-sm btn-outline-danger me-2"
                       onclick="return confirm('Really delete this account?');">

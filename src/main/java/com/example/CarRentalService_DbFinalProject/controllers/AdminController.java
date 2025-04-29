@@ -46,6 +46,10 @@ public class AdminController {
         List<Users> users = getAllUsersService.execute(role, keyword);
         model.addAttribute("users", users);
         model.addAttribute("page", "accounts");
+
+        model.addAttribute("role", role);
+        model.addAttribute("keyword", keyword);
+
         return "/pages/user-dash";
     }
 

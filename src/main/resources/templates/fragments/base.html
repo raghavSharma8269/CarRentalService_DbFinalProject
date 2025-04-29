@@ -70,9 +70,9 @@
         <form th:if="${page=='accounts'}"
               class="flex-grow-1 me-4"
               th:action="@{/dashboard/admin/accounts}"
-              method="get"
-              role="search">
-            <!-- preserve the current role filter -->
+              method="get" role="search">
+
+            <!-- keep the current role -->
             <input type="hidden" name="role" th:value="${role}" />
 
             <div class="input-group">
@@ -87,6 +87,7 @@
                        th:value="${keyword}">
             </div>
         </form>
+
 
 
         <div class="d-flex align-items-center">
