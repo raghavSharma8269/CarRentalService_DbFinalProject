@@ -23,26 +23,30 @@
                     <div class="d-flex align-items-center mb-4">
                         <!-- Vehicle Details -->
                         <div>
-                            <h5 id="vehicleName" class="mb-1">
-                                Nissan GT-R
-                                <span id="vehiclePlate" class="ms-1 text-muted">ABC123</span>
-                            </h5>
+                            <div class="d-flex align-items-center">
+                                <h5 id="vehicleName" class="mb-1 me-2">Nissan GT-R</h5>
+                                <span id="vehiclePlate" class="text-muted align-self-start">#ABC123</span>
+                            </div>
                             <p id="reservationUser" class="text-muted mb-0">User's name</p>
                         </div>
                     </div>
 
-                    <form>
+                    <form id="updateForm" method="post">
                         <div class="row mb-3">
                             <!-- Pick Up Section -->
                             <div class="col-md-6">
                                 <label class="form-label">Pick-Up Date</label>
-                                <input id="start" type="datetime-local" class="form-control mb-2">
+                                <input id="start" name="start" type="datetime-local" class="form-control mb-2" required onchange="calculateTotal()">
                             </div>
                             <!-- Drop-Off Section -->
                             <div class="col-md-6">
                                 <label class="form-label">Drop-Off Date</label>
-                                <input id="end" type="datetime-local" class="form-control mb-2">
+                                <input id="end" name="end" type="datetime-local" class="form-control mb-2" required onchange="calculateTotal()">
                             </div>
+
+                            <!-- Hidden total price for form submission -->
+                            <input type="hidden" id="totalPriceHidden" name="totalPriceHidden"/>
+
                         </div>
                     </form>
 
@@ -52,7 +56,20 @@
                             <h6 class="mb-0">Total Rental Price</h6>
                             <small class="text-muted">Overall Price</small>
                         </div>
-                        <h4 id="totalPrice" class="mb-0">$80.00</h4>
+                        <h4 id="displayTotalPrice" class="mb-0">$80.00</h4>
+                    </div>
+
+                    <!-- Buttons for Update and Cancel selected reservation -->
+                    <div class="row mt-3">
+                        <div class="col text-center">
+                            <button id="updateButton" class="form-control btn btn-primary me-2">Update</button>
+                        </div>
+                        <div class="col text-center">
+                            <a id="cancelButton" href="#" class="form-control btn btn-danger"
+                               onclick="return confirm('Are you sure you want to cancel this reservation?');">
+                                Cancel
+                            </a>
+                        </div>
                     </div>
 
                 </div>
@@ -80,6 +97,7 @@
                         th:data-vehicle-image="${reservation.vehicleId.imageUrl}"
                         th:data-vehicle-name="${reservation.vehicleId.make + ' ' + reservation.vehicleId.model}"
                         th:data-vehicle-plate="${reservation.vehicleId.licensePlate}"
+                        th:data-vehicle-price="${reservation.vehicleId.pricePerDay}"
                         th:data-reservation-start="${reservation.start}"
                         th:data-reservation-end="${reservation.end}"
                         th:data-reservation-total-price="${reservation.totalPrice}">
@@ -107,43 +125,106 @@
     <!-- JavaScript to handle reservation click event -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // Get all reservation items that are clickable
+            // Save the original start/end for change detection
+            let originalStart;
+            let originalEnd;
+            let pricePerDay;
+
+            const startInput = document.getElementById('start');
+            const endInput = document.getElementById('end');
+            const updateForm = document.getElementById('updateForm');
+            const updateButton = document.getElementById('updateButton');
+            const cancelButton = document.getElementById('cancelButton');
+            const updatePrice = document.getElementById('totalPriceHidden');
+
+            // Add event listeners to the date inputs
+            startInput.addEventListener('change', () => {
+                checkForChanges();
+                calculateTotal(); // Optional: if you want to recalculate price on date change
+            });
+            endInput.addEventListener('change', () => {
+                checkForChanges();
+                calculateTotal();
+            });
+
+            // Submit the form when the update button is clicked
+            updateButton.addEventListener('click', () => {
+                updateForm.submit();
+            });
+
+            // Function to detect changes
+            function checkForChanges() {
+                const start = startInput.value;
+                const end = endInput.value;
+
+                if (start !== originalStart || end !== originalEnd) {
+                    updateButton.innerText = 'Update Reservation';
+                    updateButton.disabled = false;
+                } else {
+                    updateButton.innerText = 'Update Reservation?';
+                    updateButton.disabled = true;
+                }
+            }
+
+            // Function to recalculate total price
+            window.calculateTotal = function() {
+                const start = new Date(startInput.value);
+                const end = new Date(endInput.value);
+
+                if (isNaN(start.getTime()) || isNaN(end.getTime()) || end <= start) {
+                    document.getElementById('displayTotalPrice').innerText = '$0.00';
+                    updatePrice.value = 0;
+                    return;
+                }
+
+                const msInDay = 1000 * 60 * 60 * 24;
+                const days = Math.ceil((end - start) / msInDay);
+
+                const total = pricePerDay * days;
+
+                document.getElementById('displayTotalPrice').innerText = `$${total.toFixed(2)}`;
+                updatePrice.value = total;
+            }
+
+            // Set up reservation click handlers
             const reservationItems = document.querySelectorAll('.list-group-item');
 
             reservationItems.forEach(item => {
                 item.addEventListener('click', () => {
-                    // Get reservation details from data attributes loaded by Thymeleaf
                     const reservationId = item.getAttribute('data-reservation-id');
                     const reservationUser = item.getAttribute('data-reservation-user');
                     const vehicleImage = item.getAttribute('data-vehicle-image');
                     const vehicleName = item.getAttribute('data-vehicle-name');
                     const vehiclePlate = item.getAttribute('data-vehicle-plate');
+                    const vehiclePrice = item.getAttribute('data-vehicle-price');
                     const reservationStart = item.getAttribute('data-reservation-start');
                     const reservationEnd = item.getAttribute('data-reservation-end');
                     const reservationTotalPrice = item.getAttribute('data-reservation-total-price');
 
-                    console.log(reservationUser, vehiclePlate);
-
-                    // Load reservation details into column 1
                     document.getElementById('vehicleImage').src = vehicleImage;
                     document.getElementById('vehicleName').innerText = vehicleName;
-                    document.getElementById('vehiclePlate').innerText = vehiclePlate;
+                    document.getElementById('vehiclePlate').innerText = '#' + vehiclePlate;
                     document.getElementById('reservationUser').innerText = reservationUser;
 
-                    // Format datetime-local inputs (Format: YYYY-MM-DDTHH:MM)
-                    const formatDateTime = (isoString) => {
-                        const date = new Date(isoString);
-                        const padding = (num) => num.toString().padStart(2, '0');
-                        return `${date.getFullYear()}-${padding(date.getMonth() + 1)}-${padding(date.getDate())}T${padding(date.getHours())}:${padding(date.getMinutes())}`;
-                    }
+                    startInput.value = reservationStart;
+                    endInput.value = reservationEnd;
+                    originalStart = reservationStart;
+                    originalEnd = reservationEnd;
 
-                    document.getElementById('start').value = formatDateTime(reservationStart);
-                    document.getElementById('end').value = formatDateTime(reservationEnd);
-                    document.getElementById('totalPrice').innerText = `$${reservationTotalPrice}`;
+                    document.getElementById('displayTotalPrice').innerText = `$${reservationTotalPrice}`;
+                    updatePrice.value = reservationTotalPrice;
 
-                })
-            })
-        })
+                    // Store the vehicle's price per day for calculations
+                    pricePerDay = parseFloat(vehiclePrice);
+
+                    updateForm.action = `/dashboard/reservation/modify/${reservationId}`;
+                    cancelButton.href = `/dashboard/reservation/cancel/${reservationId}`;
+
+                    updateButton.innerText = "Update Reservation?";
+                    updateButton.disabled = true;
+                });
+            });
+        });
     </script>
 
 </div>
