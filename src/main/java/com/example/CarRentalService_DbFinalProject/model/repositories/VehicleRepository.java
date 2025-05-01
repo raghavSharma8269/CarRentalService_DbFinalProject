@@ -23,8 +23,6 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Integer> {
             "(:maxPrice IS NULL OR v.pricePerDay <= :maxPrice)")
     List<Vehicle> searchAvailableByKeywordAndPrice(String keyword, Double minPrice, Double maxPrice);
 
-
-
     // Search all vehicles by keyword via make, model, year, license_plate, min price - max price
     @Query("SELECT query FROM Vehicle query WHERE " +
             "(:keyword IS NULL OR :keyword = '' OR " +
