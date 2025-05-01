@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -18,6 +19,15 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
             "AND (:reservationId IS NULL OR :reservationId = '' OR CAST(r.reservationId AS string) LIKE %:reservationId%)")
     List<Reservation> findAllByUserIdAndReservationIdKeyword(int userId, String reservationId);
 
+    // Modify a reservation's (start, end, and total price) via it's ID
+    @Modifying
+    @Transactional
+    @Query("UPDATE Reservation r SET r.start = :startDate, r.end = :endDate, r.totalPrice = :totalPrice " +
+            "WHERE r.reservationId = :reservationId")
+    void updateReservation(@Param("reservationId") int reservationId,
+                           @Param("startDate") LocalDateTime start,
+                           @Param("endDate") LocalDateTime end,
+                           @Param("totalPrice") double totalPrice);
 
     // Deletes all reservations associated with a specific user ID to avoid deletion anomaly
     @Modifying
