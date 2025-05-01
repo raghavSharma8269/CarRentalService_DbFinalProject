@@ -93,8 +93,6 @@ public class EmployeeController {
         // Add the reservations to the model
         model.addAttribute("reservations", reservations);
 
-        System.out.println("reservations: " + reservations);
-
         // Set the page attribute to reservations for rendering
         model.addAttribute("page", "reservations");
 
