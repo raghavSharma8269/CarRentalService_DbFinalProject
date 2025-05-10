@@ -42,6 +42,8 @@ A full-stack car rental management system built with **Spring Boot**, **MSSQL**,
 
 *Add images here of the login page, vehicle catalog, staff dashboard, etc.*
 
+> **Note:** UI design inspired by [Figma Community Design – Modern UI Kit](https://www.figma.com/community/file/1138316365849534403)
+
 ---
 
 ## 🚀 Getting Started
