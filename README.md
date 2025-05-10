@@ -1,41 +1,67 @@
-# CarRentalService_DbFinalProject
+# Car Rental Service Web Application 🚗
 
-## Login/Registration Endpoints
-### Base URL: http://localhost:8080/api/auth/register
+A full-stack car rental management system built with **Spring Boot**, **MSSQL**, and **Thymeleaf**, supporting three roles: Customer, Employee, and Admin.
 
-## Customer Endpoints
-### URL for Vehicles: http://localhost:8080/api/customer/vehicle
-### URL for Vehicles Details: http://localhost:8080/api/customer/vehicle/{id}
-### URL for Checkout Page: http://localhost:8080/api/customer/checkout/{id}
+---
 
-## Dashboard Endpoints
-### URL for Dashboard: http://localhost:8080/api/dashboard
+## 🔧 Features
 
-### Option 3: Develop a Program for a Car Rental Service | [Kanban Board](https://trello.com/invite/b/67f93300b896a31191a170b0/ATTI902c0540a3a66b9b60e9380f69502f99D033A5D7/car-rental-service) | [LucidSpark](https://lucid.app/lucidchart/6bb02b5f-56a4-4262-abe1-59f99177dc8e/edit?viewport_loc=-10695%2C-851%2C9901%2C5082%2C0_0&invitationId=inv_6335ab82-8e2e-454e-ad08-3046dcd1a753) | [BootStrap Docs](https://getbootstrap.com/docs/5.3/components/buttons/) | [Car API](https://carapi.app/api)
+### 👤 Customer
 
-- [ ] Sign-in page for customers, employees, and admins.
+* Register and log in
+* Browse and reserve available vehicles
+* View and cancel reservations
+* Update profile and view rental history
 
-#### Customers
-- [ ] Create an account with username, password, full name, and contact information.
-- [ ] Browse available vehicles and reserve one for specific dates.
-- [ ] View or cancel reservations.
-- [ ] View rental history.
-- [ ] See general account info after signing in (username, full name, contact info).
-- [ ] Update profile details after signing in.
+### 👨‍🔧 Employee
 
-#### Employees
-- [ ] Add new vehicles to the system with details like type, availability, and rental price.
-- [ ] Modify vehicle information, including rental price.
-- [ ] View a list of all customers and their rental histories.
-- [ ] Approve or decline special rental requests (e.g., long-term rentals).
-- [ ] Manage vehicle maintenance schedules and mark vehicles as unavailable.
-- [ ] **(Optional)** Create coupon codes that a customer could apply to a rental.
+* Add and modify vehicle listings
+* Approve or reject rental requests
+* Manage maintenance schedules
+* Create coupon codes
 
-#### Admin Account
-- [ ] Create employee accounts with a username, password, and full name.  
-- [ ] **(Optional)** Require new employees to change their password on first login.
-- [ ] Delete customer or employee accounts.
-- [ ] Modify general employee account info.
-- [ ] Modify general customer account info.
-- [ ] Modify or delete vehicle records.
+### 🛠️ Admin
 
+* Create, update, and delete user accounts (customers & employees)
+* Modify or delete vehicle listings
+* Promote users to employee role
+
+---
+
+## 🧰 Tech Stack
+
+* **Backend:** Spring Boot, Spring MVC, Spring Security, JPA (Hibernate)
+* **Frontend:** Thymeleaf, HTML/CSS, JavaScript
+* **Database:** MSSQL
+* **Project Management:** GitHub Feature Branches, Scrum + Kanban
+* **Version Control:** Git & GitHub
+
+---
+
+## 📷 Screenshots
+
+*Add images here of the login page, vehicle catalog, staff dashboard, etc.*
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+* Java 17+
+* MSSQL Server
+* Maven (used for dependency management and builds)
+* Spring Boot CLI or IntelliJ IDEA
+
+### Steps
+
+1. Clone the repository
+   `git clone https://github.com/raghavSharma8269/CarRentalService_DbFinalProject.git`
+2. Create a new database in MySQL.
+3. Update your `application.properties` with DB credentials.
+4. Run the project via IntelliJ or command line using:
+
+   ```
+   ./mvnw spring-boot:run
+   ```
+5. Navigate to `http://localhost:8080`.
