@@ -38,9 +38,27 @@ A full-stack car rental management system built with **Spring Boot**, **MSSQL**,
 
 ---
 
+## 🌐 Live Demo
+
+Experience the application live at: [Car Rental Service](https://car-rental-service-47xj.onrender.com)
+
+> **Note:** The server may take up to ~60 seconds to spin up if it's in a cold state.
+
+### 🔑 Default Credentials
+
+* **Customer:** Username: `Customer`, Password: `customer`
+* **Employee:** Username: `Employee`, Password: `employee`
+* **Admin:** Username: `Admin`, Password: `admin`
+
+---
+
 ## 📷 Screenshots
 
-*Add images here of the login page, vehicle catalog, staff dashboard, etc.*
+### Login + Registration Page
+![Login/Register Pages](src/main/resources/static/media/Login-Register-Preview.gif)
+
+### Admin Dashboard (Includes all user views/features)
+![Admin Dashboard](src/main/resources/static/media/Admin-Dashboard-Preview.gif)
 
 > **Note:** UI design inspired by [Figma Community Design – Modern UI Kit](https://www.figma.com/community/file/1138316365849534403)
 
